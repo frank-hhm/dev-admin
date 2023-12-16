@@ -8,6 +8,15 @@ dev-admin
 * PHP8 thinkphp8 mysql
 * vue3 typescript vite arco-design
 
+## Demo
+
+演示：http://admin.dev-frank.cn/
+
+~~~
+admin
+123456
+~~~
+
 ## 服务端安装
 
 ~~~
@@ -59,8 +68,3 @@ location / {
 }
 ~~~
 
-## 账号密码
-~~~
-admin
-123456
-~~~
