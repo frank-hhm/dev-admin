@@ -16,7 +16,7 @@ export default [{
             path: '/index',
             name: '/index',
             meta: {
-                auth: '/index',
+                auth: false,
                 menu_name: "首页",
             },
             component: () => import('@/views/index/index.vue')
