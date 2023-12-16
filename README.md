@@ -21,6 +21,11 @@ php think migrate:run
 ~~~
 
 
+开启目录'写入'权限
+runtime
+public/uploads
+
+
 启动服务
 
 ~~~
@@ -32,10 +37,15 @@ php think run
 ~~~
 yarn install
 ~~~
-启动服务
+开发
 
 ~~~
-yarn dev || yarn build
+yarn dev 
+~~~
+发布
+
+~~~
+yarn build 
 ~~~
 
 ## Nginx配置
@@ -47,4 +57,10 @@ location / {
   	break;
   }
 }
+~~~
+
+## 账号密码
+~~~
+frank
+123456
 ~~~

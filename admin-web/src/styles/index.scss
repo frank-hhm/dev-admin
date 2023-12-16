@@ -1,0 +1,145 @@
+@use './common.scss' as *;
+@use './icon.css' as *;
+@use './theme/style.scss' as *;
+
+:root {
+    --base-size: 14px;
+    --base-radius:2px;
+}
+
+* {
+    font-family: PingFangSC-Medium;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    font-size: var(--base-size);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-fill-1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-fill-3);
+}
+
+
+.body-box {
+    background: #fff;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+}
+
+.fw {
+    font-weight: 550;
+}
+
+.flex {
+    display: flex
+}
+
+.grid {
+    display: grid
+}
+
+.flex.between {
+    justify-content: space-between
+}
+
+.flex.around {
+    justify-content: space-around
+}
+
+.flex.start {
+    justify-content: start
+}
+
+.flex.end {
+    justify-content: end
+}
+
+.grid.end {
+    justify-content: end
+}
+
+.flex.center {
+    justify-content: center
+}
+
+.items-center {
+    align-items: center
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.pointer {
+    user-select: none;
+    cursor: pointer;
+}
+
+
+/* 文本 */
+.text-default {
+    color: rgba(var(--primary-6));
+}
+.text-blue {
+    color: rgba(var(--blue-6));
+}
+
+.text-green {
+    color: rgba(var(--green-6));
+}
+
+.text-grey {
+    color: rgba(var(--gray-5));
+}
+
+.text-yellow {
+    color: rgba(var(--yellow-6));
+}
+
+.text-red {
+    color: rgba(var(--red-6));
+}
+
+.text-indigo {
+    color: rgba(var(--green-6));
+}
+
+.text-purple {
+    color: rgba(var(--purple-6));
+}
+
+.text-pink {
+    color: rgba(var(--pinkpurple-6));
+}
+
+.text-orange {
+    color: rgba(var(--orange-6));
+}
+
+.text-cyan {
+    color: rgba(var(--cyan-6));
+}
+
+.text-black {
+    color: rgba(var(--color-black));
+}

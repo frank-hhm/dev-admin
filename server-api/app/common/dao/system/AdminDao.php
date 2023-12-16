@@ -1,0 +1,82 @@
+<?php
+/**
+ * @Author: Frank
+ * @Email: frank_hhm@163.com
+ * @Date: 2023/12/16 12:38
+ */
+
+declare(strict_types=1);
+
+namespace app\common\dao\system;
+
+use app\common\model\system\AdminModel;
+
+/**
+ * Class AdminDao
+ * @package app\common\dao\system
+ */
+class AdminDao extends \app\common\dao\BaseDao
+{
+    protected array $field = ['*'];
+
+    protected function setModel(): string
+    {
+        return AdminModel::class;
+    }
+
+    /**
+     * 获取列表
+     */
+    public function getAdminList(array $where, int $page, int $limit, $with = []): array
+    {
+        return $this->search($where)->when(count($with), function ($query) use ($with) {
+            $query->with($with);
+        })->order(['create_time DESC'])->page($page)->paginate($limit)->toArray();
+    }
+
+    /**
+     * 用管理员名查找管理员信息
+     */
+    public function accountByAdmin(string $account)
+    {
+        return $this->search(['account' => $account, 'status' => 1])->find();
+    }
+
+    public function accountById(int $id)
+    {
+        return $this->search(['id' => $id])->field($this->field)->find($id);
+    }
+
+    /**
+     * 当前账号是否可用
+     */
+    public function isAccountUsable(string $account, int $id)
+    {
+        return $this->search(['account' => $account])->where('id', '<>', $id)->count();
+    }
+
+    /**
+     * 获取admin
+     */
+    public function getAdminIds(int $level)
+    {
+        return $this->search('level', '>=', $level)->column('id', 'id');
+    }
+
+    /**
+     * 获取低于等级的管理员名称和id
+     */
+    public function getOrdAdmin(string $field = 'real_name,id', int $level = 0)
+    {
+        return $this->search('level', '>=', $level)->field($field)->order('sort DESC,id DESC')->select()->toArray();
+    }
+
+    /**
+     * 条件获取管理员数据
+     */
+    public function getInfo($where)
+    {
+        return $this->search($where)->find();
+    }
+}
+
