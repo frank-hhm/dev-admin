@@ -61,6 +61,6 @@ location / {
 
 ## 账号密码
 ~~~
-frank
+admin
 123456
 ~~~
