@@ -83,7 +83,17 @@ class Admin extends Base
         ]);
         validate(AdminValidate::class)->check($data);
 
-        if( $this->service->updateSave($this->request->param('id'),$data)){
+        $detail = $this->service->getDetail($data['id']);
+        if(empty($detail)){
+            $this->error('该账号不存在！');
+        }
+        if($detail['level'] == 0 && $this->adminId != $data['id']){
+            $this->error('该账号不能编辑！');
+        }
+        if($detail['level'] == 1 && $this->adminId != $data['id']){
+            $this->error('该账号不能编辑！');
+        }
+        if( $this->service->updateSave($data['id'],$data)){
             $this->success('修改账号成功!');
         }
         $this->error('修改账号失败!');
@@ -124,6 +134,16 @@ class Admin extends Base
     {
         if (!$id = $this->request->param('id')) {
             $this->error('参数错误!');
+        }
+        $detail = $this->service->getDetail($id);
+        if(empty($detail)){
+            $this->error('该账号不存在！');
+        }
+        if($detail['level'] == 0 && $this->adminId != $id){
+            $this->error('该账号不能修改状态！');
+        }
+        if($detail['level'] == 1 && $this->adminId != $id){
+            $this->error('该账号不能修改状态！');
         }
         if ($this->service->update($id, ['status' => $this->request->param('status')])) {
             $this->success('修改成功');
