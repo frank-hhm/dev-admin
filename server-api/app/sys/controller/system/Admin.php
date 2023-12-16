@@ -133,6 +133,7 @@ class Admin extends Base
 
     /**
      * 账号详细
+     * @noAuth(true)
      * @method(GET)
      */
     public function detail(){
