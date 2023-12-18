@@ -24,6 +24,7 @@ declare module '@vue/runtime-core' {
     SelectModal: typeof import('./src/components/media/select-modal.vue')['default']
     ShortcutsTime: typeof import('./src/components/plugins/shortcuts-time/index.vue')['default']
     UpdateName: typeof import('./src/components/media/update-name.vue')['default']
+    UpdatePassword: typeof import('./src/components/system/admin/update-password.vue')['default']
     Upload: typeof import('./src/components/media/upload.vue')['default']
     UploadBtn: typeof import('./src/components/plugins/upload-btn/index.vue')['default']
   }

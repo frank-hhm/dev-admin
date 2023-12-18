@@ -41,6 +41,7 @@ import router from "@/router/index";
 import { storeToRefs } from "pinia";
 import { logoutApi } from '@/api/login';
 import { Message } from '@arco-design/web-vue';
+import adminPassModal from "@/components/system/admin/update-password.vue";
 
 const { systemInfo } = storeToRefs(useAppStore());
 
@@ -56,7 +57,7 @@ const {
 
 const outLogin = () => {
   Message.loading({
-    id:'outlogin',
+    id: 'outlogin',
     content: "正在退出...",
   });
   logoutApi().then(async (res: any) => {
@@ -64,7 +65,7 @@ const outLogin = () => {
     $utils.setStorage("token", null);
     setTimeout(() => {
       Message.success({
-        id:'outlogin',
+        id: 'outlogin',
         content: "退出成功!",
         duration: 1000,
         onClose: () => {
@@ -87,6 +88,8 @@ const toLogin = () => {
 const adminPassModalRef = ref<HTMLElement>();
 
 const onUpdatePass = () => {
+  console.log(1111)
+  console.log(proxy?.$refs["adminPassModalRef"])
   proxy?.$refs["adminPassModalRef"]?.open();
 };
 
@@ -192,7 +195,7 @@ onMounted(() => {
 }
 
 .layout-nav .layout-nav-menu-item.active {
-  color:rgba(var(--primary-1));
+  color: rgba(var(--primary-1));
 }
 
 .layout-nav-user {
@@ -200,6 +203,6 @@ onMounted(() => {
   align-items: center;
   cursor: pointer;
   user-select: none;
-  color:var(--color-text-1)
+  color: var(--color-text-1)
 }
 </style>

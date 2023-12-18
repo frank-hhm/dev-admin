@@ -103,9 +103,9 @@ defineExpose({ refreshMenuList });
   cursor: pointer;
   text-align: left;
   padding: 0 20px;
-  font-size: var(--base-size);
+  font-size:12px;
   border-radius: 5px;
-  color: var(--color-text-3);
+  color: var(--color-text-1);
 }
 
 .layout-side-childen-sub .layout-side-childen-item {}
