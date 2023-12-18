@@ -27,7 +27,7 @@
                         <a-table-column title="" align="center" :width="120">
                             <template #cell="{ record }">
                                 <template v-if="record.status == 2 || record.status == 3">
-                                    <a-progress :percentage="record.progress.percent" />
+                                    <a-progress :percent="record.progress.percent / 100" />
                                 </template>
                             </template>
                         </a-table-column>

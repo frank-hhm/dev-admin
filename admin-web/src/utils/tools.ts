@@ -1,5 +1,6 @@
 import { EnumType, Result, ResultError } from '@/types';
 import { Message } from '@arco-design/web-vue';
+import { request } from './request/default';
 
 export const baseApiUrl = () => {
     return import.meta.env.VITE_BASE_URL
@@ -29,7 +30,7 @@ export const errorMsg = (res: ResultError) => {
             id: 'error',
             duration: 2000
         })
-       
+
     } else if (res.code == 'ERRPR' || res.code == ' ERRPR_AUTH') {
         Message.error({
             content: res?.data?.message || '未知错误',
@@ -78,7 +79,7 @@ export const staticImgPath = (path: string, source = 'assets') => {
     if (!path) return;
     switch (source) {
         case 'assets':
-            return new URL('/image/' + path, import.meta.url).href;
+            return new URL('../assets/image/' + path, import.meta.url).href;
             break;
     }
 }
@@ -116,6 +117,19 @@ export const getEnumName = (value: string | number | boolean, enums: EnumType = 
     return value?.toString() || ''
 }
 
+export const downloadVideo = (url: string, fileName: string = '') => {
+    const a = document.createElement('a')
+    a.href = url
+    if (fileName) {
+        a.download = fileName
+    }
+    a.target = '_blank';
+    a.style.display = 'none'
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+};
+
 export default {
     baseApiUrl,
     setStorage,
@@ -125,5 +139,6 @@ export default {
     copyDomText,
     staticImgPath,
     getUrlParams,
-    getEnumName
+    getEnumName,
+    downloadVideo
 }

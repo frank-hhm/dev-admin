@@ -38,10 +38,12 @@ class MediaGroup extends Base
      */
     public function list()
     {
-        $this->success($this->service->selectList([
-            'source'=>1,
-            'source_id'=>$this->adminId
-        ]));
+        $data = $this->request->postMore([
+            ['type','image'],
+        ]);
+        $data['source'] = 1;
+        $data['source_id'] = $this->adminId;
+        $this->success($this->service->selectList($data));
     }
 
     /**
@@ -51,9 +53,10 @@ class MediaGroup extends Base
     public function create()
     {
         $data = $this->request->postMore([
-            ['group_name', '']
+            ['group_name', ''],
+            ['type', 'image']
         ]);
-        $group = $this->service->getOne(['group_name' => $data['group_name']]);
+        $group = $this->service->getOne(['group_name' => $data['group_name'],'type' => $data['type']]);
         if ($group) {
             $this->error('该分组名称已存在！请重新输入');
         }

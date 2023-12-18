@@ -30,7 +30,7 @@ export const request = (params: any, options: any = {
                     config.headers['Authori-zation'] = 'Bearer ' + token
                 }
                 config.onUploadProgress = progressEvent => {
-                    if(options.progress){
+                    if (options.progress) {
                         options.progress.percent = progressEvent.loaded / progressEvent.total * 100 - 1 | 0
                     }
                 };
@@ -88,7 +88,7 @@ export const requestProgress = (params: any, options: any = {
         progress: readonly(progress),
         request: request(params, Object.assign({
             progress
-        },options))
+        }, options))
     };
 };
 

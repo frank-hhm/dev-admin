@@ -46,9 +46,11 @@ const visible = ref<boolean>(false);
 const createRef = ref<HTMLElement>();
 
 const createForm = ref<{
-    group_name: string
+    group_name: string,
+    type: string
 }>({
     group_name: "",
+    type: "image"
 });
 const createRules = reactive({
     group_name: [
@@ -60,7 +62,8 @@ const createRules = reactive({
     ],
 });
 
-const open = (id: number = 0, group_name: string = '') => {
+const open = (type: string, id: number = 0, group_name: string = '') => {
+    createForm.value.type = type
     if (id != 0) {
         operation.value = "update";
         operationId.value = id;

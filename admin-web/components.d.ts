@@ -8,6 +8,7 @@ export {}
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Copyright: typeof import('./src/components/plugins/copyright/index.vue')['default']
+    Editor: typeof import('./src/components/plugins/editor/index.vue')['default']
     Group: typeof import('./src/components/media/group.vue')['default']
     GroupCreate: typeof import('./src/components/media/group-create.vue')['default']
     Icon: typeof import('./src/components/select-modal/icon/index.vue')['default']
@@ -21,11 +22,13 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Rule: typeof import('./src/components/select-modal/rule/index.vue')['default']
+    SearchMap: typeof import('./src/components/plugins/search-map/index.vue')['default']
     SelectModal: typeof import('./src/components/media/select-modal.vue')['default']
     ShortcutsTime: typeof import('./src/components/plugins/shortcuts-time/index.vue')['default']
     UpdateName: typeof import('./src/components/media/update-name.vue')['default']
     UpdatePassword: typeof import('./src/components/system/admin/update-password.vue')['default']
     Upload: typeof import('./src/components/media/upload.vue')['default']
     UploadBtn: typeof import('./src/components/plugins/upload-btn/index.vue')['default']
+    VideoPlay: typeof import('./src/components/plugins/video-play/index.vue')['default']
   }
 }

@@ -1,9 +1,9 @@
 <template>
     <div class="media-body">
-        <mediaGroup @change="changeGroup" @initChange="initGroup" :width="groupWidth + 'px'" :isModal="isModal">
+        <mediaGroup ref="mediaGroupRef" :type="props.type" @change="changeGroup" @initChange="initGroup"
+            :width="groupWidth + 'px'" :isModal="isModal">
         </mediaGroup>
-        <div v-loading="initLoading" class="media-box"
-            :style="[`min-width:calc(100% - 1px - ` + groupWidth + `px)`]">
+        <div v-loading="initLoading" class="media-box" :style="[`min-width:calc(100% - 1px - ` + groupWidth + `px)`]">
             <div class="media-select-group-name">
                 <div>{{ activeGroupName }}</div>
                 <div class="flex">
@@ -27,7 +27,7 @@
             <div class="media-list-box" ref="mediaRef" :class="isModal ? 'is-modal' : ''">
                 <div class="media-list">
                     <template v-for="(item, index) in lists" :key="index">
-                        <div class="media-item" @click.capture="onSelectedItem(item)">
+                        <div class="media-item" @click="onSelectedItem(item)">
 
                             <template v-if="item.file_type == 'image'">
                                 <div class="img-cover">
@@ -38,7 +38,10 @@
                                 </div>
                             </template>
                             <template v-else-if="item.file_type == 'video'">
-                                <div class="media-item-video icon icon-shipin "></div>
+                                <div class="media-item-video">
+                                    <icon-file-video />
+                                </div>
+                                <div class="media-item-video-play" @click.stop="onPlay(item)"><icon-play-arrow /></div>
                             </template>
                             <div class="select-mask" v-if="isModal" v-show="item.active">
                                 <div class="mask-icon">
@@ -51,12 +54,12 @@
                                 <a-dropdown trigger="hover">
                                     <span class="icon icon-gengduo-2"></span>
                                     <template #content>
-                                        <a-doption @click="onCopy(item.file_url)">复制链接</a-doption>
+                                        <a-doption @click.stop="onCopy(item.file_url)">复制链接</a-doption>
                                         <div v-permission="'media-update-name'">
-                                            <a-doption @click="onEditFileName(item)">改素材名</a-doption>
+                                            <a-doption @click.stop="onEditFileName(item)">改素材名</a-doption>
                                         </div>
                                         <div v-permission="'media-delete'">
-                                            <a-doption @click="onDelete(item.id)">删除</a-doption>
+                                            <a-doption @click.stop="onDelete(item.id)">删除</a-doption>
                                         </div>
                                     </template>
                                 </a-dropdown>
@@ -91,7 +94,8 @@
                     :total="listPage.total" size="mini" @change="changeCurPage" />
             </div>
         </div>
-        <mediaUpdateName ref="mediaUpdateNameRef" @success="toInit()"></mediaUpdateName>
+        <video-play ref="videoPlayRef"></video-play>
+        <mediaUpdateName ref="mediaUpdateNameRef" @success="toInit(true)"></mediaUpdateName>
     </div>
 </template>
 <script lang="ts">
@@ -141,8 +145,7 @@ const changeGroup = (obj: {
 }) => {
     activeGroupId.value = obj.group_id;
     activeGroupName.value = obj.group_name;
-    listPage.page = 1;
-    toInit();
+    toInit(true);
 };
 
 const initLoading = ref<boolean>(true);
@@ -160,7 +163,6 @@ const listPage: PageLimitType = {
 };
 
 const changeCurPage = (val: number) => {
-    console.log(val);
     listPage.page = val;
     toInit();
 };
@@ -171,13 +173,18 @@ const initGroup = (data: any) => {
     groupList.value = data;
 };
 
-const toInit = () => {
+const mediaType = ref<string>(props.type);
+
+const toInit = (isInit: boolean = false) => {
+    if (isInit) {
+        listPage.page = 1;
+    }
     initLoading.value = true;
     let obj: any = {};
     obj.page = listPage.page;
     obj.limit = listPage.limit;
     obj.group_id = activeGroupId.value;
-    obj.type = props.type
+    obj.type = mediaType.value
     getMediaListApi(obj)
         .then((res: Result) => {
             lists.value = res.data.data;
@@ -236,6 +243,13 @@ const onCopy = (fileUrl: string) => {
 const onDeletes = () => {
     onDelete(getIds());
 };
+
+const videoPlayRef = ref<HTMLElement>()
+
+const onPlay = (item: any) => {
+    console.log(item)
+    proxy?.$refs["videoPlayRef"]?.open(item.file_url)
+}
 
 const getIds = () => {
     if (props.isModal) {
@@ -378,6 +392,14 @@ const close = () => {
     selectedDataList.value = [];
 };
 
+const mediaGroupRef = ref<HTMLElement>()
+
+const toTypeInit = (type: string) => {
+    mediaType.value = type;
+    toInit(true);
+    proxy?.$refs['mediaGroupRef']?.toTypeInit(type);
+}
+
 const dragoverOldItem = ref<any>();
 
 const dragoverNewItem = ref<any>();
@@ -412,7 +434,7 @@ const dragover = (e: any) => {
     e.preventDefault();
 };
 
-defineExpose({ open, close, setYes });
+defineExpose({ open, close, toTypeInit, setYes });
 </script>
         
         
@@ -482,7 +504,7 @@ defineExpose({ open, close, setYes });
     width: 100%;
     margin-top: 5px;
     line-height: 16px;
-    color:var(--color-text-1);
+    color: var(--color-text-1);
 }
 
 .media-list .media-item div.media-name {
@@ -492,8 +514,9 @@ defineExpose({ open, close, setYes });
     overflow: hidden;
     font-size: 12px;
     width: calc(100% - 40px);
-    color:var(--color-text-1);
+    color: var(--color-text-1);
 }
+
 .select-mask {
     position: absolute;
     top: -2px;
@@ -583,7 +606,7 @@ defineExpose({ open, close, setYes });
     top: 0;
     z-index: 1;
     line-height: 12px;
-    color:var(--color-white);
+    color: var(--color-white);
     font-size: 12px;
 }
 
@@ -607,10 +630,23 @@ defineExpose({ open, close, setYes });
 
 .media-item-video {
     width: 100%;
-    height: 140px;
+    height: 110px;
     text-align: center;
-    line-height: 140px;
-    font-size: 50px;
+    line-height: 110px;
+    font-size: 30px;
+    color: var(--color-text-2);
+}
+
+.media-item-video-play {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+    text-align: center;
+    line-height: 14px;
+    border-radius: var(--base-radius);
+    color: var(--color-text-3);
 }
 </style>
         
