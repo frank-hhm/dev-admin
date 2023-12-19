@@ -72,6 +72,24 @@ class MediaModel extends BaseModel
         }
     }
 
+
+    /**
+     * 来源
+     */
+    public function searchSourceAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('source', $value);
+        }
+    }
+
+    public function searchTypeAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('type', $value);
+        }
+    }
+
     /**
      * 类型
      */

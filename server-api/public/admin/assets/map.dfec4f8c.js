@@ -1,0 +1,1 @@
+import{_}from"./LayoutBody.19ec38a5.js";import{aF as a,ak as n,aq as e,aA as c,ap as s,bt as r}from"./index.06ac279d.js";const p={};function m(u,f){const o=r,t=_;return c(),n(t,{height:"100%"},{default:e(()=>[s(o)]),_:1})}const d=a(p,[["render",m]]);export{d as default};

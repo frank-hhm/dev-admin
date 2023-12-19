@@ -30,4 +30,43 @@ class MediaGroupModel extends BaseModel
      * 模型名称
      */
     protected $name = 'media_group';
+
+
+    /**
+     * 来源
+     */
+    public function searchSourceIdAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('source_id', $value);
+        }
+    }
+
+
+    /**
+     * 来源
+     */
+    public function searchSourceAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('source', $value);
+        }
+    }
+
+
+    public function searchTypeAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('type', $value);
+        }
+    }
+
+    public function searchGroupNameAttr($query, $value)
+    {
+        if ($value) {
+            $query->where('group_name', $value);
+        }
+    }
+
+
 }

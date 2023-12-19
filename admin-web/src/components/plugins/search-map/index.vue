@@ -1,4 +1,5 @@
 <template>
+<<<<<<< HEAD
     <div :style="styles" class="map-body"  v-loading="initLoading">
         <div v-show="!initStatus && !initLoading">
             <div class="text-red">初始化组件失败</div>
@@ -53,6 +54,34 @@
                 </template>
                 <div class="search-empty" v-else>
                     <p>暂无搜索结果</p>
+=======
+    <div style="[`height: ${mapHegiht}px`]">
+        <div :style="styles" class="map-body" v-loading="initLoading">
+            <div v-show="!initStatus && !initLoading">
+                <div class="text-red">初始化组件失败</div>
+            </div>
+            <div class="map-search-box" v-show="!initLoading && !isSetHeight">
+                <a-input-search class="map-search-input" v-model="searchText" @search="mapSearch(false)" id="searchInput"
+                    placeholder="输入关键字搜索" allow-clear />
+            </div>
+            <!-- 地图 -->
+            <div class="map-box" :style="{ height: 'calc(' + mapHegiht + ' - 340px)' }">
+                <div class="flex items-center" v-if="hideBtn">
+                    <div class="map-hide-btn icon icon-fangwen" @click="setHeight"></div>
+                    <div class="ml50 mt10 text-grey" v-show="isSetHeight">
+                        地图已隐藏，点击左边按钮可展示
+                    </div>
+                </div>
+                <div class="map-box-main" id="mapContainer"></div>
+                <!--  -->
+                <div class="map-select-box" v-if="selectedData.name" v-show="!isSetHeight">
+                    <div>
+                        经纬度:{{ selectedData.location.lng }},{{ selectedData.location.lat }}
+                    </div>
+                    <div class="map-select-box-name">
+                        {{ selectedData.name }}{{ selectedData.name }}
+                    </div>
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
                 </div>
             </div>
         </div>
@@ -77,17 +106,24 @@ const {
     proxy: { $utils },
 } = getCurrentInstance() as any;
 
+<<<<<<< HEAD
 
 interface mapCenterType {
     lat: number
     lng: number
 }
 
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 const props = withDefaults(
     defineProps<{
         height?: string;
         width?: string;
+<<<<<<< HEAD
         center?: mapCenterType;
+=======
+        center?: Array<number>;
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
         searchCity?: string;
         zoom?: number;
         modelValue?: string | number[] | string[];
@@ -100,10 +136,14 @@ const props = withDefaults(
         height: "100%",
         width: "100%",
         center: () => {
+<<<<<<< HEAD
             return {
                 lat: 0,
                 lng: 0
             }
+=======
+            return [0, 0];
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
         },
         searchCity: "全国",
         zoom: 12,
@@ -120,7 +160,11 @@ const emit = defineEmits(["change", "update:modelValue"]);
 
 const mapHegiht = ref<string>(props.height);
 
+<<<<<<< HEAD
 const mapCenter = ref<mapCenterType>(props.center);
+=======
+const mapCenter = ref<number[]>(props.center);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 
 const mapKey = ref<string>(systemInfo.map_key || 'R2FBZ-4WD6X-E5P4Q-TK34D-F4SFV-XJFZP');
 
@@ -179,6 +223,7 @@ const toInit = () => {
             $utils.successMsg("地图完成");
             initStatus.value = true;
             addMarker(props.lng, props.lat)
+<<<<<<< HEAD
             searchExplore();
         }
     })
@@ -187,6 +232,10 @@ const toInit = () => {
         addMarker(mapCenter.value.lng, mapCenter.value.lat)
         searchExplore();
     })
+=======
+        }
+    })
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 };
 
 const marker = ref<any>();
@@ -199,6 +248,10 @@ const addMarker = (g: number, t: number) => {
             "position": new _TMap.value.LatLng(t, g),
         }]
     });
+<<<<<<< HEAD
+=======
+    console.log(marker.value)
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     return marker.value;
 }
 
@@ -209,6 +262,7 @@ const clearMap = () => {
     }
 }
 
+<<<<<<< HEAD
 const searchList = ref<any>([]);
 
 const mapSearch = () => {
@@ -249,6 +303,38 @@ const searchExplore = () => {
         }, 500);
     });
 }
+=======
+const Autocomplete = () => {
+    _TMap.value.event.addListener(
+        new _TMap.value.Autocomplete({
+            city: searchCity.value,
+            input: "searchInput",
+        }),
+        "select",
+        (res: any) => {
+            if (res.type == "select") {
+                searchCityCode.value = res.poi.adcode
+                searchCity.value = res.poi.adcode
+                searchText.value = res.poi.name;
+                mapCenter.value = [res.poi.location.lng, res.poi.location.lat];
+                mapSearch();
+            }
+        }
+    );
+};
+
+const mapSearch = (isNear: boolean = false, isAll: boolean = false) => {
+    var search = new _TMap.value.service.Search({ pageSize: 10 });
+    search
+        .searchRectangle({
+            keyword: searchText.value,
+            bounds: map.value.getBounds(),
+        })
+        .then((result:any) => {
+            console.log(result)
+        })
+};
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 
 const searchText = ref<string>("");
 
@@ -259,6 +345,7 @@ const selectedIndex = ref<number | string>(-1);
 const selectedData = ref<any>({});
 
 const setSearchLoading = (v: boolean) => {
+<<<<<<< HEAD
     searchLoading.value = v;
 };
 
@@ -274,6 +361,35 @@ const selectItem = (item: any, index: number) => {
         province: item.ad_info.province,
         city: item.ad_info.city,
         district: item.ad_info.district,
+=======
+    setTimeout(() => {
+        searchLoading.value = v;
+    }, 300);
+};
+
+const markerItem = ref<any>();
+
+const selectItem = (item: any, index: number) => {
+    selectedIndex.value = index;
+    // 清除 marker
+    map.value.clearMap();
+    var marker = new _TMap.value.Marker({
+        icon: new _TMap.value.Icon({
+            image: $utils.staticImgPath("marker_01.png"),
+            size: new _TMap.value.Size(18, 30),
+            imageSize: new _TMap.value.Size(18, 30),
+        }),
+        position: [item.location.lng, item.location.lat],
+    });
+    map.value.add(marker);
+    map.value.setCenter([item.location.lng, item.location.lat]);
+    map.value.setZoom(props.zoom);
+    selectedData.value = item;
+    emit("change", {
+        province: item.pname,
+        city: item.cityname,
+        district: item.adname,
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
         location_lat: item.location.lat,
         location_lng: item.location.lng,
         address: item.address,
@@ -285,6 +401,20 @@ const selectItem = (item: any, index: number) => {
             : [item.location.lng, item.location.lat]
     );
 };
+<<<<<<< HEAD
+=======
+watch(
+    () => searchText.value,
+    (val, old) => {
+        if (val == "" && old != "") {
+            mapSearch();
+        }
+    },
+    {
+        deep: true,
+    }
+);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 
 const styles = ref<any>([
     `width: ${props.width}`,
@@ -302,6 +432,7 @@ const setHeight = () => {
     styles.value = [`width: ${props.width}`, `height: ${mapHegiht.value}`];
     isSetHeight.value = !isSetHeight.value;
 };
+<<<<<<< HEAD
 watch(
     () => searchText.value,
     (val, old) => {
@@ -313,6 +444,8 @@ watch(
         deep: true,
     }
 );
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 </script>
 
 
@@ -326,14 +459,22 @@ watch(
 
 .map-box {
     width: 100%;
+<<<<<<< HEAD
     border-radius: var(--base-radius);
+=======
+    border-bottom: 1px solid var(--color-border-1);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     position: relative;
     z-index: 1;
 }
 
 .map-search-box {
     position: absolute;
+<<<<<<< HEAD
     width: 240px;
+=======
+    width: 280px;
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     height: 32px;
     top: 10px;
     left: 10px;
@@ -359,7 +500,11 @@ watch(
 .search-empty {
     text-align: center;
     line-height: 100px;
+<<<<<<< HEAD
     color: rgba(var(--gray-6));
+=======
+    color: var(--base-grey);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 }
 
 .map-address {
@@ -368,6 +513,7 @@ watch(
     margin-top: 10px;
 }
 
+<<<<<<< HEAD
 .map-address-body {
     height: 328px;
 }
@@ -376,6 +522,12 @@ watch(
     padding: 5px 10px;
     border: 1px dashed var(--color-border-1);
     margin: 5px 0;
+=======
+.map-address-item {
+    padding: 5px 10px;
+    border: 1px dashed var(--color-border-1);
+    margin: 5px;
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     cursor: pointer;
     border-radius: 2px;
     line-height: 24px;
@@ -385,6 +537,7 @@ watch(
 }
 
 .map-address-item:hover {
+<<<<<<< HEAD
     border: 1px dashed rgb(var(--primary-6));
 }
 
@@ -396,6 +549,19 @@ watch(
 
 .map-address-item:hover .map-address-name {
     color: rgb(var(--primary-6));
+=======
+    border: 1px dashed var(--base-default);
+}
+
+.map-address-item.is-active {
+    color: var(--base-default);
+    background: var(--base-default-dark);
+    border: 1px dashed var(--base-default);
+}
+
+.map-address-item:hover .map-address-name {
+    color: var(--base-default);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 }
 
 .map-select-box {
@@ -421,6 +587,7 @@ watch(
     -webkit-box-orient: vertical;
 }
 
+<<<<<<< HEAD
 .map-search-list {
     background: var(--color-white);
     padding: 10px;
@@ -443,6 +610,8 @@ watch(
     color: rgb(var(--primary-6));
 }
 
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 .map-hide-btn {
     position: absolute;
     top: 10px;
