@@ -1,5 +1,6 @@
 <template>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <div :style="styles" class="map-body"  v-loading="initLoading">
         <div v-show="!initStatus && !initLoading">
             <div class="text-red">初始化组件失败</div>
@@ -55,6 +56,8 @@
                 <div class="search-empty" v-else>
                     <p>暂无搜索结果</p>
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     <div style="[`height: ${mapHegiht}px`]">
         <div :style="styles" class="map-body" v-loading="initLoading">
             <div v-show="!initStatus && !initLoading">
@@ -81,6 +84,9 @@
                     <div class="map-select-box-name">
                         {{ selectedData.name }}{{ selectedData.name }}
                     </div>
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
                 </div>
             </div>
@@ -107,6 +113,7 @@ const {
 } = getCurrentInstance() as any;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 interface mapCenterType {
     lat: number
@@ -115,12 +122,18 @@ interface mapCenterType {
 
 =======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 const props = withDefaults(
     defineProps<{
         height?: string;
         width?: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
         center?: mapCenterType;
+=======
+        center?: Array<number>;
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
         center?: Array<number>;
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -137,10 +150,14 @@ const props = withDefaults(
         width: "100%",
         center: () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
             return {
                 lat: 0,
                 lng: 0
             }
+=======
+            return [0, 0];
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
             return [0, 0];
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -161,7 +178,11 @@ const emit = defineEmits(["change", "update:modelValue"]);
 const mapHegiht = ref<string>(props.height);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const mapCenter = ref<mapCenterType>(props.center);
+=======
+const mapCenter = ref<number[]>(props.center);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
 const mapCenter = ref<number[]>(props.center);
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -224,6 +245,7 @@ const toInit = () => {
             initStatus.value = true;
             addMarker(props.lng, props.lat)
 <<<<<<< HEAD
+<<<<<<< HEAD
             searchExplore();
         }
     })
@@ -232,6 +254,10 @@ const toInit = () => {
         addMarker(mapCenter.value.lng, mapCenter.value.lat)
         searchExplore();
     })
+=======
+        }
+    })
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
         }
     })
@@ -249,6 +275,10 @@ const addMarker = (g: number, t: number) => {
         }]
     });
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+    console.log(marker.value)
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
     console.log(marker.value)
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -262,6 +292,7 @@ const clearMap = () => {
     }
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const searchList = ref<any>([]);
 
@@ -304,6 +335,8 @@ const searchExplore = () => {
     });
 }
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 const Autocomplete = () => {
     _TMap.value.event.addListener(
         new _TMap.value.Autocomplete({
@@ -334,6 +367,9 @@ const mapSearch = (isNear: boolean = false, isAll: boolean = false) => {
             console.log(result)
         })
 };
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 
 const searchText = ref<string>("");
@@ -345,6 +381,7 @@ const selectedIndex = ref<number | string>(-1);
 const selectedData = ref<any>({});
 
 const setSearchLoading = (v: boolean) => {
+<<<<<<< HEAD
 <<<<<<< HEAD
     searchLoading.value = v;
 };
@@ -362,6 +399,8 @@ const selectItem = (item: any, index: number) => {
         city: item.ad_info.city,
         district: item.ad_info.district,
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     setTimeout(() => {
         searchLoading.value = v;
     }, 300);
@@ -389,6 +428,9 @@ const selectItem = (item: any, index: number) => {
         province: item.pname,
         city: item.cityname,
         district: item.adname,
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
         location_lat: item.location.lat,
         location_lng: item.location.lng,
@@ -402,7 +444,10 @@ const selectItem = (item: any, index: number) => {
     );
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 watch(
     () => searchText.value,
     (val, old) => {
@@ -414,6 +459,9 @@ watch(
         deep: true,
     }
 );
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 
 const styles = ref<any>([
@@ -433,6 +481,7 @@ const setHeight = () => {
     isSetHeight.value = !isSetHeight.value;
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 watch(
     () => searchText.value,
     (val, old) => {
@@ -444,6 +493,8 @@ watch(
         deep: true,
     }
 );
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 </script>
@@ -460,7 +511,11 @@ watch(
 .map-box {
     width: 100%;
 <<<<<<< HEAD
+<<<<<<< HEAD
     border-radius: var(--base-radius);
+=======
+    border-bottom: 1px solid var(--color-border-1);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
     border-bottom: 1px solid var(--color-border-1);
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -471,7 +526,11 @@ watch(
 .map-search-box {
     position: absolute;
 <<<<<<< HEAD
+<<<<<<< HEAD
     width: 240px;
+=======
+    width: 280px;
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
     width: 280px;
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -501,7 +560,11 @@ watch(
     text-align: center;
     line-height: 100px;
 <<<<<<< HEAD
+<<<<<<< HEAD
     color: rgba(var(--gray-6));
+=======
+    color: var(--base-grey);
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
     color: var(--base-grey);
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
@@ -514,6 +577,7 @@ watch(
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .map-address-body {
     height: 328px;
 }
@@ -523,10 +587,15 @@ watch(
     border: 1px dashed var(--color-border-1);
     margin: 5px 0;
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 .map-address-item {
     padding: 5px 10px;
     border: 1px dashed var(--color-border-1);
     margin: 5px;
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     cursor: pointer;
     border-radius: 2px;
@@ -537,6 +606,7 @@ watch(
 }
 
 .map-address-item:hover {
+<<<<<<< HEAD
 <<<<<<< HEAD
     border: 1px dashed rgb(var(--primary-6));
 }
@@ -550,6 +620,8 @@ watch(
 .map-address-item:hover .map-address-name {
     color: rgb(var(--primary-6));
 =======
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
     border: 1px dashed var(--base-default);
 }
 
@@ -561,6 +633,9 @@ watch(
 
 .map-address-item:hover .map-address-name {
     color: var(--base-default);
+<<<<<<< HEAD
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
+=======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 }
 
@@ -588,6 +663,7 @@ watch(
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .map-search-list {
     background: var(--color-white);
     padding: 10px;
@@ -610,6 +686,8 @@ watch(
     color: rgb(var(--primary-6));
 }
 
+=======
+>>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 =======
 >>>>>>> d7e7fac9bcea2ca46918ce5f0c684d726926c01d
 .map-hide-btn {
