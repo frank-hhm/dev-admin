@@ -2,6 +2,7 @@ import BasicLayout from "@/components/layouts/Layout.vue";
 
 import system from './system'
 import media from './media'
+import plugins from './plugins'
 
 export default [{
     path: '/',
@@ -22,6 +23,7 @@ export default [{
             component: () => import('@/views/index/index.vue')
         },
         ...system,
-        ...media
+        ...media,
+        ...plugins
     ]
 }]

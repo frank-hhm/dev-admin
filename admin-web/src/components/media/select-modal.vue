@@ -4,7 +4,7 @@
         <template #title>
             <a-radio-group type="button" v-model="mediaType">
                 <template v-for="(item, index) in typeData" :key="index">
-                    <a-radio :value="item.value">{{ item.name }}</a-radio>
+                    <a-radio :disabled="item.value != props.type" :value="item.value">{{ item.name }}</a-radio>
                 </template>
             </a-radio-group>
         </template>
@@ -43,7 +43,7 @@ const props = withDefaults(
 
 const { proxy } = getCurrentInstance() as any
 
-const emit = defineEmits(["change"]);
+const emit = defineEmits(["change","close"]);
 
 interface typeItem {
     name: string;
@@ -68,10 +68,12 @@ const visible = ref<boolean>(false);
 
 const mediaModalRef = ref<HTMLElement>();
 
-const open = (selectedData: string | string[] = []) => {
-    console.log(modalStatus.value)
+const open = (selectedData: string | string[] = [], type?: string) => {
     if (modalStatus.value == true) {
         return;
+    }
+    if (type) {
+        mediaType.value = type
     }
     modalStatus.value = true;
     visible.value = true;
@@ -79,6 +81,11 @@ const open = (selectedData: string | string[] = []) => {
         proxy?.$refs['mediaModalRef']?.open(selectedData);
     })
 };
+
+const changeType = (val: any) => {
+    mediaType.value = val
+    proxy?.$refs['mediaModalRef']?.toTypeInit(mediaType.value)
+}
 
 const onSelectOk = () => {
     proxy?.$refs['mediaModalRef']?.setYes()
@@ -91,10 +98,10 @@ const selectChange = (selectedData: string | string[]) => {
 }
 
 const close = () => {
-    console.log(11111)
     modalStatus.value = false;
     visible.value = false;
     proxy?.$refs['mediaModalRef']?.close();
+    emit("close");
     return true;
 };
 

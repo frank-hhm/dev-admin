@@ -24,7 +24,9 @@ const headTab = ref<EnumType>([
 const tabActive = ref<string>('image');
 
 const changeTab = (tab: string) => {
+    console.log(tab)
     tabActive.value = tab;
+    proxy?.$refs['mediaRef']?.toTypeInit(tab);
 };
 
 const mediaRef = ref<HTMLElement>()

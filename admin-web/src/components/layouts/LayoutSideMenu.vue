@@ -2,7 +2,7 @@
   <template v-for="(item, index) in menus" :key="index">
     <div class="layout-side-item" :class="curNav == item.id ? 'active' : ''" @click="onPath(item)">
       <div class="icon" :class="item.icon"></div>
-      <!-- <div class="name">{{ item.menu_name }}</div> -->
+      <div class="name">{{ item.menu_name }}</div>
     </div>
   </template>
 </template>
@@ -132,7 +132,8 @@ onMounted(() => {
 <style>
 .layout-side-item {
   width:30px;
-  height: 30px;
+  /* height: 30px; */
+  height:30px;
   text-align: center;
   padding: 10px;
   cursor: pointer;
@@ -144,13 +145,13 @@ onMounted(() => {
 }
 
 .layout-side-item .icon {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
-  line-height:30px;
+  line-height:16px;
 }
 
 .layout-side-item .name {
-  font-size: var(--base-size);
+  font-size:12px;
   line-height: 24px;
   display: flex;
   justify-content: center;

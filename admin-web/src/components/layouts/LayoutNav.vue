@@ -11,6 +11,10 @@
       <a-button class="mr20" shape="circle" size="mini" @click="onTemplate">
         <icon-sun-fill />
       </a-button>
+      <a-button class="mr20" shape="circle" size="mini" @click="onFull">
+        <icon-expand v-if="!isFull" />
+        <icon-shrink v-else />
+      </a-button>
       <adminPassModal ref="adminPassModalRef"></adminPassModal>
       <a-dropdown v-if="adminInfo?.id">
         <div class="layout-nav-user">
@@ -35,7 +39,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { getCurrentInstance, ref, onMounted } from "vue";
+import { getCurrentInstance, ref, onMounted, watch } from "vue";
 import { useAdminStore, useAppStore } from "@/store";
 import router from "@/router/index";
 import { storeToRefs } from "pinia";
@@ -54,6 +58,20 @@ const {
   proxy: { $utils },
 } = getCurrentInstance() as any;
 
+const isFull = ref<boolean>(false);
+
+const onFull = () => {
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  } else {
+    document.body.requestFullscreen().catch((err) => {
+      console.error('Error attempting to enable full screen', err);
+    });
+  }
+};
+const handleFullScreenChange = () => {
+  isFull.value = !!document.fullscreenElement;
+};
 
 const outLogin = () => {
   Message.loading({
@@ -108,7 +126,9 @@ onMounted(() => {
       screenWidth.value = document.body.clientWidth;
     })();
   };
+  document.addEventListener('fullscreenchange', handleFullScreenChange);
 });
+
 </script>
 <style scoped>
 .layout-nav {

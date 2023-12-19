@@ -64,12 +64,16 @@ const props = withDefaults(
     defineProps<{
         isModal?: boolean;
         width?: string;
+        type?: string;
     }>(),
     {
         isModal: false,
         width: "386px",
+        type: "image"
     }
 );
+
+const mediaType = ref<string>(props.type);
 
 const selectedGroupId = ref<number | string>(-1);
 
@@ -83,7 +87,9 @@ const groupLoading = ref<boolean>(false);
 
 const toInit = () => {
     groupLoading.value = true;
-    getMediaGroupListApi({})
+    getMediaGroupListApi({
+        type: mediaType.value,
+    })
         .then((res: Result) => {
             groupList.value = res.data;
             emit('initChange', groupList.value);
@@ -97,7 +103,7 @@ const toInit = () => {
 };
 
 const onCreate = (id: number | string, group_name: string) => {
-    proxy?.$refs['createComponentRef']?.open(id, group_name);
+    proxy?.$refs['createComponentRef']?.open(mediaType.value,id, group_name);
 }
 
 
@@ -120,9 +126,15 @@ const onSelectedGroup = (val: number | string, title: string) => {
     emit("change", { group_id: val, group_name: title })
 }
 
+const toTypeInit = (type: string) =>{
+    mediaType.value = type;
+    toInit();
+}
+
 onMounted(() => {
     toInit();
 });
+defineExpose({ toTypeInit });
 </script>
 <style scoped>
 ::-webkit-scrollbar {
