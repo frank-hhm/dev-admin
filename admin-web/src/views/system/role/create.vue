@@ -15,7 +15,7 @@
             <template #footer>
                 <a-space>
                     <a-button v-btn @click="close">取消</a-button>
-                    <a-button v-btn type="primary" :loading="btnLoading" @click="onCreateOk">确定</a-button>
+                    <a-button v-btn type="primary" :disabled="initLoading || btnLoading" :loading="btnLoading" @click="onCreateOk">确定</a-button>
                 </a-space>
             </template>
         </a-modal>

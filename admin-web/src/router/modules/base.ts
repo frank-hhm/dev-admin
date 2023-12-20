@@ -9,7 +9,7 @@ export default [{
     name: '/',
     header: '/',
     redirect: {
-        path: `/index`
+        path: `/system/config`
     },
     component: BasicLayout,
     children: [

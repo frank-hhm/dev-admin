@@ -3,7 +3,7 @@
         <a-modal :title="operation == 'create' ? '添加菜单' : '编辑菜单'" @BeforeOk="onCreateOk" @BeforeCancel="close" width="900px"
             :top="useSetting().ModalTop" class="modal" v-model:visible="visible" :align-center="false" title-align="start"
             render-to-body>
-            <a-form :model="createForm" ref="createRef" :rules="createRules" v-loading="createLoading">
+            <a-form :model="createForm" ref="createRef" :rules="createRules" v-loading="initLoading">
 
                 <a-row :gutter="20">
                     <a-col :md="24" :xs="24">
@@ -109,7 +109,7 @@
             <template #footer>
                 <a-space>
                     <a-button v-btn @click="close">取消</a-button>
-                    <a-button v-btn type="primary" :loading="createLoading" @click="onCreateOk">确定</a-button>
+                    <a-button v-btn type="primary" :disabled="initLoading || btnLoading" :loading="initLoading" @click="onCreateOk">确定</a-button>
                 </a-space>
             </template>
             <select-rule-modal ref="selectRuleRef" @change="ruleChange"></select-rule-modal>
@@ -165,7 +165,7 @@ const toInit = () => {
     if (!operationId.value) {
         return;
     }
-    createLoading.value = true;
+    initLoading.value = true;
     getDetailMenusApi({ id: operationId.value })
         .then((res: Result) => {
             createForm.value.type = res.data.type;
@@ -179,7 +179,7 @@ const toInit = () => {
             createForm.value.status = res.data.status.value;
             createForm.value.api_rule = res.data.api_rule;
 
-            createLoading.value = false;
+            initLoading.value = false;
         })
         .catch((err: ResultError) => {
             $utils.errorMsg(err);
@@ -190,7 +190,7 @@ const createRules: any = reactive({
     menu_name: [{ required: true, message: "菜单名称不能为空！" }],
 });
 
-const createLoading = ref<boolean>(false);
+const initLoading = ref<boolean>(false);
 
 const emit = defineEmits(["success"]);
 

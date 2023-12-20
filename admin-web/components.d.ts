@@ -19,6 +19,7 @@ declare module '@vue/runtime-core' {
     LayoutSideMenu: typeof import('./src/components/layouts/LayoutSideMenu.vue')['default']
     LayoutSideMenuChilden: typeof import('./src/components/layouts/LayoutSideMenuChilden.vue')['default']
     List: typeof import('./src/components/media/list.vue')['default']
+    Page: typeof import('./src/components/plugins/page/index.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Rule: typeof import('./src/components/select-modal/rule/index.vue')['default']

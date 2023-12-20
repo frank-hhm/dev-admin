@@ -50,7 +50,7 @@
                 <a-space>
                     <a-button @click="close()">取消</a-button>
                     <a-button type="primary" @click="onCreateOk()" :loading="btnLoading"
-                        :disabled="btnLoading">确定</a-button>
+                        :disabled="initLoading || btnLoading">确定</a-button>
                 </a-space>
             </template>
         </a-modal>

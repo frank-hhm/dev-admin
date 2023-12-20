@@ -105,6 +105,9 @@
                     </a-table-column>
                 </template>
             </a-table>
+        <div class="mt20 flex end">
+            <page :listPage="listPage" @change="pageChange"></page>
+        </div>
         </layout-body>
     </div>
 </template>

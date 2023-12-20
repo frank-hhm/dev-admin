@@ -15,7 +15,7 @@
             <template #footer>
                 <a-space>
                     <a-button @click="close">取消</a-button>
-                    <a-button @click="onSave()" type="primary" :loading="btnLoading" :disabled="btnLoading">确定</a-button>
+                    <a-button @click="onSave()" type="primary" :loading="btnLoading" :disabled="initLoading || btnLoading">确定</a-button>
                 </a-space>
             </template>
         </a-drawer>

@@ -7,6 +7,7 @@ import shortcutsTime from '@/components/plugins/shortcuts-time/index.vue'
 import editor from '@/components/plugins/editor/index.vue'
 import videoPlay from '@/components/plugins/video-play/index.vue'
 import searchMap from '@/components/plugins/search-map/index.vue'
+import page from '@/components/plugins/page/index.vue'
 export const ComponentsPlugin: Plugin = {
     install(app: App) {
         app.component('copyright', copyright);
@@ -17,6 +18,7 @@ export const ComponentsPlugin: Plugin = {
         app.component('editor', editor);
         app.component('video-play', videoPlay);
         app.component('search-map', searchMap);
+        app.component('page', page);
     },
 };
-export { copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap };
+export { copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap,page };
