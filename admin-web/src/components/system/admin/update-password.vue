@@ -4,16 +4,13 @@
         <div v-loading="initLoading">
             <a-form layout="vertical" :model="createForm" ref="createRef" :rules="createRules">
                 <a-form-item :label-col-flex="labelColFlex" label="原密码" field="old_pwd">
-                    <a-input-password v-model="createForm.old_pwd" type="password" placeholder="请输入原密码"
-                        allow-clear />
+                    <a-input-password v-model="createForm.old_pwd" type="password" placeholder="请输入原密码" allow-clear />
                 </a-form-item>
                 <a-form-item :label-col-flex="labelColFlex" label="新密码" field="pwd">
-                    <a-input-password v-model="createForm.pwd" type="password" placeholder="请输入新密码"
-                        allow-clear />
+                    <a-input-password v-model="createForm.pwd" type="password" placeholder="请输入新密码" allow-clear />
                 </a-form-item>
                 <a-form-item :label-col-flex="labelColFlex" label="确定密码" field="conf_pwd">
-                    <a-input-password v-model="createForm.conf_pwd" type="password" placeholder="请再次输入密码"
-                        allow-clear />
+                    <a-input-password v-model="createForm.conf_pwd" type="password" placeholder="请再次输入密码" allow-clear />
                 </a-form-item>
             </a-form>
         </div>

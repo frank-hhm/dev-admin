@@ -16,18 +16,16 @@ class Base extends BaseController
 
     /**
      * 当前登陆管理员信息
-     * @var
      */
-    protected $adminInfo;
+    protected mixed $adminInfo;
 
     /**
      * 当前登陆管理员ID
-     * @var
      */
-    protected $adminId;
+    protected int $adminId;
 
     // 初始化
-    protected function initialize()
+    protected function initialize(): void
     {
         $this->adminId = $this->request->adminId() ?? 0;
         $this->adminInfo = $this->request->adminInfo() ?? [];

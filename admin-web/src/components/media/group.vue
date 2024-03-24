@@ -3,7 +3,7 @@
         <div class="media-group-box-head">
             <div v-if="!isModal">分组</div>
             <a-button size="small" @click="onCreate(0, '')"
-                v-permission="'media_group-create'">新增分组</a-button>
+                v-permission="'media-group-create'">新增分组</a-button>
         </div>
         <div class="media-group-list" v-loading="groupLoading">
             <div class="media-group-item" :class="-1 == selectedGroupId ? 'is-active' : ''"
@@ -28,13 +28,13 @@
                         <div :class="isModal ? 'ml5' : 'ml10'" class="media-group-name-text">{{ item.group_name }}</div>
                     </div>
                     <div class="media-group-item-action">
-                        <icon-edit v-if="isModal" v-permission="'media_group-update'"
+                        <icon-edit v-if="isModal" v-permission="'media-group-update'"
                             @click="onCreate(item.id, item.group_name)" />
-                        <a-button type="text" v-else v-permission="'media_group-update'"
+                        <a-button type="text" v-else v-permission="'media-group-update'"
                             @click="onCreate(item.id, item.group_name)" size="mini">编辑</a-button>
                         <a-popconfirm content="确定删除吗？" @ok="onDelete(item.id)">
                             <icon-delete  v-if="isModal" class="ml10" />
-                            <a-button type="text" size="mini" v-permission="'media_group-delete'" v-else>删除</a-button>
+                            <a-button type="text" size="mini" v-permission="'media-group-delete'" v-else>删除</a-button>
                         </a-popconfirm>
                     </div>
                 </div>
@@ -228,7 +228,7 @@ defineExpose({ toTypeInit });
 }
 
 .media-group-item.is-active {
-    background: rgba(var(--primary-1));
+    background:var(--color-fill-2);
 }
 </style>
       

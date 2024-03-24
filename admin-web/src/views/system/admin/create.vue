@@ -28,7 +28,8 @@
                                 </a-select>
                             </a-form-item>
                             <a-form-item :label-col-flex="labelColFlex" label="角色：" v-else>
-                                <div class="text-red">超级管理员</div>
+                                <div class="text-red" v-if="adminLevel == 0"><icon-user-group />超级管理员</div>
+                                <div class="text-red" v-if="adminLevel == -1"><icon-face-smile-fill />开发者</div>
                             </a-form-item>
                         </a-col>
                     </a-row>

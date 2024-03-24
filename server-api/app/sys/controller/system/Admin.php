@@ -9,10 +9,7 @@ declare(strict_types=1);
 namespace app\sys\controller\system;
 
 use app\sys\controller\Base;
-use think\facade\{
-    App,
-    Config
-};
+use think\facade\{App, Config, Filesystem};
 use app\common\services\system\AdminService;
 use app\common\services\common\CacheService;
 use app\sys\validate\AdminValidate;
@@ -24,6 +21,7 @@ use app\sys\validate\AdminPassValidate;
  */
 class Admin extends Base
 {
+    protected array $seniorLevel = [-1,0];
     /**
      * Admin constructor.
      */
@@ -87,12 +85,10 @@ class Admin extends Base
         if(empty($detail)){
             $this->error('该账号不存在！');
         }
-        if($detail['level'] == 0 && $this->adminId != $data['id']){
+        if(in_array($detail['level'],$this->seniorLevel) && $this->adminInfo['level'] > $detail['level']){
             $this->error('该账号不能编辑！');
         }
-        if($detail['level'] == 1 && $this->adminId != $data['id']){
-            $this->error('该账号不能编辑！');
-        }
+
         if( $this->service->updateSave($data['id'],$data)){
             $this->success('修改账号成功!');
         }
@@ -109,15 +105,12 @@ class Admin extends Base
         if (!$id = $this->request->param('id')) {
             $this->error('参数错误!');
         }
-        $admin = $this->service->getOne(['id' => $id]);
-        if (!$admin) {
+        $detail = $this->service->getDetail($id);
+        if (!$detail) {
             $this->error('该账号不存在！');
         }
-        if (!$admin['level']) {
-            $this->error('开发者不可删除！');
-        }
-        if ($admin['level'] == 1) {
-            $this->error('超级账号不可删除！');
+        if(in_array($detail['level'],$this->seniorLevel) && $this->adminInfo['level'] > $detail['level']){
+            $this->error('该账号不能编辑！');
         }
 
         if ($this->service->destroy((int)$id)) {
@@ -139,11 +132,8 @@ class Admin extends Base
         if(empty($detail)){
             $this->error('该账号不存在！');
         }
-        if($detail['level'] == 0 && $this->adminId != $id){
-            $this->error('该账号不能修改状态！');
-        }
-        if($detail['level'] == 1 && $this->adminId != $id){
-            $this->error('该账号不能修改状态！');
+        if(in_array($detail['level'],$this->seniorLevel) && $this->adminInfo['level'] > $detail['level']){
+            $this->error('该账号不能编辑！');
         }
         if ($this->service->update($id, ['status' => $this->request->param('status')])) {
             $this->success('修改成功');
@@ -156,7 +146,8 @@ class Admin extends Base
      * @noAuth(true)
      * @method(GET)
      */
-    public function detail(){
+    public function detail(): void
+    {
         $this->success($this->service->getDetail($this->request->get('id')));
     }
 
@@ -166,7 +157,8 @@ class Admin extends Base
      * @noAuth(true)
      * @method(GET)
      */
-    public function defaultDetail(){
+    public function defaultDetail(): void
+    {
         $this->success($this->adminInfo);
     }
 
@@ -175,7 +167,7 @@ class Admin extends Base
      * @noAuth(true)
      * @method(GET)
      */
-    public function logout()
+    public function logout(): void
     {
         $key = trim(ltrim($this->request->header(Config::get('cookie.token_name')), 'Bearer'));
         CacheService::instance()->delete($key);
@@ -187,7 +179,7 @@ class Admin extends Base
      * @noAuth(true)
      * @method(PUT)
      */
-    public function updatePass()
+    public function updatePass(): void
     {
         $data = $this->request->postMore([
             ['old_pwd', ''],
@@ -198,9 +190,28 @@ class Admin extends Base
         validate(AdminPassValidate::class)->check($data);
 
         if( $this->service->updatePass($data)){
-            $this->success('修改密码成功!');
+            $this->success('修改密码成功!',[],701);
         }
         $this->error('修改密码失败!');
     }
 
+
+    /**
+     *
+     */
+    public function updateAvatar(){
+        $file = request()->file('file');
+        if (empty($file)){
+            $this->error('上传失败：文件为空!');
+        }
+        $publicDisk = Filesystem::getDiskConfig('public');
+        $saveFileName  = '/'.Filesystem::disk('public')->putFile('avatar', $file,'uniqid');
+        $filePath = $publicDisk['url'] . $saveFileName;
+
+        $fileUrl = sysconf("web_domain"). $filePath;
+        if ($this->service->update($this->adminId, ['avatar' => $fileUrl])) {
+            $this->success('修改成功');
+        }
+        $this->error('失败成功');
+    }
 }

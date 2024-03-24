@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace app\common\services\common;
 
+use app\common\exception\CommonException;
+
 /**
  * 图形验证码服务
  * Class CaptchaService
@@ -27,21 +29,25 @@ class CaptchaService extends \app\common\services\BaseService
     ## 服务初始化
     public function initialize($config = []): static
     {
-        # 动态配置属性
-        foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
-        # 生成验证码序号
-        $this->uniqid = uniqid('captcha:') . mt_rand(1000, 9999);
-        # 生成验证码字符串
-        list($this->code, $length) = ['', strlen($this->charset) - 1];
-        for ($i = 0; $i < $this->length; $i++) {
-            $this->code .= $this->charset[mt_rand(0, $length)];
+        try {
+            # 动态配置属性
+            foreach ($config as $k => $v) if (isset($this->$k)) $this->$k = $v;
+            # 生成验证码序号
+            $this->uniqid = uniqid('captcha:') . mt_rand(1000, 9999);
+            # 生成验证码字符串
+            list($this->code, $length) = ['', strlen($this->charset) - 1];
+            for ($i = 0; $i < $this->length; $i++) {
+                $this->code .= $this->charset[mt_rand(0, $length)];
+            }
+            # 设置字体文件路径
+            $this->fontfile = __DIR__ . '/static/font/font.ttf';
+            # 缓存验证码字符串
+            $this->app->cache->set($this->uniqid, $this->code, 360);
+            # 返回当前对象
+            return $this;
+        }catch (\Exception $e){
+            throw new CommonException($e->getMessage());
         }
-        # 设置字体文件路径
-        $this->fontfile = __DIR__ . '/static/font/font.ttf';
-        # 缓存验证码字符串
-        $this->app->cache->set($this->uniqid, $this->code, 360);
-        # 返回当前对象
-        return $this;
     }
 
     ## 动态切换配置

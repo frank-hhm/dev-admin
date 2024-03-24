@@ -18,6 +18,9 @@ use Firebase\JWT\ExpiredException;
 
 use Psr\SimpleCache\InvalidArgumentException;
 use think\App;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\DbException;
+use think\db\exception\ModelNotFoundException;
 use think\facade\Env;
 
 /**
@@ -44,7 +47,9 @@ class AdminAuthService extends BaseService
      * 获取Admin授权信息
      * @param string $token
      * @return array
-     * @throws InvalidArgumentException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function parseToken(string $token): array
     {
@@ -86,7 +91,8 @@ class AdminAuthService extends BaseService
         }
 
         //获取管理员信息
-        $adminInfo = $this->dao->accountById($id);
+        $adminInfo = $this->dao->model->where('id',$id)->find();
+
         if (!$adminInfo || !$adminInfo->id) {
             if (!request()->isCli()) {
                 $cacheService->clear($md5Token);

@@ -1,5 +1,5 @@
 <template>
-    <div :style="styles" class="map-body"  v-loading="initLoading">
+    <div :style="styles" class="map-body" v-loading="initLoading">
         <div v-show="!initStatus && !initLoading">
             <div class="text-red">初始化组件失败</div>
         </div>
@@ -87,7 +87,6 @@ const props = withDefaults(
     defineProps<{
         height?: string;
         width?: string;
-        center?: mapCenterType;
         searchCity?: string;
         zoom?: number;
         modelValue?: string | number[] | string[];
@@ -99,28 +98,24 @@ const props = withDefaults(
     {
         height: "100%",
         width: "100%",
-        center: () => {
-            return {
-                lat: 0,
-                lng: 0
-            }
-        },
         searchCity: "全国",
         zoom: 12,
         modelValue: "",
         valueType: "string",
         hideBtn: false,
-        lat: 26.461937,
-        lng: 106.324859,
+        lat: 20.855058,
+        lng: 109.720828,
     }
 );
 
 const emit = defineEmits(["change", "update:modelValue"]);
 
-
 const mapHegiht = ref<string>(props.height);
 
-const mapCenter = ref<mapCenterType>(props.center);
+const mapCenter = ref<mapCenterType>({
+    lat: 20.855058,
+    lng: 109.720828,
+});
 
 const mapKey = ref<string>(systemInfo.map_key || 'R2FBZ-4WD6X-E5P4Q-TK34D-F4SFV-XJFZP');
 
@@ -131,22 +126,30 @@ const searchCityCode = ref<string>("");
 const _TMap = ref<any>();
 
 onMounted(() => {
-    $utils.getScript(
-        "https://map.qq.com/api/gljs?v=1.exp&key=" +
-        mapKey.value +
-        "&libraries=service",
-        () => {
-            nextTick(() => {
-                window!._TMapSecurityConfig = {
-                    securityJsCode: systemInfo.map_secret_key
-                };
-                setTimeout(() => {
-                    _TMap.value = window?.TMap;
-                    toInit();
-                }, 2000);
-            })
-        }
-    );
+    if (!useAppStore().isMapScriptLoad) {
+        $utils.getScript(
+            "https://map.qq.com/api/gljs?v=1.exp&key=" +
+            mapKey.value +
+            "&libraries=service",
+            () => {
+                nextTick(() => {
+                    window!._TMapSecurityConfig = {
+                        securityJsCode: systemInfo.map_secret_key
+                    };
+                    setTimeout(() => {
+                        useAppStore().setMapScriptLoad()
+                        _TMap.value = window?.TMap;
+                        toInit();
+                    }, 2000);
+                })
+            }
+        );
+    } else {
+        nextTick(() => {
+            _TMap.value = window?.TMap;
+            toInit();
+        })
+    }
 });
 
 const initLoading = ref<boolean>(true);
@@ -159,14 +162,17 @@ const map = ref<any>();
 
 const toInit = () => {
     //设置中心点坐标
-    mapCenter.value = new _TMap.value.LatLng(props.lat, props.lng);
+    if(props.lat && props.lng){
+        mapCenter.value = new _TMap.value.LatLng(props.lat, props.lng);
+    }else{
+        mapCenter.value = new _TMap.value.LatLng(mapCenter.value.lat,mapCenter.value.lng);
+    }
     map.value = new _TMap.value.Map("mapContainer", {
         zoom: props.zoom,
         center: mapCenter.value
     });
     map.value.on("error", (res: any) => {
         $utils.errorMsg("地图组件初始化失败,请关闭重试");
-        console.log(res)
         initStatus.value = false;
         initLoading.value = false
         return false;
@@ -219,7 +225,6 @@ const mapSearch = () => {
     search.getSuggestions({
         keyword: searchText.value
     }).then((result: any) => {
-        console.log(result)
         searchList.value = result.data;
     })
 };
@@ -239,7 +244,6 @@ const searchExplore = () => {
     search.explore({
         center: mapCenter.value,
         radius: 1000,
-
     }).then((result: any) => {
         lists.value = result.data;
         searchList.value = [];
@@ -263,12 +267,10 @@ const setSearchLoading = (v: boolean) => {
 };
 
 const selectItem = (item: any, index: number) => {
-    console.log(item)
     selectedIndex.value = index;
     // 清除 marker
     clearMap();
     addMarker(item.location.lng, item.location.lat);
-
     selectedData.value = item;
     emit("change", {
         province: item.ad_info.province,
@@ -319,9 +321,10 @@ watch(
 
 <style scoped>
 .map-body {
-    border: 1px solid var(--el-border-color-lighter);
+    border: 1px solid var(--color-border-1);
     border-radius: 2px;
     position: relative;
+    min-height: 684px;
 }
 
 .map-box {
@@ -344,7 +347,9 @@ watch(
 .map-search-input {
     z-index: 2;
     width: 100%;
-    border: 1px solid var(--color-border-3);
+    border: 1px solid #c9cdd4;
+    color: #1d2129 !important;
+    background-color: #f2f3f5 !important;
 }
 
 .map-search-input:hover {
@@ -459,4 +464,9 @@ watch(
     cursor: pointer;
 }
 </style>
-    
+
+<style>
+.map-search-input .arco-input::placeholder {
+    color: #86909C !important;
+}
+</style>

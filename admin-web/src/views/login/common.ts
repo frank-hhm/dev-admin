@@ -112,7 +112,6 @@ export default function (_call: any) {
     const getOptions = () => {
         let options = particlesOptions
         options.background.color.value = useAppStore().isDark ? "#17171a" : "#ffffff";
-        console.log(options)
         return options;
     }
 

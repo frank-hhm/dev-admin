@@ -101,7 +101,7 @@ abstract class BaseDao
      */
     public function getColumn(array $where, string $field, string $key = ''): array
     {
-        return $this->search($where)->column($field, $key);
+        return $this->model->where($where)->column($field, $key);
     }
 
 
@@ -115,7 +115,7 @@ abstract class BaseDao
         } else {
             $where = [$this->getPk() => $id];
         }
-        return $this->search($where)->when(count($with), function ($query) use ($with) {
+        return $this->model->where($where)->when(count($with), function ($query) use ($with) {
             $query->with($with);
         })->when($onlyTrashed, function ($query) {
             $query->onlyTrashed();
@@ -139,7 +139,7 @@ abstract class BaseDao
         if($limit == 0){
             [$page,$limit] = $this->getPageValue();
         }
-        $res = $this->search($where)->with($with)->field($field)->order($order)->page($page)->paginate($limit);
+        $res = $this->model->where($where)->with($with)->field($field)->order($order)->page($page)->paginate($limit);
         if($isArr) return $res->toArray();
         return $res;
     }
@@ -149,7 +149,7 @@ abstract class BaseDao
      */
     public function selectList(array $where, $page = 0, $limit = 0, $field = '*'): \think\Collection|array
     {
-        return $this->search($where)->field($field)
+        return $this->model->where($where)->field($field)
             ->when($page && $limit, function ($query) use ($page, $limit) {
                 $query->page($page, $limit);
             })->select();
@@ -161,7 +161,7 @@ abstract class BaseDao
      */
     public function detail($filter,?array $with = []){
         if(is_array($filter)){
-            return $this->search($filter)->when(count($with), function ($query) use ($with) {
+            return $this->model->where($filter)->when(count($with), function ($query) use ($with) {
                 $query->with($with);
             })->find();
         }else{
@@ -188,7 +188,7 @@ abstract class BaseDao
      */
     public function count(array $where = []): int
     {
-        return $this->search($where)->count();
+        return $this->model->where($where)->count();
     }
 
     /**

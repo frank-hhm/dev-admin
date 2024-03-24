@@ -60,7 +60,6 @@ class InitRoute extends Service
     {
         $pathinfoArray = explode('/',  $this->pathinfo);
 
-
         !empty($pathinfoArray[0]) && $this->appName = $pathinfoArray[0];
         isset($pathinfoArray[1]) && $this->controller = $pathinfoArray[1];
         isset($pathinfoArray[2]) && $this->action = $pathinfoArray[2];
@@ -84,7 +83,6 @@ class InitRoute extends Service
         $this->setRule();
 
         $this->getClass();
-
 
         $eventListenFile = app()->getRootPath() . $this->appPath .'/' .'event.php';
         if(file_exists($eventListenFile)){

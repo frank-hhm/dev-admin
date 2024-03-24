@@ -43,6 +43,7 @@ abstract class BaseController
      */
     protected array $middleware = [];
 
+    public mixed $service;
     /**
      * 构造方法
      * @access public
@@ -89,10 +90,10 @@ abstract class BaseController
     /**
      * 操作成功
      * @param string | array $message 提示消息
-     * @param array $data 返回数据
+     * @param string|array $data 返回数据
      * @param string | int | array $code 返回码
      */
-    protected function success(string|array $message = 'success', array $data = [], string|int|array $code = StatusCode::SUCCESS): void
+    protected function success(string|array $message = 'success', string | array $data = [], string|int|array $code = StatusCode::SUCCESS): void
     {
         if (is_array($message)) {
             $data = $message;

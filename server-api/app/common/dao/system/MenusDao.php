@@ -37,12 +37,12 @@ class MenusDao extends BaseDao
         if (!$field) {
             $field = ['id', 'menu_name', 'icon', 'pid', 'sort', 'type', 'params', 'menu_path', 'menu_node', 'status'];
         }
-        return $this->search($where)->field($field)->order('sort DESC,id DESC')->select();
+        return $this->model->where($where)->field($field)->order('sort DESC,id DESC')->select();
     }
 
     public function getMenusNode(array $where): array|\think\Collection
     {
-        return $this->search($where)->where('menu_node','<>','')->order('sort DESC,id DESC')->select();
+        return $this->model->where($where)->where('menu_node','<>','')->order('sort DESC,id DESC')->select();
     }
 
     /**
@@ -50,7 +50,7 @@ class MenusDao extends BaseDao
      */
     public function getMenusApiRule(array $where): array|\think\Collection
     {
-        return $this->search($where)->where('api_rule','<>','')->order('sort DESC,id DESC')->select();
+        return $this->model->where($where)->where('api_rule','<>','')->order('sort DESC,id DESC')->select();
     }
 
     /**
@@ -58,7 +58,6 @@ class MenusDao extends BaseDao
      */
     public function getMenusList(array $where,$field = []): array
     {
-        $where = array_merge($where, ['delete_time' => 0]);
-        return $this->search($where)->order('sort DESC,id DESC')->field($field)->select()->toArray();
+        return $this->model->where($where)->order('sort DESC,id DESC')->field($field)->select()->toArray();
     }
 }

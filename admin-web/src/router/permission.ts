@@ -12,7 +12,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     NProgress.start()
     // 判断是否需要登录才可以进入
     const token = getToken()
-    if (to.matched.some((_: any) => _.meta.auth) || token) {
+    if (to.matched.some((_: any) => _.meta.login !== false) || token) {
         const userStore = useAdminStoreHook()
         const useMenusStore = useMenusStoreHook();
         const permissionStore = usePermissionStoreHook();

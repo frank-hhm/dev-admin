@@ -1,5 +1,6 @@
 <template>
-    <a-modal v-model:visible="visible" title="上传素材" width="800px" :top="useSetting().ModalTop" :align-center="false">
+    <a-modal v-model:visible="visible" title="上传素材" width="800px" :top="useSetting().ModalTop" @BeforeCancel="close"
+        :align-center="false" :mask-closable="false">
         <a-upload ref="uploadRef" draggable multiple :auto-upload="false" @success="uploadSuccess" @error="uploadError"
             @change="uploadChange" v-model:file-list="uploadMediaLists" :show-file-list="false" :accept="uploadAccept"
             :data="{}">
@@ -59,13 +60,13 @@
                             </template>
                         </a-table-column>
                         <a-table-column title="操作" align="right" :width="120">
-                            <template #cell="{ record }">
+                            <template #cell="{ record, rowIndex }">
                                 <template v-if="record.status == 5">
                                     <a-button v-btn link type="text" @click="onOneUpload(record)"
                                         size="mini">重新上传</a-button>
                                 </template>
                                 <template v-if="record.status == 1">
-                                    <a-button v-btn link type="text" @click="onDelete(record, record.$index)"
+                                    <a-button v-btn link type="text" @click="onDelete(record, rowIndex)"
                                         size="mini">移除</a-button>
                                 </template>
                             </template>
@@ -94,7 +95,7 @@ import { Result, ResultError } from "@/types";
 import axios from 'axios';
 import { getToken } from '@/utils';
 import { uploadMediaApi } from '@/api/media';
-import type { FileItem } from '@arco-design/web-vue';
+import { Modal, type FileItem } from '@arco-design/web-vue';
 import { useSetting } from "@/hooks/useSetting";
 
 const {
@@ -104,11 +105,11 @@ const {
 
 const visible = ref(false);
 
-const apiUrl = ref<string>(import.meta.env.VITE_BASE_URL + "sys/media/upload")
+const apiUrl = ref<string>($utils.baseApiUrl() + "sys/media/upload")
 
 const uploadRef = ref<HTMLElement>()
 
-const uploadAccept = ref<string>(".gif,.jpg,.jpeg,.bmp,.png,.mp4");
+const uploadAccept = ref<string>(".gif,.jpg,.jpeg,.bmp,.png,.mp4,.mp3");
 
 const uploadLoading = ref<boolean>(false)
 
@@ -220,7 +221,17 @@ const onOneUpload = (uploadFile: any) => {
 
 const onDelete = (uploadFile: FileItem, index: number) => {
     mediaFormData.value.splice(index, 1)
-    proxy?.$refs["uploadRef"].handleRemove(uploadFile);
+    uploadMediaLists.value.splice(index, 1)
+}
+
+const getFilsUploadCount = () => {
+    let status: boolean = true
+    mediaFormData.value.forEach((item: any, index: number) => {
+        if (item.status != 4) {
+            status = false
+        }
+    })
+    return status;
 }
 
 const groupId = ref<number>(-1)
@@ -232,6 +243,20 @@ const open = (id: number = -1) => {
 
 const close = () => {
     visible.value = false;
+    if (!getFilsUploadCount()) {
+        Modal.confirm({
+            title: '提示',
+            content: '您还有未上传的文件，是否放弃上传？',
+            onOk: () => {
+                visible.value = false;
+                return true;
+            },
+            onCancel: () => {
+                return true;
+            }
+        });
+    }
+    return true;
 };
 
 onMounted(() => {

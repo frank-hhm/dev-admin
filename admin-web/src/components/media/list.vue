@@ -39,9 +39,18 @@
                             </template>
                             <template v-else-if="item.file_type == 'video'">
                                 <div class="media-item-video">
-                                    <icon-file-video />
+                                    <span class="icon icon-shipin"></span>
                                 </div>
                                 <div class="media-item-video-play" @click.stop="onPlay(item)"><icon-play-arrow /></div>
+                            </template>
+                            <template v-else-if="item.file_type == 'audio'">
+                                <div class="media-item-audio">
+                                    <span class="icon icon-audio-full"></span>
+                                </div>
+                                <div class="media-item-audio-play">
+                                    <audio-play :src="item.file_url"></audio-play>
+                                </div>
+                                <!-- <div class="media-item-video-play" @click.stop="onPlay(item)"><icon-play-arrow /></div> -->
                             </template>
                             <div class="select-mask" v-if="isModal" v-show="item.active">
                                 <div class="mask-icon">
@@ -175,7 +184,7 @@ const initGroup = (data: any) => {
 
 const mediaType = ref<string>(props.type);
 
-const toInit = (isInit: boolean = false) => {
+const toInit = (isInit: boolean = false,callback:Function | unknown = null) => {
     if (isInit) {
         listPage.page = 1;
     }
@@ -197,12 +206,18 @@ const toInit = (isInit: boolean = false) => {
             setTimeout(() => {
                 initLoading.value = false;
             }, 500);
+            if(typeof callback == 'function'){
+                callback()
+            }
         })
         .catch((err: ResultError) => {
             setTimeout(() => {
                 initLoading.value = false;
             }, 500);
             $utils.errorMsg(err)
+            if(typeof callback == 'function'){
+                callback()
+            }
         });
 };
 
@@ -247,7 +262,6 @@ const onDeletes = () => {
 const videoPlayRef = ref<HTMLElement>()
 
 const onPlay = (item: any) => {
-    console.log(item)
     proxy?.$refs["videoPlayRef"]?.open(item.file_url)
 }
 
@@ -374,7 +388,7 @@ onMounted(() => {
     }
 });
 
-const open = (selectedData: string | string[] = "") => {
+const open = (selectedData: string | string[] = "",callback:Function | unknown = null) => {
     if (selectedData.length > 0) {
         if (typeof selectedData == "string") {
             selectedData = [selectedData];
@@ -383,7 +397,7 @@ const open = (selectedData: string | string[] = "") => {
             selectedDataList.value.push(item);
         });
     }
-    toInit();
+    toInit(true,callback);
 };
 
 const close = () => {
@@ -394,9 +408,9 @@ const close = () => {
 
 const mediaGroupRef = ref<HTMLElement>()
 
-const toTypeInit = (type: string) => {
+const toTypeInit = (type: string,callback:Function | unknown) => {
     mediaType.value = type;
-    toInit(true);
+    toInit(true,callback);
     proxy?.$refs['mediaGroupRef']?.toTypeInit(type);
 }
 
@@ -628,7 +642,7 @@ defineExpose({ open, close, toTypeInit, setYes });
     padding: 10px 20px;
 }
 
-.media-item-video {
+.media-item-video,.media-item-audio {
     width: 100%;
     height: 110px;
     text-align: center;
@@ -636,8 +650,10 @@ defineExpose({ open, close, toTypeInit, setYes });
     font-size: 30px;
     color: var(--color-text-2);
 }
-
-.media-item-video-play {
+.media-item-video .icon,.media-item-audio .icon {
+    font-size: 40px;
+}
+.media-item-video-play,.media-item-audio-play {
     position: absolute;
     top: 5px;
     right: 5px;

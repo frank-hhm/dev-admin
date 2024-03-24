@@ -33,7 +33,7 @@ const props = withDefaults(
   {
     height: false,
     title: "",
-    padding: "20px",
+    padding: "12px",
   }
 );
 
@@ -46,8 +46,8 @@ const styles = computed<StyleValue>(() => {
 </script>
 <style scoped>
 .layout-body-main {
-  padding: 20px;
-  background: var(--color-bg-1);
+  padding: 12px;
+  background: var(--color-bg-2);
   border-radius: var(--base-radius);
   border: 1px solid var(--color-border-1);
 }

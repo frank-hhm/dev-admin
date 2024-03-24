@@ -5,17 +5,19 @@
 <script lang="ts" setup>
 import { onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
-import { useAdminStore, useAppStore, useEnumStore } from "@/store";
+import { useAdminStore, useAppStore, useEnumStore, useWebsocketStore } from "@/store";
 
-const { systemInfo } = storeToRefs(useAppStore());
+const { systemInfo,isDark } = storeToRefs(useAppStore());
 
 useEnumStore().initEnum();
 
 useAppStore().getSystemInfo();
+useAppStore().setDark(isDark.value)
 
 onMounted(() => {
     if (useAdminStore().token) {
         useAdminStore().initInfo()
+        // useWebsocketStore().initWebSocket();
     }
     document.title = import.meta.env.VITE_BASE_SYSTEM_NAME;
     setHeadLinks()
@@ -28,7 +30,6 @@ const setHeadLinks = () => {
     link.href = systemInfo.value.system_icon || '';
     document.head.appendChild(link);
 }
-
 
 watch(
     () => systemInfo.value,

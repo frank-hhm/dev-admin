@@ -9,7 +9,8 @@
                         <i class="icon icon-jia"></i>
                     </template>
                     <template v-else>
-                        <a-image ref="imageRef" height="100%" width="100%" show-loader :preview="false" :src="selectData" fit="cover" />
+                        <a-image ref="imageRef" height="100%" width="100%" show-loader :preview="false" :src="selectData"
+                            fit="cover" />
                         <div class="upload-select-del" @click.stop="onDelete(-1)">
                             <div class="icon icon-cuo"></div>
                         </div>
@@ -19,7 +20,6 @@
                         </div>
                     </template>
                 </div>
-
             </template>
             <!-- 多个 -->
             <template v-else>
@@ -27,7 +27,7 @@
                 <template v-for="(item, index) in selectData" :key="index">
                     <div class="upload-select-btn" :style="styles" draggable="true" @dragstart="dragstart(item)"
                         @dragenter="dragenter(item, $event)" @dragend="dragend(item, $event)" @dragover="dragover($event)">
-                        <a-image height="100%" width="100%" show-loader :preview="false"  :src="item" fit="cover" />
+                        <a-image height="100%" width="100%" show-loader :preview="false" :src="item" fit="cover" />
                         <div class="upload-select-del" @click.stop="onDelete(index, item)">
                             <div class="icon icon-cuo"></div>
                         </div>
@@ -50,7 +50,8 @@
                 </template>
             </a-input>
         </template>
-        <mediaSelectModal ref="mediaSelectModalRef" @change="selectChange" :type="type" :count="count"></mediaSelectModal>
+        <mediaSelectModal ref="mediaSelectModalRef" @change="selectChange" v-if="isInit" :type="type" :count="count">
+        </mediaSelectModal>
     </div>
 </template>
 <script lang="ts">
@@ -109,8 +110,13 @@ const styles = computed(() => {
     };
 });
 
+const isInit = ref<boolean>(false);
+
 const onSelectMedia = () => {
-    proxy?.$refs["mediaSelectModalRef"]?.open(selectData.value);
+    isInit.value = true;
+    nextTick(() => {
+        proxy?.$refs["mediaSelectModalRef"]?.open(selectData.value);
+    });
 };
 
 const selectChange = (data: any) => {
@@ -223,10 +229,14 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: var(--el-color-info-light-7);
+    color: rgba(var(--gray-6));
     cursor: pointer;
     position: relative;
     overflow: hidden;
+}
+
+.upload-select-btn .icon {
+    font-size: 12px;
 }
 
 .upload-select-del {

@@ -13,15 +13,16 @@
                 <div class="select-icon-list">
                     <template v-for="(item, index) in iconLists" :key="index">
                         <template v-if="index + 1 == curPage">
-                            <div class="select-icon-item" v-for="(items, idx) in item" :key="idx"
-                                @click="selectItem(items)">
+                            <template v-for="(items, idx) in item" :key="idx">
                                 <a-tooltip>
                                     <template #content>
                                         <i class="select-icon-item-tip icon" :class="'icon-' + items.font_class"></i>
                                     </template>
-                                    <i class="icon" :class="'icon-' + items.font_class"></i>
+                                    <div class="select-icon-item" @click="selectItem(items)">
+                                        <i class="icon" :class="'icon-' + items.font_class"></i>
+                                    </div>
                                 </a-tooltip>
-                            </div>
+                            </template>
                         </template>
                     </template>
                     <div v-if="iconLists.length == 0" class="select-icon-empty">
@@ -31,13 +32,15 @@
                 <div class="select-icon-page">
                     <div class="select-icon-page-count">
                         <span id="select-icon-page-current">{{ curPage }}</span>
-                        /<span id="select-icon-page-pages">{{ countPage }}</span> (共<span id="select-icon-page-length">{{
-                            total }}</span>个)
+                        /<span id="select-icon-page-pages">{{ countPage }}</span> (共<span
+                            id="select-icon-page-length">{{
+        total }}</span>个)
                     </div>
                     <div class="select-icon-page-operate">
                         <div class="select-icon-close"></div>
                         <a-button size="small" @click="close">关闭</a-button>
-                        <a-button class="ml10" size="small" @click="prevClick" :disabled="curPage == 1 || countPage == 0">
+                        <a-button class="ml10" size="small" @click="prevClick"
+                            :disabled="curPage == 1 || countPage == 0">
                             <icon-left /></a-button>
                         <a-button class="ml10" size="small" @click="nextClick"
                             :disabled="countPage == curPage || countPage == 0"><icon-right /></a-button>
@@ -220,7 +223,7 @@ defineExpose({ open });
 }
 
 .select-icon-item .icon {
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .select-icon-empty {

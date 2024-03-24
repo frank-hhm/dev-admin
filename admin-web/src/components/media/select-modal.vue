@@ -1,6 +1,8 @@
 <template>
     <a-modal v-model:visible="visible" width="1168px" @BeforeCancel="close" class="modal media-select-modal"
-        titleAlign="start" :footer="Number(count) > 1 || count == -1" :top="useSetting().ModalTop" :align-center="false">
+        titleAlign="start" :footer="Number(count) > 1 || count == -1" :top="useSetting().ModalTop" :align-center="false"
+        
+        render-to-body>
         <template #title>
             <a-radio-group type="button" v-model="mediaType">
                 <template v-for="(item, index) in typeData" :key="index">
@@ -14,7 +16,7 @@
                 <a-button v-btn type="primary" @click="onSelectOk">确定</a-button>
             </a-space>
         </template>
-        <div class="media-select-modal-main">
+        <div class="media-select-modal-main" v-if="visible">
             <mediaFiles :groupWidth="160" :type="mediaType" @change="selectChange" :count="count" ref="mediaModalRef"
                 :isModal="true">
             </mediaFiles>
@@ -43,7 +45,7 @@ const props = withDefaults(
 
 const { proxy } = getCurrentInstance() as any
 
-const emit = defineEmits(["change","close"]);
+const emit = defineEmits(["change", "close"]);
 
 interface typeItem {
     name: string;
@@ -58,6 +60,9 @@ const typeData = ref<typeItem[]>([{
 }, {
     name: '视频',
     value: 'video'
+}, {
+    name: '音频',
+    value: 'audio'
 }]);
 
 const modelSelectData = ref<string | number | string[] | number[] | any>([])

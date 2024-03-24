@@ -35,7 +35,8 @@
     "firebase/php-jwt": "^5.0",
     "spatie/macroable": "^1.0",
     "myclabs/php-enum": "^1.8",
-    "topthink/think-migration": "^3.1"
+    "topthink/think-migration": "^3.1",
+    "topthink/think-swoole": "^4.0"
   },
   "require-dev": {
     "symfony/var-dumper": ">=4.2",

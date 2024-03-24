@@ -1,10 +1,12 @@
 @use './common.scss' as *;
 @use './icon.css' as *;
 @use './theme/style.scss' as *;
+@use './theme/editor.scss' as *;
 
 :root {
     --base-size: 14px;
-    --base-radius:2px;
+    --base-radius:4px;
+    --base-padding:12px
 }
 
 * {

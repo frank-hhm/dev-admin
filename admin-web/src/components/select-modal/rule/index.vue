@@ -1,7 +1,7 @@
 <template>
     <div>
-        <a-modal title="接口列表" width="1000px" :top="useSetting().ModalTop" class="modal" v-model:visible="visible" :align-center="false"
-            title-align="start" @BeforeCancel="close">
+        <a-modal title="接口列表" width="1000px" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
+            :align-center="false" title-align="start" @BeforeCancel="close">
             <div class="rule-select-body">
                 <div class="mt10 mb10 flex">
                     <a-input placeholder="搜索名称" v-model="search_value">
@@ -10,14 +10,17 @@
                         </template>
                     </a-input>
                 </div>
-                <div class="rules-list">
-                    <template v-for="(item, index) in ruleLists" :key="index">
-                        <div class="rules-item" v-if="search_value == '' || item.search === true" @click="selectItem(item)">
-                            <div>接口名称：{{ item.title }}</div>
-                            <div>请求方式：{{ item.method }}</div>
-                            <div>接口地址：{{ item.rule }}</div>
-                        </div>
-                    </template>
+                <div class="rules-main">
+                    <div class="rules-list">
+                        <template v-for="(item, index) in ruleLists" :key="index">
+                            <div class="rules-item" v-if="search_value == '' || item.search === true"
+                                @click="selectItem(item)">
+                                <div>接口名称：{{ item.title }}</div>
+                                <div>请求方式：{{ item.method }}</div>
+                                <div>接口地址：{{ item.rule }}</div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
         </a-modal>
@@ -33,7 +36,7 @@ import { ref, getCurrentInstance, watch } from "vue";
 import { getRuleListMenusApi } from "@/api/system/menus";
 import { Result, ResultError } from "@/types";
 import { Message } from '@arco-design/web-vue';
-import { useSetting } from "@/hooks/useSetting"; 
+import { useSetting } from "@/hooks/useSetting";
 const {
     proxy,
     proxy: { $utils },
@@ -104,13 +107,15 @@ watch(
 defineExpose({ open });
 </script>
 <style >
-.rule-select-body .rules-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+.rule-select-body .rules-main{
     height: 450px;
     overflow: hidden;
     overflow-y: scroll;
+}
+
+.rule-select-body .rules-list {
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .rule-select-body .rules-item {
@@ -121,6 +126,8 @@ defineExpose({ open });
     padding: 10px;
     border: 2px solid var(--color-border-1);
     cursor: pointer;
+    height: 60px;
+    white-space: nowrap;
 }
 
 .rule-select-body .rules-item:hover {

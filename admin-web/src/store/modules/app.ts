@@ -3,8 +3,12 @@ import store from "@/store"
 import { getSystemInfoApi } from "@/api/common";
 import { Result, SystemInfoType } from "@/types"
 import { defineStore } from "pinia"
-import { setCacheSystemInfo, getCacheSystemInfo, getCacheTemplateDark } from "@/utils";
+import { setCacheSystemInfo, getCacheSystemInfo, getCacheTemplateDark,setCacheTemplateDark, getCacheLayout, setCacheLayout } from "@/utils";
 export const useAppStore = defineStore("app", () => {
+
+    const isMapScriptLoad = ref<boolean>(false)
+
+    const layout = ref<string>(getCacheLayout() || "default")
 
     const isDark = ref<boolean>(getCacheTemplateDark() || false)
 
@@ -27,8 +31,17 @@ export const useAppStore = defineStore("app", () => {
         } else {
             document.body.removeAttribute('arco-theme');
         }
+        setCacheTemplateDark(isDark.value)
     }
-    return { isDark, setDark, systemInfo, getSystemInfo }
+    const setMapScriptLoad = () => {
+        isMapScriptLoad.value = true
+    }
+    const setLayout = (_layout: string) => {
+        layout.value = _layout
+        setCacheLayout(layout.value)
+    }
+
+    return { isDark, setDark, systemInfo, getSystemInfo, isMapScriptLoad, setMapScriptLoad, layout, setLayout }
 })
 
 /** 在 setup 外使用 */

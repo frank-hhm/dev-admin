@@ -61,8 +61,6 @@ const toInit = () => {
     getDetailRoleApi({ id: roleId.value })
         .then(res => {
             checkedKeys.value = checkRulesInt(res.data.rules);
-            console.log(checkedKeys.value)
-            console.log(res.data.rules)
             initLoading.value = false
         })
         .catch(res => {

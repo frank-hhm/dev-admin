@@ -4,6 +4,13 @@ import CacheKey from "@/constants/cache-key"
 import { SystemInfoType, MenusListsType, EnumListsType, PageLimitType } from "@/types"
 import { getStorage, setStorage } from "@/utils"
 
+export const getCacheLayout = () => {
+  return getStorage(CacheKey.LAYOUT)
+}
+export const setCacheLayout = (layout: string) => {
+  setStorage(CacheKey.LAYOUT, layout)
+}
+
 export const getCacheSystemInfo = () => {
   return getStorage(CacheKey.SYSTEM_INFO)
 }
@@ -48,11 +55,31 @@ export const setCacheRoleAction = (data: string[] | number) => {
   setStorage(CacheKey.ROLE_ACTION, data)
 }
 
+
+export const getCacheLogin = () => {
+  let obj = getStorage(CacheKey.LOGINDATA) || {};
+  if (obj.account) {
+    obj.account = window.atob(obj.account)
+  }
+  if (obj.password) {
+    obj.password = window.atob(obj.password)
+  }
+  return obj
+}
+
+export const setCacheLogin = (data: {
+  account: string;
+  password: string;
+} | unknown) => {
+  setStorage(CacheKey.LOGINDATA, data)
+}
 export default {
   getCacheSystemInfo,
   setCacheSystemInfo,
   getCacheTemplateDark,
   setCacheTemplateDark,
   getCacheMenus,
-  setCacheMenus
+  setCacheMenus,
+  getCacheLogin,
+  setCacheLogin
 }

@@ -85,4 +85,8 @@ class CacheService  extends BaseService
     {
         return CacheStatic::store('redis');
     }
+    public function redisHandler()
+    {
+        return $this->redis()->handler();
+    }
 }

@@ -59,36 +59,4 @@ class MenusModel extends BaseModel
         // !empty($data['params']) ? implode('&', $data['params'])
     }
 
-    /**
-     * 状态搜索器
-     */
-    public function searchStatusAttr($query, $value)
-    {
-        if ($value != '') {
-            $query->where('status', $value ?: 1);
-        }
-    }
-
-    /**
-     * 类型搜索器
-     */
-    public function searchTypeAttr($query, $value)
-    {
-        if ($value != '') {
-            $query->where('type', $value);
-        }
-    }
-
-
-    /**
-     * id搜索器
-     */
-    public function searchIdAttr($query, $value)
-    {
-        if (is_array($value)) {
-            $query->whereIn('id', $value);
-        } else {
-            $query->where('id', $value);
-        }
-    }
 }

@@ -7,14 +7,14 @@ return [
     'listen'    => [
         'AppInit'  => [
             'app\\common\\event\\InitConfig',
+        ],
+        'HttpRun'  => [
             'app\\common\\event\\InitRoute'
         ],
-        'HttpRun'  => [],
         'HttpEnd'  => [],
         'LogLevel' => [],
         'LogWrite' => [],
     ],
-
     'subscribe' => [
     ],
 ];

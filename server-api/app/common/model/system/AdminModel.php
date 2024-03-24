@@ -32,7 +32,6 @@ class AdminModel extends BaseModel
 
     ## 模型名称
     protected $name = 'system_admin';
-
     protected string $deleteTime = 'delete_time';
     protected $defaultSoftDelete = 0;
 
@@ -66,70 +65,5 @@ class AdminModel extends BaseModel
     public function getStatusAttr($value)
     {
         return EnumFactory::instance('status')->getItem($value);
-    }
-
-
-    /**
-     * 管理员级别搜索器
-     */
-    public function searchLevelAttr($query, $value)
-    {
-        if (is_array($value)) {
-            $query->where('level', $value[0], $value[1]);
-        } else {
-            $query->where('level', $value);
-        }
-    }
-
-    /**
-     * 管理员账号和姓名搜索器
-     */
-    public function searchAccountLikeAttr($query, $value)
-    {
-        if ($value) {
-            $query->whereLike('account|real_name', '%' . $value . '%');
-        }
-    }
-
-    /**
-     * 管理员账号搜索器
-     */
-    public function searchAccountAttr($query, $value)
-    {
-        if ($value) {
-            $query->where('account', $value);
-        }
-    }
-
-    /**
-     * 管理员权限搜索器
-     */
-    public function searchRolesAttr($query, $roles)
-    {
-        if ($roles) {
-            $query->where("CONCAT(',',roles,',')  LIKE '%,$roles,%'");
-        }
-    }
-
-    /**
-     * 状态搜索器
-     */
-    public function searchStatusAttr($query, $value)
-    {
-        if ($value != '' && $value != null) {
-            $query->where('status', $value);
-        }
-    }
-
-    /**
-     * id搜索器
-     */
-    public function searchIdAttr($query, $value)
-    {
-        if (is_array($value)) {
-            $query->whereIn('id', $value);
-        } else {
-            $query->where('id', $value);
-        }
     }
 }

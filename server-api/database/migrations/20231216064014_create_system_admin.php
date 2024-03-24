@@ -33,6 +33,15 @@ class CreateSystemAdmin extends Migrator
                 'account' => 'frank',
                 'pwd' => '$2y$10$/xUS/4TZC99TfixyR5ZeI.9xJHvQkSxtrylcXdqilDCSorJHZVVpe',
                 'real_name' => '小明',
+                'level' => -1,
+                'status' => 1,
+            ]
+        ]);
+        Db::name('system_admin')->insertAll([
+            [
+                'account' => 'admin',
+                'pwd' => '$2y$10$/xUS/4TZC99TfixyR5ZeI.9xJHvQkSxtrylcXdqilDCSorJHZVVpe',
+                'real_name' => '管理员',
                 'level' => 0,
                 'status' => 1,
             ]

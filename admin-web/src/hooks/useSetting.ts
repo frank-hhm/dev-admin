@@ -3,7 +3,7 @@ import { getCachePageLimit } from "@/utils"
 import { ref } from "vue"
 
 /** 当前分页配置 */
-const PageLimit = ref<number>(getCachePageLimit() || 20)
+const PageLimit = ref<number>(getCachePageLimit() || 10)
 
 const setPageLimit = (value: number) => {
     PageLimit.value = value

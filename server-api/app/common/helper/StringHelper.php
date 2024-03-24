@@ -99,7 +99,6 @@ class StringHelper
         return $string;
     }
 
-
     /**
      * 保留两位
      */
@@ -188,4 +187,12 @@ class StringHelper
         }
     }
 
+    public static function  _strtotime($datetime): float|bool|int|string
+    {
+        if (!is_numeric($datetime)) {
+            return strtotime($datetime);
+        }else{
+            return $datetime;
+        }
+    }
 }

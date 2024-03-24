@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
-import { getToken } from "@/utils"
+import { baseApiUrl, getToken } from "@/utils"
 import router from "@/router";
 import { Result } from "@/types";
 import { useAdminStoreHook } from "@/store";
@@ -11,9 +11,9 @@ export const request = (params: any, options: any = {
     return new Promise<Result>((resolve, reject) => {
         axios.defaults.headers.post['Content-Type'] = 'application/json'
         axios.defaults.responseType = 'json'
-        const apiPath = options.apiPath || "/sys"
+        const apiPath = options.apiPath || "sys/"
         const service = axios.create({
-            baseURL: import.meta.env.VITE_BASE_URL + apiPath, // api 的 base_url
+            baseURL: baseApiUrl() + apiPath, // api 的 base_url
             timeout: 80000
         })
         // axios.defaults.withCredentials = true;

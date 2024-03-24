@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/default'
+import { request, requestProgress } from '@/utils/request/default'
 export const getListAdminApi = (params: any) => {
     return request({
         url: `system.admin/list`,
@@ -54,5 +54,12 @@ export const deleteAdminApi = (params: { id: number | string }) => {
         url: `system.admin/delete`,
         method: 'DELETE',
         params
+    })
+}
+export const uploadAvatarApi = (data:any) => {
+    return requestProgress({
+        url: `system.admin/updateAvatar`,
+        method: 'POST',
+        data
     })
 }

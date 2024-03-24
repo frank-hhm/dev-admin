@@ -27,20 +27,19 @@
                 </a-row>
             </a-form>
         </a-card>
-        <div class="mt20"></div>
+        <div class="mt12"></div>
         <layout-body>
             <a-button type="primary" @click="onCreate(0)" v-permission="'system-admin-create'">添加账号</a-button>
-
             <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>
-            <a-table :loading="initLoading" class="mt20" :data="lists" row-key="id" isLeaf :pagination="false">
+            <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false">
                 <template #columns>
-                    <a-table-column title="级别" data-index="level" align="center" :width="120">
+                    <a-table-column title="级别" data-index="level" align="left" :width="120">
                         <template #cell="{ record }">
-                            <a-tag v-if="record.level == 0">
+                            <a-tag v-if="record.level == -1">
                                 <template #icon>
                                     <icon-face-smile-fill />
                                 </template>开发者</a-tag>
-                            <a-tag v-else-if="record.level == 1"> <template #icon>
+                            <a-tag v-else-if="record.level == 0"> <template #icon>
                                     <icon-user-group />
                                 </template>超级管理员</a-tag>
                             <a-tag v-else> <template #icon>
@@ -50,9 +49,7 @@
                     </a-table-column>
                     <a-table-column title="头像" data-index="avatar" :width="40">
                         <template #cell="{ record }">
-                            <a-avatar shape="square" :size="40">
-                                <img alt="avatar" :src="record.avatar">
-                            </a-avatar>
+                            <a-image :src="record.avatar" :height="40" :width="40"/>
                         </template>
                     </a-table-column>
                     <a-table-column title="账号" data-index="account" :width="120">
@@ -80,7 +77,7 @@
                     </a-table-column>
                     <a-table-column title="状态" fixed="right" data-index="status" align="center" :width="80">
                         <template #cell="{ record }">
-                            <a-switch v-model="record.status.value" :disabled="!record.level" size="small" type="round"
+                            <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small" type="round"
                                 :loading="record.loading" :beforeChange="() => {
                                     return (record.switch = true);
                                 }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
@@ -90,10 +87,10 @@
                     <a-table-column title="操作" align="center" :width="140">
                         <template #cell="{ record }">
                             <a-space>
-                                <a-button v-if="record.level || adminInfo.id == record.id" @click=" onCreate(record.id)"
+                                <a-button v-if=" Number(adminInfo.level) < 1 || adminInfo.id == record.id" @click=" onCreate(record.id)"
                                     v-permission="'system-admin-update'" size="small">编辑</a-button>
-                                <div v-if="record.level" v-permission="'system-admin-delete'">
-                                    <a-popconfirm content="确定删除吗？" @confirm=" onDelete(record.id)">
+                                <div v-if="record.level > 0" v-permission="'system-admin-delete'">
+                                    <a-popconfirm content="确定删除吗？" @ok="onDelete(record.id)">
                                         <template #icon>
                                             <icon-exclamation-circle-fill type="red" />
                                         </template>
@@ -176,7 +173,9 @@ const toInit = (isInit: boolean = false) => {
                 initLoading.value = false;
             }, 300);
         })
-        .catch((error: ResultError) => { });
+        .catch((error: ResultError) => { 
+            $utils.errorMsg(error);
+        });
 };
 
 const onCreate = (id: number | string) => {

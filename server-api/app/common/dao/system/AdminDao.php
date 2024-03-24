@@ -29,7 +29,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function getAdminList(array $where, int $page, int $limit, $with = []): array
     {
-        return $this->search($where)->when(count($with), function ($query) use ($with) {
+        return $this->model->where($where)->when(count($with), function ($query) use ($with) {
             $query->with($with);
         })->order(['create_time DESC'])->page($page)->paginate($limit)->toArray();
     }
@@ -39,12 +39,12 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function accountByAdmin(string $account)
     {
-        return $this->search(['account' => $account, 'status' => 1])->find();
+        return $this->model->where(['account' => $account, 'status' => 1])->find();
     }
 
     public function accountById(int $id)
     {
-        return $this->search(['id' => $id])->field($this->field)->find($id);
+        return $this->model->where(['id' => $id])->field($this->field)->find($id);
     }
 
     /**
@@ -52,7 +52,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function isAccountUsable(string $account, int $id)
     {
-        return $this->search(['account' => $account])->where('id', '<>', $id)->count();
+        return $this->model->where(['account' => $account])->where('id', '<>', $id)->count();
     }
 
     /**
@@ -60,7 +60,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function getAdminIds(int $level)
     {
-        return $this->search('level', '>=', $level)->column('id', 'id');
+        return $this->model->where('level', '>=', $level)->column('id', 'id');
     }
 
     /**
@@ -68,7 +68,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function getOrdAdmin(string $field = 'real_name,id', int $level = 0)
     {
-        return $this->search('level', '>=', $level)->field($field)->order('sort DESC,id DESC')->select()->toArray();
+        return $this->model->where('level', '>=', $level)->field($field)->order('sort DESC,id DESC')->select()->toArray();
     }
 
     /**
@@ -76,7 +76,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function getInfo($where)
     {
-        return $this->search($where)->find();
+        return $this->model->where($where)->find();
     }
 }
 

@@ -3,8 +3,20 @@ import { Message } from '@arco-design/web-vue';
 import { request } from './request/default';
 
 export const baseApiUrl = () => {
-    return import.meta.env.VITE_BASE_URL
+    let domain = window.location.protocol+"//"+window.location.hostname + '/'
+    if (process.env.NODE_ENV === 'development') {
+        domain = import.meta.env.VITE_BASE_URL
+    }
+    return domain
 }
+export const baseWsUrl = () => {
+    let domain = "ws:://"+window.location.hostname + '/'
+    if (process.env.NODE_ENV === 'development') {
+        domain = import.meta.env.VITE_BASE_WS_URL
+    }
+    return domain
+}
+
 
 export const setStorage = (key: string, value: any, time = 0) => {
     localStorage.setItem(key, JSON.stringify({ data: value, time: time == 0 ? -1 : time * 1000 }))
@@ -132,6 +144,7 @@ export const downloadVideo = (url: string, fileName: string = '') => {
 
 export default {
     baseApiUrl,
+    baseWsUrl,
     setStorage,
     getStorage,
     errorMsg,

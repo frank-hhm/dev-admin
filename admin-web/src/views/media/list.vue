@@ -1,5 +1,5 @@
 <template>
-    <layout-body-tabs :tabs="headTab" v-model="tabActive" heightFil @change="changeTab">
+    <layout-body-tabs :tabs="headTab" v-model="tabActive" v-model:loading="initLoading" heightFil @change="changeTab">
         <media ref="mediaRef"></media>
     </layout-body-tabs>
 </template>
@@ -18,21 +18,33 @@ const headTab = ref<EnumType>([
     {
         name: "视频",
         value: 'video',
+    },
+    {
+        name: "音频",
+        value: 'audio',
     }
 ]);
+
+const initLoading = ref<boolean>(true);
 
 const tabActive = ref<string>('image');
 
 const changeTab = (tab: string) => {
-    console.log(tab)
+    initLoading.value = true;
     tabActive.value = tab;
-    proxy?.$refs['mediaRef']?.toTypeInit(tab);
+    proxy?.$refs['mediaRef']?.toTypeInit(tab,initCallback);
 };
 
 const mediaRef = ref<HTMLElement>()
 
+const initCallback = () => {
+    setTimeout(() => {
+        initLoading.value = false;
+    }, 300);
+}
+
 onMounted(() => {
-    proxy?.$refs['mediaRef']?.open();
+    proxy?.$refs['mediaRef']?.open([],initCallback);
 })
 
 </script>

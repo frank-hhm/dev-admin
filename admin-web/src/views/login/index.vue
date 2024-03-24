@@ -46,10 +46,15 @@
                         <a-button type="primary" :loading="loginLoad" long @click="toLogin" size="large">登录</a-button>
                     </a-form-item>
                 </a-form>
-                <div class="flex center">
-                    <a-button shape="circle" size="mini" @click="onTemplate">
-                        <icon-sun-fill />
-                    </a-button>
+                <div class="flex between items-center">
+                    <div>
+                        <a-checkbox v-model="isCacheLogin" default-checked>记住密码</a-checkbox>
+                    </div>
+                    <div>
+                        <a-button shape="circle" size="mini" @click="onTemplate">
+                            <icon-sun-fill />
+                        </a-button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,7 +62,7 @@
     </div>
 </template>
 <script lang="ts" setup>
-import { ref, getCurrentInstance, reactive, onMounted ,nextTick } from "vue";
+import { ref, getCurrentInstance, reactive, onMounted, nextTick } from "vue";
 import type { Result, ResultError } from "@/types";
 import { loginApi, } from "@/api/login";
 import { getCaptchaApi } from "@/api/common";
@@ -67,7 +72,7 @@ import {
     useMenusStore,
     usePermissionStore,
 } from "@/store";
-import { setToken } from "@/utils";
+import { getCacheLogin, setCacheLogin, setToken } from "@/utils";
 import { storeToRefs } from "pinia";
 import common from "./common";
 import router from "@/router";
@@ -87,9 +92,11 @@ interface ILoginType {
     captcha_code: string;
 }
 
+const cacheLogin = ref<ILoginType>(getCacheLogin())
+
 const loginForm: ILoginType = reactive({
-    account: "",
-    password: "",
+    account: cacheLogin.value?.account || "",
+    password:  cacheLogin.value?.password || "",
     captcha_uniqid: "",
     captcha_code: "",
 });
@@ -121,6 +128,14 @@ const toLogin = () => {
                     setToken(res.data.token, res.data.expires_time);
                     permission.setHomeAction(res.data.menus.homePath);
                     permission.setRoleAction(res.data.menus.action);
+                    if (isCacheLogin.value) {
+                        setCacheLogin({
+                            account: window.btoa(loginForm.account),
+                            password: window.btoa(loginForm.password)
+                        })
+                    } else {
+                        setCacheLogin(null);
+                    }
                     Notification.success({
                         title: "登录成功",
                         content: "正在进入...",
@@ -194,8 +209,8 @@ const {
 const initLoading = ref<boolean>(true);
 
 const onTemplate = () => {
-    if(loginLoad.value){
-        return ;
+    if (loginLoad.value) {
+        return;
     }
     initLoading.value = false;
     useAppStore().setDark(!useAppStore().isDark)
@@ -204,16 +219,18 @@ const onTemplate = () => {
     });
 }
 
+const isCacheLogin = ref<boolean>(true);
+
 </script>
 <style scoped lang="scss">
 .login-body {}
 
 .login-box {
     width: 320px;
-    height: 380px;
+    height: 400px;
     display: flex;
     position: fixed;
-    top: calc(50% - 190px);
+    top: calc(50% - 250px);
     left: calc(50% - 160px);
     z-index: 9;
     box-shadow: 0 10px 75px 0 rgba(0, 0, 0, 0.05), 0 20px 87px 0 rgba(0, 0, 0, 0.07), 0 30px 94px 0 rgba(0, 0, 0, 0.06), 0 40px 100px 0 rgba(0, 0, 0, 0.03);

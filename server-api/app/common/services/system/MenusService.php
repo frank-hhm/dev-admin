@@ -42,9 +42,13 @@ class MenusService extends \app\common\services\BaseService
     /**
      * 获取菜单树型结构列表
      */
-    public function getList(array $where,$field = '*'): array
+    public function getList(array $params,$field = '*'): array
     {
-        $menusList = $this->dao->getMenusList($where,$field);
+        $filter = [];
+        if(!empty($params['status'])){
+            $filter[] = ['status','=',$params['status']];
+        }
+        $menusList = $this->dao->getMenusList($filter,$field);
         $menusList = ArrayHelper::sortListTier($menusList);
         return ArrayHelper::getArrayTreeChildren($menusList);
     }
@@ -52,7 +56,7 @@ class MenusService extends \app\common\services\BaseService
     public function getRoleStr($roleId): array
     {
         $roleService = RoleService::instance();
-        $rules = $roleService->getRoleArray(['status' => 1, 'id' => $roleId], 'rules');
+        $rules = $roleService->getRoleArray([['status','=',1,],['id','in', $roleId]], 'rules');
         $rulesStr = ArrayHelper::unique($rules);
         return $rulesStr;
     }
@@ -64,11 +68,11 @@ class MenusService extends \app\common\services\BaseService
     {
         $rulesStr = $this->getRoleStr($roleId);
         $ruleMap = ['status' => 1];
-        $level && $ruleMap['id'] = $rulesStr;
+        $level > 0 && $ruleMap['id'] = $rulesStr;
         $menusList = $this->dao->getMenusRole(array_merge($ruleMap,['type' => $type]));
         $menusList && $menusList = $menusList->toArray();
         $menusList = ArrayHelper::arr2tree($menusList,'id','pid','children');
-        $action = $level? ArrayHelper::getArrayColumn($this->dao->getMenusNode($ruleMap),'menu_node') : -1;
+        $action = $level > 0 ? ArrayHelper::getArrayColumn($this->dao->getMenusNode($ruleMap),'menu_node') : -1;
         if($type == 2){
             $addonMenus = [];
             foreach ($menusList as $key => $value) {
@@ -86,7 +90,7 @@ class MenusService extends \app\common\services\BaseService
     {
         $rulesStr = $this->getRoleStr($ruleId);
         $ruleMap = ['status' => 1];
-        $level && $ruleMap['id'] = $rulesStr;
+        $level > 0 && $ruleMap['id'] = $rulesStr;
         $menusList = $this->dao->getMenusApiRule($ruleMap);
         $menusList && $menusList = $menusList->toArray();
         $menusApi = ArrayHelper::getArrayColumn($menusList,'api_rule');

@@ -8,9 +8,6 @@
       </div>
     </div>
     <div class="layout-nav-right" ref="rightRef">
-      <a-button class="mr20" shape="circle" size="mini" @click="onTemplate">
-        <icon-sun-fill />
-      </a-button>
       <a-button class="mr20" shape="circle" size="mini" @click="onFull">
         <icon-expand v-if="!isFull" />
         <icon-shrink v-else />
@@ -25,11 +22,13 @@
           </div>
         </div>
         <template #content>
+          <a-doption @click="onDetail">个人中心</a-doption>
           <a-doption @click="onUpdatePass">修改密码</a-doption>
           <a-doption @click="outLogin">退出登录</a-doption>
         </template>
       </a-dropdown>
       <div v-else>未登录</div>
+      <selectBtn></selectBtn>
     </div>
   </div>
 </template>
@@ -39,13 +38,14 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { getCurrentInstance, ref, onMounted, watch } from "vue";
-import { useAdminStore, useAppStore } from "@/store";
+import { getCurrentInstance, ref, onMounted, watch, onBeforeUnmount } from "vue";
+import { useAdminStore, useAppStore, useWebsocketStore } from "@/store";
 import router from "@/router/index";
 import { storeToRefs } from "pinia";
 import { logoutApi } from '@/api/login';
 import { Message } from '@arco-design/web-vue';
 import adminPassModal from "@/components/system/admin/update-password.vue";
+import selectBtn from "@/components/layouts/select-btn.vue";
 
 const { systemInfo } = storeToRefs(useAppStore());
 
@@ -106,14 +106,9 @@ const toLogin = () => {
 const adminPassModalRef = ref<HTMLElement>();
 
 const onUpdatePass = () => {
-  console.log(1111)
   console.log(proxy?.$refs["adminPassModalRef"])
   proxy?.$refs["adminPassModalRef"]?.open();
 };
-
-const onTemplate = () => {
-  useAppStore().setDark(!useAppStore().isDark)
-}
 
 const screenWidth = ref();
 
@@ -127,7 +122,55 @@ onMounted(() => {
     })();
   };
   document.addEventListener('fullscreenchange', handleFullScreenChange);
+  // websocketOpenCallback();
 });
+
+const onDetail = () => {
+  router.push("/detail");
+}
+
+
+const noticeList = ref<any[]>([])
+
+const websocketMessageCallback = ({
+  detail
+}: any) => {
+  if (detail?.action == 'notice') {
+    noticeList.value = detail.data;
+  }
+}
+
+const messageTimer = ref<any>(null)
+
+const websocketOpenCallback = () => {
+  if (useWebsocketStore().ws) {
+    $utils.eventsListener('websocketMessage', websocketMessageCallback);
+    useWebsocketStore().sendMessage({
+      action: "notice"
+    })
+    messageTimer.value = setInterval(() => {
+      useWebsocketStore().sendMessage({
+        action: "notice"
+      })
+    }, 5000)
+  } else {
+    setTimeout(() => {
+      if (messageTimer.value) {
+        clearInterval(messageTimer.value)
+        messageTimer.value = null
+      }
+      websocketOpenCallback()
+    }, 5000)
+  }
+}
+
+onBeforeUnmount(() => {
+  document.removeEventListener('fullscreenchange', () => { });
+  if (messageTimer.value) {
+    clearInterval(messageTimer.value)
+    messageTimer.value = null
+  }
+})
 
 </script>
 <style scoped>
@@ -160,6 +203,7 @@ onMounted(() => {
   text-align: center;
   display: flex;
   align-items: center;
+  
 }
 
 .layout-nav .layout-nav-logo .logo-image {
@@ -171,6 +215,9 @@ onMounted(() => {
 .layout-nav .layout-nav-logo .name {
   font-size: 16px;
   color: var(--color-text-1);
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .layout-nav .layout-nav-logo .version {

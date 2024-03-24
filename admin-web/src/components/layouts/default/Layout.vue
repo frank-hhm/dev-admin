@@ -6,11 +6,13 @@
         <LayoutSideMenu ref="LayoutSideMenuRef" @change="selectChange"></LayoutSideMenu>
       </div>
       <div class="layout-side-childen" v-if="childrenMenu.length">
-        <LayoutSideMenuChilden ref="LayoutSideMenuChildenRef" :data="childrenMenu"></LayoutSideMenuChilden>
+        <a-menu v-if="!menusLoad" :auto-open-selected="true" :default-selected-keys="[activeMenu]" :default-open-keys="parentPath" >
+          <LayoutSideMenuChilden ref="LayoutSideMenuChildenRef" :data="childrenMenu"></LayoutSideMenuChilden>
+        </a-menu >
       </div>
     </div>
 
-    <div class="layout-body" :class="{ 'hidden-menu': hiddenMenu }" v-if="!bodyLoad">
+    <div class="layout-body" :class="{ 'hidden-menu': hiddenMenu }" v-if="!menusLoad">
       <router-view></router-view>
     </div>
     <div class="layout-footer" :class="{ 'hidden-menu': hiddenMenu }">
@@ -19,22 +21,27 @@
   </div>
 </template>
 <script lang="ts" setup>
-import LayoutNav from "./LayoutNav.vue";
+import LayoutNav from "@/components/layouts/LayoutNav.vue";
 import LayoutSideMenu from "./LayoutSideMenu.vue";
 import LayoutSideMenuChilden from "./LayoutSideMenuChilden.vue";
+import common from "@/components/layouts/common";
 import {
   ref,
   getCurrentInstance,
   onMounted,
   nextTick,
+  computed,
 } from "vue";
+import { useRoute } from "vue-router";
 
 const {
   proxy,
   proxy: { $utils },
 } = getCurrentInstance() as any;
 
-const bodyLoad = ref<boolean>(true);
+const route = useRoute();
+
+const menusLoad = ref<boolean>(true);
 
 const hiddenMenu = ref<boolean>(true);
 
@@ -46,6 +53,7 @@ const LayoutSideMenuChildenRef = ref<HTMLElement>();
 
 const selectChange = (children: any) => {
   childrenMenu.value = children;
+  _common.getParent(childrenMenu.value)
   hiddenMenu.value = childrenMenu.value.length == 0 ? true : false;
   nextTick(() => {
     proxy?.$refs["LayoutSideMenuChildenRef"]?.refreshMenuList(
@@ -55,10 +63,26 @@ const selectChange = (children: any) => {
 };
 
 onMounted(() => {
+  
+});
+
+const activeMenu = computed(() => {
+  const { meta, path } = route;
+  if (meta.activeMenu) {
+    return meta.activeMenu as string;
+  }
+  return path;
+});
+
+const parentPath = ref<string[]>([]);
+
+const _common = common((res: any) => {
+  parentPath.value = res
   nextTick(() => {
-    bodyLoad.value = false;
+    menusLoad.value = false;
   });
 });
+
 </script>
 <style scoped>
 .layout {}
@@ -72,7 +96,7 @@ onMounted(() => {
 }
 
 .layout-side.hidden-menu {
-  width: 80px;
+  width: 90px;
 }
 
 .layout-side .el-menu {
@@ -83,46 +107,46 @@ onMounted(() => {
   height: 100%;
   overflow-x: hidden;
   position: fixed;
-  width: 50px;
+  width: 60px;
   z-index: 99;
   height: calc(100% - 60px);
   top: 51px;
-  padding: 10px 15px;
+  padding: 10px 10px;
   border-right: 1px solid var(--color-border-1);
 }
 
 .layout-side-childen {
-  width: 120px;
+  width: 140px;
   height: 100%;
   overflow-x: hidden;
   position: fixed;
   z-index: 99;
-  height: calc(100% - 60px);
-  left: 80px;
+  height: calc(100% - 50px);
+  left: 81px;
   top: 51px;
-  padding: 10px;
+  /* padding: 10px; */
   border-right: 1px solid var(--color-border-1);
 }
 
 .layout-body {
-  left: 221px;
+  left: 222px;
   top: 51px;
   position: fixed;
-  width: calc(100% - 261px);
-  height: calc(100% - 40px - 51px - 51px);
-  padding: 20px;
+  width: calc(100% - 222px - (2*var(--base-padding)));
+  height: calc(100% - (2*var(--base-padding)) - 51px - 51px);
+  padding: var(--base-padding);
   background: var(--color-border-1);
   overflow-y: scroll;
 }
 
 .layout-body.hidden-menu {
   left: 81px;
-  width: calc(100% - 121px);
+  width: calc(100% - 101px);
 }
 
 .layout-footer {
-  width: calc(100% - 221px);
-  left: 221px;
+  width: calc(100% - 222px);
+  left: 222px;
   text-align: center;
   position: fixed;
   bottom: 0;
@@ -147,4 +171,3 @@ html.dark .layout-body {
   background: var(--color-bg-1);
 }
 </style>
-            

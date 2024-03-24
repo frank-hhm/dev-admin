@@ -15,7 +15,6 @@ export const useEnumStore = defineStore("Enum", () => {
 
     const getEnumItem = (itemKey: string) => {
         try {
-            console.log(itemKey)
             return enums.value[itemKey]
         } catch (e) {
             return []

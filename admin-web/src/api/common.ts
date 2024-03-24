@@ -1,4 +1,4 @@
-import { request } from '@/utils/request/default'
+import { request, requestProgress } from '@/utils/request/default'
 export const getCaptchaApi = () => {
     return request({
         url: 'index/captcha',

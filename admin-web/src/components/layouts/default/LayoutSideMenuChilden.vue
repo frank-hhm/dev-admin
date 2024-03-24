@@ -1,5 +1,5 @@
 <template>
-  <template v-for="(item, index) in menuList" :key="index">
+  <!-- <template v-for="(item, index) in menuList" :key="index">
     <template v-if="item.children">
       <div class="layout-side-childen-sub">
         <div class="layout-side-childen-sub-title">
@@ -8,7 +8,7 @@
         <LayoutSideMenuChilden v-if="!initMenuLoading" :data="item.children" :name="item.menu_name"></LayoutSideMenuChilden>
       </div>
     </template>
-    <template v-else>
+<template v-else>
       <div :key="item.id" class="layout-side-childen-item" :class="cur.path == item.menu_path ||
         item.menu_path == $utils.getMenuString(cur.path) ||
         $utils.getMenuActionParent(item, cur.path)
@@ -18,6 +18,32 @@
         <span class="layout-side-childen-item-title">{{ item.menu_name }}</span>
       </div>
     </template>
+</template> -->
+  <template v-for="(item, index) in menuList" :key="index">
+    <template v-if="item.children">
+      <a-sub-menu class="layout-side-childen-sub" :key="item.menu_path" :index="item.menu_path">
+        <template #title>
+          <span class="layout-side-childen-sub-title">
+            <i class="icon mr5" v-if="item.icon" :class="item.icon"></i>
+            <span>{{ item.menu_name }}</span>
+          </span>
+        </template>
+        <LayoutSideMenuChilden v-if="!initMenuLoading" :data="item.children" :name="item.menu_name">
+        </LayoutSideMenuChilden>
+      </a-sub-menu>
+    </template>
+    <template v-else>
+      <a-menu-item :key="item.menu_path" :route="item.menu_path + (item.params ? '?' + item.params : '')"
+        class="layout-side-childen-item" :class="cur.path == item.menu_path ||
+    item.menu_path == $utils.getMenuString(cur.path) ||
+    $utils.getMenuActionParent(item, cur.path)
+    ? 'active'
+    : ''
+    " v-permission="item.menu_node" @click="onPath(item)" :index="item.menu_path">
+        <i class="icon mr5" v-if="item.icon" :class="item.icon"></i>
+        <span class="layout-side-childen-item-title">{{ item.menu_name }}</span>
+      </a-menu-item>
+    </template>
   </template>
 </template>
 <script lang="ts">
@@ -25,8 +51,8 @@ export default {
   name: "LayoutSideMenuChilden",
 };
 </script>
-<script setup  lang="ts">
-import { defineProps, ref, getCurrentInstance, onMounted, watch,nextTick } from "vue";
+<script setup lang="ts">
+import { defineProps, ref, getCurrentInstance, onMounted, watch, nextTick, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import LayoutSideMenuChilden from "./LayoutSideMenuChilden.vue";
 
@@ -84,17 +110,17 @@ onMounted(() => { });
 defineExpose({ refreshMenuList });
 </script>
 <style scoped>
-.layout-side-childen-sub {}
+.layout-side-childen-sub {
+  /* padding: 0 15px; */
+}
 
 .layout-side-childen-sub-title {
   color: var(--color-text-3);
-  height: 40px;
-  line-height: 40px;
-  font-size: var(--base-size);
+  font-size: 12px;
 }
 
 .layout-side-childen-item {
-  width: calc(100% - 40px);
+  /* width: calc(100% - 20px);
   height: 40px;
   line-height: 40px;
   display: inline-block;
@@ -102,19 +128,28 @@ defineExpose({ refreshMenuList });
   user-select: none;
   cursor: pointer;
   text-align: left;
-  padding: 0 20px;
-  font-size:12px;
+  padding: 0 15px;
+  font-size: 12px;
   border-radius: 5px;
-  color: var(--color-text-1);
+  color: var(--color-text-1); */
 }
 
-.layout-side-childen-sub .layout-side-childen-item {}
+.layout-side-childen-sub .layout-side-childen-item {
+  /* padding: 0 10px; */
+}
+.layout-side-childen-sub .icon , .layout-side-childen-item .icon {
+  font-size: 12px;
+}
+
+.layout-side-childen-item-title {
+  font-size: 12px;
+}
 
 .layout-side-childen-item.active {
-  color:rgba(var(--primary-6));
+  color: rgba(var(--primary-6));
 }
 
 .layout-side-childen-item:hover {
-  color:rgba(var(--primary-6));
+  color: rgba(var(--primary-6));
 }
 </style>

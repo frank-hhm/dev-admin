@@ -63,7 +63,21 @@ export default defineConfig({
     https: false,
     // 端口号
     port: 80,
-    host: 'localhost'
+    host: 'localhost',
+    // proxy: {
+    //   '/sys': {
+    //     target: 'http://dev-admin.dev-frank.cn', 
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/sys/, '/sys'),
+    //     secure: false, 
+    //   },
+    //   '/index': {
+    //     target: 'http://dev-admin.dev-frank.cn', 
+    //     changeOrigin: true,
+    //     rewrite: (path) => path.replace(/^\/index/, '/index'),
+    //     secure: false, 
+    //   },
+    // },
   },
   build: {
     outDir: path.resolve(__dirname, '../server-api/public/admin'),

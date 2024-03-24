@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace app\common\services\system;
 
+use app\common\helper\StringHelper;
 use app\common\services\common\JwtAuthService;
 use app\common\services\common\CacheService;
 use app\common\exception\CommonException;
@@ -50,7 +51,14 @@ class AdminService extends \app\common\services\BaseService
     public function getAdminList(array $param = []): array
     {
         [$page, $limit] = $this->dao->getPageValue();
-        $list = $this->dao->getAdminList($param, $page, $limit);
+        $filter[] = ['level', '=', 1];
+        if(!empty($param['account_like'])){
+            $filter[] = ['account','like',"%{$param['account_like']}%"];
+        }
+        if(!empty($param['time']) && is_array($param['time'])){
+            $filter[] = ['create_time', 'between', [StringHelper::_strtotime($param['time'][0]), StringHelper::_strtotime($param['time'][1])]];
+        }
+        $list = $this->dao->getAdminList($filter, $page, $limit);
         return $list;
     }
 
@@ -84,7 +92,7 @@ class AdminService extends \app\common\services\BaseService
         $menusService = MenusService::instance();
         $menus = $menusService->getMenusList($adminInfo->roles, (int)$adminInfo['level']);
         $exp =  $tokenInfo['params']['exp'];
-        if(!(int)$adminInfo['level']){
+        if((int)$adminInfo['level'] < 1){
             $rolesApi = -1;
         }else{
             $rolesApi = $menusService->getApiList($adminInfo->roles, (int)$adminInfo['level']);
@@ -173,7 +181,7 @@ class AdminService extends \app\common\services\BaseService
             throw new CommonException('账号不存在!');
         }
         if (!password_verify($data['old_pwd'], $detail['pwd'])) {
-            throw new CommonException('原密码错误，请重新输入',701);
+            throw new CommonException('原密码错误，请重新输入');
         }
 
         //修改密码

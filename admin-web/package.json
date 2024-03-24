@@ -24,11 +24,12 @@
     ]
   },
   "dependencies": {
-    "@arco-themes/vue-dev-frank": "^0.0.15",
+    "@arco-themes/vue-dev-frank": "^0.0.21",
+    "@vueuse/core": "^7.7.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
-    "@vueuse/core": "^7.7.1",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.7",
     "js-cookie": "^2.2.0",
     "nprogress": "^0.2.0",
     "particles.vue3": "^2.9.3",
@@ -36,13 +37,13 @@
     "rollup-plugin-image": "^1.0.2",
     "tsparticles": "^2.9.3",
     "vue": "^3.2.37",
+    "vue-cropper": "^1.1.1",
     "vue-router": "^4.1.5",
     "vue-tsc": "^0.40.4",
-    "dayjs": "^1.11.7",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
-    "@arco-design/web-vue": "^2.53.3",
+    "@arco-design/web-vue": "^2.54.6",
     "@arco-plugins/vite-vue": "^1.4.5",
     "@types/js-cookie": "^3.0.2",
     "@types/node": "^18.11.10",

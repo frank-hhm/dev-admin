@@ -6,13 +6,13 @@
         <!-- 添加 -->
         <menusCreateComponent ref="createComponentRef" @success=" toInit(true)"></menusCreateComponent>
     </div>
-    <div class="mt20"></div>
-    <layout-body-tabs :tabs="levelTabs" v-model="menusLevel" @change="changeType">
-        <div class="m20">
+    <div class="mt12"></div>
+    <layout-body-tabs :tabs="levelTabs" v-model="menusLevel" v-model:loading="initLoading" @change="changeType">
+        <div class="m12">
             <!-- 列表 -->
             <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :bordered="false">
                 <template #columns>
-                    <a-table-column title="菜单名称" data-index="menu_name"  :width="400">
+                    <a-table-column title="菜单名称" data-index="menu_name" :width="400">
                         <template #cell="{ record }">
                             <span class="text-grey">{{ record.html }}</span>
                             <span>{{ record.menu_name }}</span>
@@ -43,8 +43,8 @@
                         <template #cell="{ record }">
                             <a-switch v-model="record.status.value" size="small" type="round" :loading="record.loading"
                                 :beforeChange="() => {
-                                    return (record.switch = true);
-                                }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
+            return (record.switch = true);
+        }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
 
                         </template>
                     </a-table-column>
@@ -109,6 +109,7 @@ const toInit = (initMenu: boolean = false) => {
         })
         .catch((err: ResultError) => {
             $utils.errorMsg(err);
+            initLoading.value = false;
         });
 };
 

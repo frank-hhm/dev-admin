@@ -9,7 +9,7 @@
         <systemRoleAuth ref="systemRoleAuthRef" @success=" toInit(true)"></systemRoleAuth>
 
         <!-- 列表 -->
-        <a-table :loading="initLoading" class="mt20" :data="lists" row-key="id" isLeaf :pagination="false">
+        <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false">
             <template #columns>
                 <a-table-column title="角色名称" data-index="role_name">
                     <template #cell="{ record }">
@@ -35,7 +35,7 @@
                             <a-button @click=" onCreate(record.id)" v-permission="'system-role-update'"
                                 size="small">编辑</a-button>
                             <div v-permission="'system-role-delete'">
-                                <a-popconfirm content="确定删除吗？" @confirm=" onDelete(record.id)">
+                                <a-popconfirm content="确定删除吗？" @ok=" onDelete(record.id)">
                                     <template #icon>
                                         <icon-exclamation-circle-fill type="red" />
                                     </template>

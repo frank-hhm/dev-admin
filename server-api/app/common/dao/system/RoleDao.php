@@ -30,7 +30,7 @@ class RoleDao extends \app\common\dao\BaseDao
      */
     public function getRoule(array $where = [], ?string $field = null, ?string $key = null)
     {
-        return $this->search($where)->column($field ?: 'role_name', $key ?: 'id');
+        return $this->model->where($where)->column($field ?: 'role_name', $key ?: 'id');
     }
 
     /**
@@ -38,6 +38,6 @@ class RoleDao extends \app\common\dao\BaseDao
      */
     public function getRouleList(array $where, int $page, int $limit)
     {
-        return $this->search($where)->page($page)->paginate($limit)->toArray();
+        return $this->model->where($where)->page($page)->paginate($limit)->toArray();
     }
 }
