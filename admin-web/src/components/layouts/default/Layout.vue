@@ -110,7 +110,7 @@ const _common = common((res: any) => {
   width: 60px;
   z-index: 99;
   height: calc(100% - 60px);
-  top: 51px;
+  top: 51px; 
   padding: 10px 10px;
   border-right: 1px solid var(--color-border-1);
 }
@@ -126,6 +126,7 @@ const _common = common((res: any) => {
   top: 51px;
   /* padding: 10px; */
   border-right: 1px solid var(--color-border-1);
+  background: var(--color-bg-1);
 }
 
 .layout-body {
@@ -135,7 +136,7 @@ const _common = common((res: any) => {
   width: calc(100% - 222px - (2*var(--base-padding)));
   height: calc(100% - (2*var(--base-padding)) - 51px - 51px);
   padding: var(--base-padding);
-  background: var(--color-border-1);
+  background: var(--color-bg-body);
   overflow-y: scroll;
 }
 

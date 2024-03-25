@@ -7,6 +7,9 @@
     padding-bottom: 0 !important;
 }
 
+.arco-card-bordered{
+    border: 1px solid var(--color-border-1)!important;
+}
 /******loading********/
 .state-loading {
     position: relative;

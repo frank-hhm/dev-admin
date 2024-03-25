@@ -111,6 +111,7 @@ onMounted(() => {
   -webkit-transition: all 0.1s ease-in-out;
   transition: all 0.1s ease-in-out;
   border-right: 1px solid var(--el-border-color-light);
+  background: var(--color-bg-1);
 }
 
 .layout-body {
@@ -120,7 +121,7 @@ onMounted(() => {
   width: calc(100% - 201px - (2*var(--base-padding)));
   height: calc(100% - (2*var(--base-padding)) - 51px - 51px);
   padding: var(--base-padding);
-  background: var(--color-border-1);
+  background: var(--color-bg-body);
   overflow-y: scroll;
 }
 

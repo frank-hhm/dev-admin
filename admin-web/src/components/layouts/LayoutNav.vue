@@ -207,9 +207,9 @@ onBeforeUnmount(() => {
 }
 
 .layout-nav .layout-nav-logo .logo-image {
-  height: 30px;
+  height: 36px;
   max-width: 120px;
-  margin-right: 10px;
+  margin-right: 6px;
 }
 
 .layout-nav .layout-nav-logo .name {
