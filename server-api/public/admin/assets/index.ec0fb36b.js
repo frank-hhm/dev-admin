@@ -1,0 +1,1 @@
+import{_ as n}from"./LayoutBody.cc6955b4.js";import{aI as _,am as c,aD as e}from"./index.0da99daf.js";const t={};function a(r,s){const o=n;return e(),c(o)}const f=_(t,[["render",a]]);export{f as default};

@@ -6,7 +6,7 @@ import { useAdminStoreHook } from "@/store";
 import { reactive, readonly } from 'vue';
 
 export const request = (params: any, options: any = {
-    isAllow: true,
+    isAllow: true
 }) => {
     return new Promise<Result>((resolve, reject) => {
         axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -34,6 +34,9 @@ export const request = (params: any, options: any = {
                         options.progress.percent = progressEvent.loaded / progressEvent.total * 100 - 1 | 0
                     }
                 };
+                if ( options.signal) {
+                    config.signal = options.signal
+                }
                 return config
             }, error => {
                 Promise.reject(error)

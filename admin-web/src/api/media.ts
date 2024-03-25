@@ -62,10 +62,12 @@ export const updateMediaNameApi = (data:any) => {
     })
 }
 
-export const uploadMediaApi = (data:any) => {
+export const uploadMediaApi = (data:any,options:any = {
+    isAllow:true
+}) => {
     return requestProgress({
         url: `media/uplaod`,
         method: 'POST',
         data
-    })
+    },options)
 }

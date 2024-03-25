@@ -183,13 +183,19 @@ const onUploadApi = async (item: any, cell: Function) => {
     }
 }
 
+const eventController = ref<any>(null)
+
 const toAxios = (item: any, cell: Function) => {
     let fd = new FormData();
     fd.append('file', item.file);
     if (groupId.value != -1) {
         fd.append('group_id', String(groupId.value));
     }
-    const { progress, request } = uploadMediaApi(fd)
+    eventController.value = new AbortController();
+    const { progress, request } = uploadMediaApi(fd,{
+        isAllow:true,
+        signal: eventController.value.signal
+    })
     item.progress = progress
     item.status = 3
     request.then((res: Result) => {
@@ -248,6 +254,9 @@ const close = () => {
             title: '提示',
             content: '您还有未上传的文件，是否放弃上传？',
             onOk: () => {
+                if (typeof eventController.value?.abort == 'function') {
+                    eventController.value.abort();
+                }
                 visible.value = false;
                 return true;
             },
