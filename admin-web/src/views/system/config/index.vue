@@ -22,7 +22,8 @@
                         <a-input v-model="configForm.copyright" placeholder="请输入copyright" allow-clear />
                     </a-form-item>
                     <a-form-item :label-col-flex="labelColFlex">
-                        <a-button type="primary" @click="onSave" :loading="btnLoading" :disabled="btnLoading">保存</a-button>
+                        <a-button type="primary" @click="onSave" :loading="btnLoading"
+                            :disabled="btnLoading">保存</a-button>
                     </a-form-item>
                 </a-form>
 
@@ -62,7 +63,6 @@ const toInit = () => {
     initLoading.value = true
     getConfigApi().then((res: Result) => {
         configForm.value = res.data
-        configForm.value.system_icon = []
         initLoading.value = false;
     }, (err: ResultError) => {
         initLoading.value = false;

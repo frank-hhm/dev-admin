@@ -389,6 +389,9 @@ watch(
     align-items: center;
 }
 
+.map-address-item .map-address-name {
+    color: var(--color-text-1);
+}
 .map-address-item:hover {
     border: 1px dashed rgb(var(--primary-6));
 }
