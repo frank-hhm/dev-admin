@@ -1,5 +1,6 @@
 <?php
 
+use think\facade\Db;
 use think\migration\Migrator;
 use think\migration\db\Column;
 
