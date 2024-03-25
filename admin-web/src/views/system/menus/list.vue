@@ -55,7 +55,7 @@
                                     v-permission="'system-menus-update'" size="small">编辑</a-button>
 
                                 <div v-permission="'system-menus-delete'">
-                                    <a-popconfirm content="确定删除吗？" @confirm=" onDelete(record.id)">
+                                    <a-popconfirm content="确定删除吗？" @ok=" onDelete(record.id)">
                                         <template #icon>
                                             <icon-exclamation-circle-fill type="red" />
                                         </template>
