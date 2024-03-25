@@ -23,7 +23,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
                     // 如果已经登录，并准备进入 Login 页面，则重定向到主页
                     next({ path: "/" })
                     NProgress.done()
-                } else if ( useMenusStore.menus && ((typeof roleAction !== 'number' && roleAction.indexOf(to.meta.auth) > -1) || roleAction === -1)) {
+                } else if ( useMenusStore.menus && ((typeof roleAction !== 'number' && roleAction.indexOf(to.meta.auth) > -1) || to.meta.auth === false || roleAction === -1)) {
                     next()
                 } else {
                 }
