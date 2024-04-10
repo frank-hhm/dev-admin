@@ -107,7 +107,7 @@ class MenusService extends \app\common\services\BaseService
         if (!empty($value)) {
             $data = ArrayHelper::getArrayTreeValue($menuList, $value);
             foreach ($menuList as $key => &$item) {
-                if(in_array($item['value'] , $data) || $item['pid'] == $value) $item['selected'] = true;
+                if(in_array($item['value'] , $data) || $item['pid'] == $value) $item['disabled'] = true;
             }
         } else {
             $data = [];

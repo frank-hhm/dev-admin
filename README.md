@@ -68,3 +68,12 @@ location / {
 }
 ~~~
 
+
+![输入图片说明](readme/images/1.png)
+![输入图片说明](readme/images/2.png)
+![输入图片说明](readme/images/3.png)
+![输入图片说明](readme/images/4.png)
+![输入图片说明](readme/images/5.png)
+
+
+

@@ -170,7 +170,9 @@ const toInit = () => {
         .then((res: Result) => {
             createForm.value.type = res.data.type;
             createForm.value.menu_name = res.data.menu_name;
-            createForm.value.pid = res.data.pid;
+            if(res.data.pid > 0){
+                createForm.value.pid = Number(res.data.pid);
+            }
             createForm.value.menu_path = res.data.menu_path;
             createForm.value.menu_node = res.data.menu_node;
             createForm.value.params = res.data.params;
