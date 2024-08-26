@@ -1,7 +1,6 @@
 <template>
     <defaultLayout v-if="layout == 'default'"></defaultLayout>
     <layout1 v-if="layout == 'layout1'">
-        11111111111111111
     </layout1>
 </template>
 <script lang="ts" setup>

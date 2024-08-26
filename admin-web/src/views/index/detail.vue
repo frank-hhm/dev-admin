@@ -22,7 +22,8 @@
                         <a-progress size="mini" :percent="avatarProgress.percent / 100" />
                     </div>
 
-                    <img-cropper ref="cropperRef" @change="onChangeAvatar" :autoClose="false" outputType="png"></img-cropper>
+                    <img-cropper ref="cropperRef" @change="onChangeAvatar" :autoClose="false"
+                        outputType="png"></img-cropper>
                 </div>
                 <div class="detail-right">
                     <div class="detail-item">
@@ -33,8 +34,15 @@
                         <div class="title">姓名：</div>
                         <div class="desc">{{ adminInfo.real_name }}</div>
                     </div>
+                    <div class="detail-item">
+                        <div class="title">登录IP：</div>
+                        <div class="desc flex ">
+                            <div class="fz12">{{ adminInfo.last_ip?.value }}</div>
+                            <div class="text-grey ml20 fz12" v-if="adminInfo.last_ip?.text">{{ adminInfo.last_ip?.text
+                                }}</div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
         </a-card>
     </div>
@@ -138,7 +146,7 @@ const toLogin = () => {
 }
 
 .detail-right {
-    margin-left: 10px;
+    margin-left:30px;
 }
 
 .detail-item {

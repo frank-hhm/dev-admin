@@ -1,4 +1,7 @@
 import { App, Plugin } from 'vue';
+import LayoutBody from '@/components/layouts/LayoutBody.vue'
+import LayoutBodyTabs from '@/components/layouts/LayoutBodyTabs.vue'
+import LayoutBodyContent from '@/components/layouts/LayoutBodyContent.vue'
 import copyright from '@/components/plugins/copyright/index.vue'
 import uploadBtn from '@/components/plugins/upload-btn/index.vue'
 import selectIconModal from '@/components/select-modal/icon/index.vue'
@@ -12,6 +15,9 @@ import audioPlay from '@/components/plugins/audio-play/index.vue'
 
 export const ComponentsPlugin: Plugin = {
     install(app: App) {
+        app.component('layout-body', LayoutBody);
+        app.component('layout-body-tabs', LayoutBodyTabs);
+        app.component('layout-body-content', LayoutBodyContent);
         app.component('copyright', copyright);
         app.component('upload-btn', uploadBtn);
         app.component('select-icon-modal', selectIconModal);
@@ -25,4 +31,4 @@ export const ComponentsPlugin: Plugin = {
 
     },
 };
-export { copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap, page, audioPlay };
+export {  LayoutBody, LayoutBodyTabs, LayoutBodyContent,copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap, page, audioPlay };

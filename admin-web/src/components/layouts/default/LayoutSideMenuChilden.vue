@@ -143,6 +143,7 @@ defineExpose({ refreshMenuList });
 
 .layout-side-childen-item-title {
   font-size: 12px;
+  user-select: none;
 }
 
 .layout-side-childen-item.active {

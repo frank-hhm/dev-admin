@@ -1,112 +1,120 @@
 <template>
-    <div>
-        <a-card class="card-form">
-            <a-form layout="horizontal" :model="searchForm" ref="searchFormRef">
-                <a-row :gutter="20">
-                    <a-col :md="12" :xs="24" :xl="6">
-                        <a-form-item :label-col-flex="labelColFlex" label="账号" prop="account_like">
-                            <a-input class="form-input-inline" v-model="searchForm.account_like" placeholder="请输入账号手机号"
-                                clearable />
-                        </a-form-item>
-                    </a-col>
-                    <a-col :md="12" :xs="24">
-                        <a-form-item :label-col-flex="labelColFlex" label="注册时间" prop="create_time">
-                            <shortcuts-time v-model="searchForm.time" :btnShortcuts="false" />
-                        </a-form-item>
-                    </a-col>
-                </a-row>
-                <a-row :gutter="20">
-                    <a-col>
-                        <a-form-item :label-col-flex="labelColFlex">
-                            <a-space>
-                                <a-button type="primary" @click="toInit()">查询</a-button>
-                                <a-button plain @click="onSearchReset()">重置</a-button>
-                            </a-space>
-                        </a-form-item>
-                    </a-col>
-                </a-row>
-            </a-form>
-        </a-card>
-        <div class="mt12"></div>
-        <layout-body>
-            <a-button type="primary" @click="onCreate(0)" v-permission="'system-admin-create'">添加账号</a-button>
+    <layout-body-content>
+        <template #header>
+            <a-card class="card-form">
+                <a-form layout="horizontal" :model="searchForm" ref="searchFormRef">
+                    <a-row :gutter="20">
+                        <a-col :md="12" :xs="24" :xl="6">
+                            <a-form-item :label-col-flex="labelColFlex" label="账号" prop="account_like">
+                                <a-input class="form-input-inline" v-model="searchForm.account_like"
+                                    placeholder="请输入账号手机号" clearable />
+                            </a-form-item>
+                        </a-col>
+                        <a-col :md="12" :xs="24" :xl="12">
+                            <a-form-item :label-col-flex="labelColFlex" label="注册时间" prop="create_time">
+                                <shortcuts-time v-model="searchForm.time" :btnShortcuts="false" />
+                            </a-form-item>
+                        </a-col>
+                        <a-col :md="12" :xs="24" :xl="6">
+                            <a-form-item :label-col-flex="labelColFlex" :hide-label="true">
+                                <a-space>
+                                    <a-button type="primary" @click="onCreate(0)"
+                                        v-permission="'system-admin-create'">添加账号</a-button>
+                                    <a-button @click="toInit()">查询</a-button>
+                                    <a-button plain @click="onSearchReset()">重置</a-button>
+                                </a-space>
+                            </a-form-item>
+                        </a-col>
+                    </a-row>
+                </a-form>
+            </a-card>
             <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>
-            <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false">
-                <template #columns>
-                    <a-table-column title="级别" data-index="level" align="left" :width="120">
-                        <template #cell="{ record }">
-                            <a-tag v-if="record.level == -1">
-                                <template #icon>
-                                    <icon-face-smile-fill />
-                                </template>开发者</a-tag>
-                            <a-tag v-else-if="record.level == 0"> <template #icon>
-                                    <icon-user-group />
-                                </template>超级管理员</a-tag>
-                            <a-tag v-else> <template #icon>
-                                    <icon-user />
-                                </template>管理员</a-tag>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="头像" data-index="avatar" :width="40">
-                        <template #cell="{ record }">
-                            <a-image :src="record.avatar" :height="40" :width="40"/>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="账号" data-index="account" :width="120">
-                        <template #cell="{ record }">
-                            <div class="admin-box">
-                                <div>{{ record.account }}</div>
-                                <div>{{ record.real_name }}</div>
-                            </div>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="登录次数" data-index="login_count" align="center" :width="100">
-                        <template #cell="{ record }">
-                            <div>{{ record.login_count }}</div>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="最后一次登录时间" data-index="last_time" align="center" :width="160">
-                        <template #cell="{ record }">
-                            <div class="text-grey">{{ record.last_time }}</div>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="最后一次登录IP" data-index="last_ip" align="center" :width="140">
-                        <template #cell="{ record }">
-                            <div class="text-grey">{{ record.last_ip }}</div>
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="状态" fixed="right" data-index="status" align="center" :width="80">
-                        <template #cell="{ record }">
-                            <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small" type="round"
-                                :loading="record.loading" :beforeChange="() => {
-                                    return (record.switch = true);
-                                }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
-
-                        </template>
-                    </a-table-column>
-                    <a-table-column title="操作" align="center" :width="140">
-                        <template #cell="{ record }">
-                            <a-space>
-                                <a-button v-if=" Number(adminInfo.level) < 1 || adminInfo.id == record.id" @click=" onCreate(record.id)"
-                                    v-permission="'system-admin-update'" size="small">编辑</a-button>
-                                <div v-if="record.level > 0" v-permission="'system-admin-delete'">
-                                    <a-popconfirm content="确定删除吗？" @ok="onDelete(record.id)">
-                                        <template #icon>
-                                            <icon-exclamation-circle-fill type="red" />
-                                        </template>
-                                        <a-button size="small">删除</a-button>
-                                    </a-popconfirm>
+            <div class="mt12"></div>
+        </template>
+        <template v-slot:content="{
+                    height
+                }">
+                <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
+                    x: '100%',
+                    y: height - 56
+                }" :table-layout-fixed="true">
+                    <template #columns>
+                        <a-table-column title="级别" data-index="level" align="left" :width="120">
+                            <template #cell="{ record }">
+                                <a-tag v-if="record.level == -1">
+                                    <template #icon>
+                                        <icon-face-smile-fill />
+                                    </template>开发者</a-tag>
+                                <a-tag v-else-if="record.level == 0"> <template #icon>
+                                        <icon-user-group />
+                                    </template>超级管理员</a-tag>
+                                <a-tag v-else> <template #icon>
+                                        <icon-user />
+                                    </template>管理员</a-tag>
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="头像" data-index="avatar" align="center" :width="80">
+                            <template #cell="{ record }">
+                                <a-image :src="record.avatar" :height="32" :width="32" />
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="账号" data-index="account" :width="120">
+                            <template #cell="{ record }">
+                                <div class="admin-box">
+                                    <div>{{ record.account }}</div>
+                                    <div class="text-grey">{{ record.real_name }}</div>
                                 </div>
-                            </a-space>
-                        </template>
-                    </a-table-column>
-                </template>
-            </a-table>
-        <div class="mt20 flex end">
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="登录次数" data-index="login_count" align="center" :width="100">
+                            <template #cell="{ record }">
+                                <div>{{ record.login_count }}</div>
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="最后一次登录时间" data-index="last_time" align="center" :width="160">
+                            <template #cell="{ record }">
+                                <div class="text-grey">{{ record.last_time }}</div>
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="最后一次登录IP" data-index="last_ip" :width="160">
+                            <template #cell="{ record }">
+                                <div>{{ record.last_ip?.value }}</div>
+                                <div class="text-grey">{{ record.last_ip?.text }}</div>
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="状态" fixed="right" data-index="status" align="center" :width="80">
+                            <template #cell="{ record }">
+                                <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small"
+                                    type="round" :loading="record.loading" :beforeChange="() => {
+                    return (record.switch = true);
+                }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
+
+                            </template>
+                        </a-table-column>
+                        <a-table-column title="操作" fixed="right" align="center" :width="140">
+                            <template #cell="{ record }">
+                                <a-space>
+                                    <a-button v-if="Number(adminInfo.level) < 1 || adminInfo.id == record.id"
+                                        @click=" onCreate(record.id)" v-permission="'system-admin-update'"
+                                        size="small">编辑</a-button>
+                                    <div v-if="record.level > 0" v-permission="'system-admin-delete'">
+                                        <a-popconfirm content="确定删除吗？" @ok="onDelete(record.id)">
+                                            <template #icon>
+                                                <icon-exclamation-circle-fill type="red" />
+                                            </template>
+                                            <a-button size="small">删除</a-button>
+                                        </a-popconfirm>
+                                    </div>
+                                </a-space>
+                            </template>
+                        </a-table-column>
+                    </template>
+                </a-table>
+        </template>
+        <template #footer>
             <page :listPage="listPage" @change="pageChange"></page>
-        </div>
-        </layout-body>
-    </div>
+        </template>
+    </layout-body-content>
 </template>
 
 <script lang="ts" setup>
@@ -173,7 +181,7 @@ const toInit = (isInit: boolean = false) => {
                 initLoading.value = false;
             }, 300);
         })
-        .catch((error: ResultError) => { 
+        .catch((error: ResultError) => {
             $utils.errorMsg(error);
         });
 };
@@ -232,8 +240,7 @@ onMounted(() => {
 </script>
 <style scoped>
 .admin-box {
-    display: flex;
-    align-items: center;
+    /* display: flex;
+    align-items: center; */
 }
 </style>
-  

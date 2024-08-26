@@ -249,7 +249,7 @@ onBeforeUnmount(() => {
 
 .layout-nav .layout-nav-menu-item {
   padding: 0 12px;
-  font-size: var(--base-size);
+  font-size: var(--base-size-default);
   cursor: pointer;
   height: 30px;
   line-height: 30px;

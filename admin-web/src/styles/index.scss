@@ -4,9 +4,34 @@
 @use './theme/editor.scss' as *;
 
 :root {
-    --base-size: 14px;
-    --base-radius:4px;
-    --base-padding:12px
+    
+    --base-size-small: 12px;
+
+    --base-size-default: 14px;
+
+    --base-size-large: 18px;
+
+    --base-size-large-x: 20px;
+
+    --base-size-large-xx: 32px;
+
+    --base-radius-default: 4px;
+
+    --base-radius-small: 2px;
+
+    --base-radius-large: 10px;
+
+    --base-radius-large-x: 20px;
+
+    --base-grey-btn-bg: #F3F4F6;
+
+    --base-shadow: 0 5px 10px #dddddd;
+
+    --base-grey-bg: #dcdcdc;
+
+    --base-margin: 12px;
+
+    --base-padding: 12px
 }
 
 * {
@@ -17,7 +42,7 @@
 
 body,
 html {
-    font-size: var(--base-size);
+    font-size: var(--base-size-default);
 }
 
 ::-webkit-scrollbar {

@@ -100,9 +100,7 @@ const toInit = (initMenu: boolean = false) => {
     getListMenusApi(obj)
         .then((res: Result) => {
             lists.value = res.data.list;
-            if (initMenu) {
-                MenusStore.setMenus(res.data.menusList);
-            }
+            MenusStore.setMenus(res.data.menusList);
             setTimeout(() => {
                 initLoading.value = false;
             }, 300);

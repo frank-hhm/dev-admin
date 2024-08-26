@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
     ImgCropper: typeof import('./src/components/plugins/img-cropper/index.vue')['default']
     Layout: typeof import('./src/components/layouts/default/Layout.vue')['default']
     LayoutBody: typeof import('./src/components/layouts/LayoutBody.vue')['default']
+    LayoutBodyContent: typeof import('./src/components/layouts/LayoutBodyContent.vue')['default']
     LayoutBodyTabs: typeof import('./src/components/layouts/LayoutBodyTabs.vue')['default']
     LayoutNav: typeof import('./src/components/layouts/LayoutNav.vue')['default']
     Layouts: typeof import('./src/components/layouts/index.vue')['default']

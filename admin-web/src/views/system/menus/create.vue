@@ -168,7 +168,8 @@ const toInit = () => {
     initLoading.value = true;
     getDetailMenusApi({ id: operationId.value })
         .then((res: Result) => {
-            createForm.value.type = res.data.type;
+            createForm.value.type = Number(res.data.type);
+            createForm.value.module = Number(res.data.module);
             createForm.value.menu_name = res.data.menu_name;
             if(res.data.pid > 0){
                 createForm.value.pid = Number(res.data.pid);

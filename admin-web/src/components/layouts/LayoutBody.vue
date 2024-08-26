@@ -33,38 +33,39 @@ const props = withDefaults(
   {
     height: false,
     title: "",
-    padding: "12px",
+    padding: "var(--base-padding)",
   }
 );
 
 const styles = computed<StyleValue>(() => {
   return [
-    props.height ? `height:calc(${props.height} - 42px)` : "",
+    props.height ? `height:calc(${props.height} - 2 * var(--base-padding) - 2px)` : "",
     `padding:${props.padding}`,
   ];
 });
 </script>
 <style scoped>
 .layout-body-main {
-  padding: 12px;
+  padding: var(--base-padding);
   background: var(--color-bg-2);
-  border-radius: var(--base-radius);
+  border-radius: var(--base-radius-default);
   border: 1px solid var(--color-border-1);
+  position: relative;
 }
 
 .layout-body-main-header {
-  background: #fff;
+  background: var(--color-bg-1);
   min-height: 20px;
   border-top: 1px solid var(--color-border-1);
   border-right: 1px solid var(--color-border-1);
   border-left: 1px solid var(--color-border-1);
-  padding: 20px;
+  padding: var(--base-padding);
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .layout-body-main-header-title {
-  font-size: 16px;
+  /* font-size: var(--s); */
 }
 </style>

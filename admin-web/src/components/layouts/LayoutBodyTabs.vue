@@ -113,7 +113,7 @@ const selected = (item: { name: string; value: number | string }) => {
   line-height: 40px;
   display: inline-block;
   list-style: none;
-  font-size: var(--base-size);
+  font-size: var(--base-size-default);
   font-weight: 500;
   color: #000000;
   position: relative;

@@ -70,7 +70,8 @@ import {
 } from "vue";
 import { useAppStore } from "@/store";
 
-const { systemInfo } = useAppStore();
+import { storeToRefs } from "pinia";
+const { isDark, systemInfo } = storeToRefs(useAppStore());
 
 const {
     proxy,
@@ -117,7 +118,7 @@ const mapCenter = ref<mapCenterType>({
     lng: 109.720828,
 });
 
-const mapKey = ref<string>(systemInfo.map_key || 'R2FBZ-4WD6X-E5P4Q-TK34D-F4SFV-XJFZP');
+const mapKey = ref<string>(systemInfo.value?.map_key || 'R2FBZ-4WD6X-E5P4Q-TK34D-F4SFV-XJFZP');
 
 const searchCity = ref<string>(props.searchCity);
 
@@ -126,6 +127,11 @@ const searchCityCode = ref<string>("");
 const _TMap = ref<any>();
 
 onMounted(() => {
+    _toInit()
+});
+
+
+const _toInit = () => {
     if (!useAppStore().isMapScriptLoad) {
         $utils.getScript(
             "https://map.qq.com/api/gljs?v=1.exp&key=" +
@@ -134,7 +140,7 @@ onMounted(() => {
             () => {
                 nextTick(() => {
                     window!._TMapSecurityConfig = {
-                        securityJsCode: systemInfo.map_secret_key
+                        securityJsCode: systemInfo.value?.map_secret_key
                     };
                     setTimeout(() => {
                         useAppStore().setMapScriptLoad()
@@ -150,7 +156,7 @@ onMounted(() => {
             toInit();
         })
     }
-});
+}
 
 const initLoading = ref<boolean>(true);
 
@@ -162,15 +168,18 @@ const map = ref<any>();
 
 const toInit = () => {
     //设置中心点坐标
-    if(props.lat && props.lng){
+    if (props.lat && props.lng) {
         mapCenter.value = new _TMap.value.LatLng(props.lat, props.lng);
-    }else{
-        mapCenter.value = new _TMap.value.LatLng(mapCenter.value.lat,mapCenter.value.lng);
+    } else {
+        mapCenter.value = new _TMap.value.LatLng(mapCenter.value.lat, mapCenter.value.lng);
     }
     map.value = new _TMap.value.Map("mapContainer", {
         zoom: props.zoom,
         center: mapCenter.value
     });
+    nextTick(() => {
+        changeMapStyle();
+    })
     map.value.on("error", (res: any) => {
         $utils.errorMsg("地图组件初始化失败,请关闭重试");
         initStatus.value = false;
@@ -304,6 +313,12 @@ const setHeight = () => {
     styles.value = [`width: ${props.width}`, `height: ${mapHegiht.value}`];
     isSetHeight.value = !isSetHeight.value;
 };
+
+
+const changeMapStyle = () => {
+    let _mapStyleId = isDark.value ? 'style2' : 'style1';
+    map.value.setMapStyleId(_mapStyleId);
+}
 watch(
     () => searchText.value,
     (val, old) => {
@@ -315,9 +330,15 @@ watch(
         deep: true,
     }
 );
+
+watch(
+    () => isDark.value,
+    (val) => {
+        changeMapStyle()
+    },
+    { deep: true }
+);
 </script>
-
-
 
 <style scoped>
 .map-body {
@@ -347,9 +368,9 @@ watch(
 .map-search-input {
     z-index: 2;
     width: 100%;
-    border: 1px solid #c9cdd4;
-    color: #1d2129 !important;
-    background-color: #f2f3f5 !important;
+    border: 1px solid  var(--color-border-1);
+    color: var(--color-text-1);
+    background-color: var(--color-bg-1);
 }
 
 .map-search-input:hover {
@@ -392,6 +413,7 @@ watch(
 .map-address-item .map-address-name {
     color: var(--color-text-1);
 }
+
 .map-address-item:hover {
     border: 1px dashed rgb(var(--primary-6));
 }
@@ -410,11 +432,11 @@ watch(
     position: absolute;
     bottom: 10px;
     right: 10px;
-    background: rgba(0, 0, 0, 0.5);
     border-radius: 2px;
     height: 40px;
     width: 200px;
-    color: #fff;
+    color: var(--color-text-1);
+    background-color: var(--color-fill-2);
     padding: 5px 10px;
     line-height: 20px;
     font-size: 12px;
@@ -430,11 +452,12 @@ watch(
 }
 
 .map-search-list {
-    background: var(--color-white);
+    background: var(--color-bg-popup);
     padding: 10px;
     max-height: 240px;
     overflow-y: scroll;
     border-radius: var(--base-radius);
+    color:var(--color-text-1);
 }
 
 .map-search-list-item {

@@ -137,7 +137,7 @@ onMounted(() => {
   text-align: center;
   padding: 10px;
   cursor: pointer;
-  border-radius: var(--base-radius);
+  border-radius: var(--border-radius-medium);
   color: var(--color-text-1);
   margin-bottom: 10px;
   user-select: none;
