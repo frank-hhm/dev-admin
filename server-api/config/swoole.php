@@ -1,7 +1,6 @@
 <?php
 
 use app\swoole\websocket\Manager;
-use Swoole\Table;
 
 return [
     'http'       => [
@@ -86,14 +85,7 @@ return [
     'tables'     => [
         'sys'   => [
             'size'    => 2048 * 50,
-            'columns' => [
-                ['name' => 'fd', 'type' => Table::TYPE_INT],
-                ['name' => 'module', 'size' => 1024, 'type' => Table::TYPE_STRING],
-                ['name' => 'user_id', 'type' => Table::TYPE_INT],
-                ['name' => 'to_user_id', 'type' => Table::TYPE_INT],
-                ['name' => 'tourist', 'type' => Table::TYPE_INT],
-                ['name' => 'is_open', 'type' => Table::TYPE_INT],
-            ]
+            'columns' => []
         ]
     ],
     //每个worker里需要预加载以共用的实例

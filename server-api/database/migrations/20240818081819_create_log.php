@@ -28,6 +28,10 @@ class CreateLog extends Migrator
      */
     public function change()
     {
-
+        $ip2region = new \Ip2Region();
+        if(!empty($data['ip'])){
+            return getIPCountry($data['ip']);
+        }
+        return [];
     }
 }

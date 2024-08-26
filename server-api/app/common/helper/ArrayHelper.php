@@ -12,7 +12,7 @@ namespace app\common\helper;
 /**
  * 操作数组帮助类
  * Class ArrayHelper
- * @package frank\utils\helper
+ * @package app\common\helper
  */
 class ArrayHelper
 {

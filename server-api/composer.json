@@ -37,7 +37,9 @@
     "myclabs/php-enum": "^1.8",
     "topthink/think-migration": "^3.1",
     "topthink/think-swoole": "^4.0",
-    "topthink/think-queue": "*"
+    "topthink/think-queue": "*",
+    "zoujingli/ip2region": "^2.0",
+    "itbdw/ip-database": "^2.0"
   },
   "require-dev": {
     "symfony/var-dumper": ">=4.2",

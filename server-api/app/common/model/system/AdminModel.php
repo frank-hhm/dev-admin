@@ -11,6 +11,7 @@ namespace app\common\model\system;
 
 use app\common\enum\EnumFactory;
 use app\common\helper\ArrayHelper;
+use app\common\helper\IpHelper;
 use  app\common\model\BaseModel;
 use app\common\traits\JwtAuthModelTrait;
 use app\common\traits\ModelTrait;
@@ -65,5 +66,18 @@ class AdminModel extends BaseModel
     public function getStatusAttr($value)
     {
         return EnumFactory::instance('status')->getItem($value);
+    }
+
+    public function getLastIpAttr($value,$data){
+        if(!empty($value)){
+            return [
+                'text' => IpHelper::getIPCountry($value),
+                'value' => $value
+            ];
+        }
+        return [
+            'text' => '',
+            'value' => $value
+        ];
     }
 }

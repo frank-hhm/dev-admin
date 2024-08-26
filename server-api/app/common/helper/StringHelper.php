@@ -11,7 +11,7 @@ namespace app\common\helper;
 /**
  * 字符串工具类
  * Class String
- * @package frank\utils\helper
+ * @package app\common\helper
  */
 class StringHelper
 {

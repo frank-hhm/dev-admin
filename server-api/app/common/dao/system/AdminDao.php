@@ -50,7 +50,7 @@ class AdminDao extends \app\common\dao\BaseDao
     /**
      * 当前账号是否可用
      */
-    public function isAccountUsable(string $account, int $id)
+    public function isAccountUsable($account, $id)
     {
         return $this->model->where(['account' => $account])->where('id', '<>', $id)->count();
     }
