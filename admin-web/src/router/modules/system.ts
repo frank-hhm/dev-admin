@@ -34,24 +34,5 @@ export default [
             auth: 'system-admin-list',
             menu_name: "管理员",
         },
-    },
-    {
-        path: `/system/organization/department`,
-        name: `systemOrganizationDepartment`,
-        component: () => import("@/views/system/organization/department/list.vue"),
-        meta: {
-            auth: 'system-organization-department',
-            menu_name: "部门管理",
-        },
-    },
-    
-    {
-        path: `/system/organization/position`,
-        name: `systemOrganizationPosition`,
-        component: () => import("@/views/system/organization/position/list.vue"),
-        meta: {
-            auth: 'system-organization-position',
-            menu_name: "职位管理",
-        },
-    },
+    }
 ]

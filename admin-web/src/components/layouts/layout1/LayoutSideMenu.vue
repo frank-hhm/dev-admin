@@ -12,12 +12,12 @@
         <template v-else>
             <a-menu-item :key="item.menu_path" :route="item.menu_path + (item.params ? '?' + item.params : '')"
                 class="layout-side-item" :class="cur.path == item.menu_path ||
-                    (parentCur.meta.parent && parentCur.meta.parent == item.menu_path) ||
-                    item.menu_path == $utils.getMenuString(cur.path) ||
-                    $utils.getMenuActionParent(item, cur.path)
-                    ? 'is-active'
-                    : ''
-                    " v-permission="item.menu_node" @click="goPath(item)" :index="item.menu_path">
+        (parentCur.meta.parent && parentCur.meta.parent == item.menu_path) ||
+        item.menu_path == $utils.getMenuString(cur.path) ||
+        $utils.getMenuActionParent(item, cur.path)
+        ? 'is-active'
+        : ''
+        " v-permission="item.menu_node" @click="goPath(item)" :index="item.menu_path">
                 <i class="icon mr10" v-if="item.icon" :class="item.icon"></i>
                 <span class="layout-side-item-title">{{ item.menu_name }}</span>
             </a-menu-item>
@@ -29,7 +29,7 @@ export default {
     name: "LayoutSideMenu",
 };
 </script>
-<script setup  lang="ts">
+<script setup lang="ts">
 import { defineProps, ref, getCurrentInstance, onMounted, watch, nextTick } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import LayoutSideMenu from "./LayoutSideMenu.vue";
@@ -40,10 +40,7 @@ const {
     proxy: { $message, $utils },
 } = getCurrentInstance() as any;
 
-
 const router = useRouter();
-
-const route = useRoute();
 
 const cur = ref<any>(router.currentRoute);
 
@@ -107,5 +104,8 @@ defineExpose({ refreshMenuList });
     transition: all 0.1s ease-in-out;
 }
 
+.layout-side-item-title{
+    user-select: none;
+}
 .layout-side-item.is-active {}
 </style>

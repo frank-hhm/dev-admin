@@ -48,10 +48,10 @@
     "@babel/types" "^7.12.12"
     "@types/node" "^16.11.10"
 
-"@arco-themes/vue-dev-frank@^0.0.24":
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/@arco-themes/vue-dev-frank/-/vue-dev-frank-0.0.24.tgz#f11b37403419c849bbf278e235efc8408f95f229"
-  integrity sha512-rGrYpBWtUS2BcwMxJtyRaZsVYHSPaM6b1oBMQiQT06flhlTZYVDaYaMQrOjalHBP4aCNjHHb5Yj+XoA9T/Khyg==
+"@arco-themes/vue-dev-frank@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@arco-themes/vue-dev-frank/-/vue-dev-frank-0.0.29.tgz#e4f7fff82679e53c34334267e176d1c2f972a0b4"
+  integrity sha512-+Yl5xZ74GhEQFhL0ZnwfpgicixVjcP9XDtabO9Y3CconxL5jEbfQV1gdHayfbU4gJHPzmIhWJ00qrbkA0yOvKA==
 
 "@babel/code-frame@^7.22.13", "@babel/code-frame@^7.23.5":
   version "7.23.5"

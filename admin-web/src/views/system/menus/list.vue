@@ -4,7 +4,7 @@
             添加菜单
         </a-button>
         <!-- 添加 -->
-        <menusCreateComponent ref="createComponentRef" @success=" toInit(true)"></menusCreateComponent>
+        <menusCreateComponent ref="createComponentRef" @success=" toInit()"></menusCreateComponent>
     </div>
     <div class="mt12"></div>
     <layout-body-tabs :tabs="levelTabs" v-model="menusLevel" v-model:loading="initLoading" @change="changeType">
@@ -100,7 +100,9 @@ const toInit = (initMenu: boolean = false) => {
     getListMenusApi(obj)
         .then((res: Result) => {
             lists.value = res.data.list;
-            MenusStore.setMenus(res.data.menusList);
+            if (!initMenu) {
+                MenusStore.setMenus(res.data.menusList);
+            }
             setTimeout(() => {
                 initLoading.value = false;
             }, 300);
@@ -129,7 +131,7 @@ onMounted(() => {
             levelTabs.value.push(AppsTypeEnum[k]);
         }
     });
-    toInit();
+    toInit(true);
 });
 
 const menusLevel = ref<string | number>("all");
@@ -153,7 +155,7 @@ const onStatusChange = (val: any, row: any) => {
         })
             .then((res: Result) => {
                 row.loading = false;
-                toInit(true);
+                toInit();
                 $utils.successMsg(res);
             })
             .catch((err: ResultError) => {
@@ -167,7 +169,7 @@ const onStatusChange = (val: any, row: any) => {
 const onDelete = (id: number) => {
     deleteMenusApi({ id })
         .then((res: Result) => {
-            toInit(true);
+            toInit();
             $utils.successMsg(res.message);
         })
         .catch((err: ResultError) => {

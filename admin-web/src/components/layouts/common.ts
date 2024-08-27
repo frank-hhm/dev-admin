@@ -3,7 +3,6 @@ import {  nextTick, ref } from "vue";
 export default function (_call: any) {
 
     const parentPath = ref<string[]>([]);
-
     const getParent = (menus: any[]) => {
         menus.forEach((item: any) => {
             if (item.menu_path != router.currentRoute.value.path && item.children) {

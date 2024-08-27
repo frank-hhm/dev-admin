@@ -1,67 +1,60 @@
 <template>
-    <layout-body height="100%">
-        <layout-body-content>
-            <template #header>
-                <a-button type="primary" @click="onCreate(0)" v-permission="'system-role-create'">
-                    添加角色
-                </a-button>
-                <systemRoleCreate ref="createComponentRef" @success=" toInit(true)"></systemRoleCreate>
-                <systemRoleAuth ref="systemRoleAuthRef" @success=" toInit(true)"></systemRoleAuth>
-            </template>
-            <template v-slot:content="{
-                    height
-                }">
-                <!-- 列表 -->
-                <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false"
-                :scroll="{
-                    x:'100%',
-                    y: height - 42
-                }">
-                    <template #columns>
-                        <a-table-column title="角色名称" data-index="role_name">
-                            <template #cell="{ record }">
-                                <span>{{ record.role_name }}</span>
-                            </template>
-                        </a-table-column>
-                        <a-table-column title="备注" data-index="remarks">
-                            <template #cell="{ record }">
-                                <span class="text-grey">{{ record.remarks }}</span>
-                            </template>
-                        </a-table-column>
+    <layout-body-content>
+        <template v-slot:content="{
+            height
+        }">
+            <a-button type="primary" @click="onCreate(0)" v-permission="'system-role-create'">
+                添加角色
+            </a-button>
+            <systemRoleCreate ref="createComponentRef" @success=" toInit(true)"></systemRoleCreate>
+            <systemRoleAuth ref="systemRoleAuthRef" @success=" toInit(true)"></systemRoleAuth>
+            <!-- 列表 -->
+            <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
+            x: '100%',
+            y: height - 42
+        }">
+                <template #columns>
+                    <a-table-column title="角色名称" data-index="role_name">
+                        <template #cell="{ record }">
+                            <span>{{ record.role_name }}</span>
+                        </template>
+                    </a-table-column>
+                    <a-table-column title="备注" data-index="remarks">
+                        <template #cell="{ record }">
+                            <span class="text-grey">{{ record.remarks }}</span>
+                        </template>
+                    </a-table-column>
 
-                        <a-table-column title="创建时间" data-index="create_time" :width="160">
-                            <template #cell="{ record }">
-                                <span class="text-grey">{{ record.create_time }}</span>
-                            </template>
-                        </a-table-column>
-                        <a-table-column title="操作" align="right" fixed="right" :width="180">
-                            <template #cell="{ record }">
-                                <a-space>
-                                    <a-button v-permission="'system-role-auth'" @click=" goAuthRole(record.id)"
-                                        size="small">授权设置</a-button>
-                                    <a-button @click=" onCreate(record.id)" v-permission="'system-role-update'"
-                                        size="small">编辑</a-button>
-                                    <div v-permission="'system-role-delete'">
-                                        <a-popconfirm content="确定删除吗？" @ok=" onDelete(record.id)">
-                                            <template #icon>
-                                                <icon-exclamation-circle-fill type="red" />
-                                            </template>
-                                            <a-button size="small">删除</a-button>
-                                        </a-popconfirm>
-                                    </div>
-                                </a-space>
-                            </template>
-                        </a-table-column>
-                    </template>
-                </a-table>
-            </template>
-            <template #footer>
-                <page :listPage="listPage" @change="pageChange"></page>
-            </template>
-        </layout-body-content>
-
-
-    </layout-body>
+                    <a-table-column title="创建时间" data-index="create_time" :width="160">
+                        <template #cell="{ record }">
+                            <span class="text-grey">{{ record.create_time }}</span>
+                        </template>
+                    </a-table-column>
+                    <a-table-column title="操作" align="right" fixed="right" :width="180">
+                        <template #cell="{ record }">
+                            <a-space>
+                                <a-button v-permission="'system-role-auth'" @click=" goAuthRole(record.id)"
+                                    size="small">授权设置</a-button>
+                                <a-button @click=" onCreate(record.id)" v-permission="'system-role-update'"
+                                    size="small">编辑</a-button>
+                                <div v-permission="'system-role-delete'">
+                                    <a-popconfirm content="确定删除吗？" @ok=" onDelete(record.id)">
+                                        <template #icon>
+                                            <icon-exclamation-circle-fill type="red" />
+                                        </template>
+                                        <a-button size="small">删除</a-button>
+                                    </a-popconfirm>
+                                </div>
+                            </a-space>
+                        </template>
+                    </a-table-column>
+                </template>
+            </a-table>
+        </template>
+        <template #footer>
+            <page :listPage="listPage" @change="pageChange"></page>
+        </template>
+    </layout-body-content>
 </template>
 
 <script lang="ts" setup>

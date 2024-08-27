@@ -24,7 +24,7 @@
     ]
   },
   "dependencies": {
-    "@arco-themes/vue-dev-frank": "^0.0.24",
+    "@arco-themes/vue-dev-frank": "^0.0.29",
     "@vueuse/core": "^7.7.1",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",

@@ -1,16 +1,15 @@
 <template>
   <LayoutNav></LayoutNav>
   <div class="layout">
-    <div class="layout-side">
+    <div class="layout-side" v-loading="menusLoad">
       <a-menu v-if="!menusLoad" :style="[
-        `width:200px`,
-        `height:100%`
-      ]" :auto-open-selected="true" :default-selected-keys="[activeMenu]" :default-open-keys="parentPath">
+      `width:200px`,
+      `height:100%`
+    ]" :auto-open-selected="true" :default-selected-keys="[activeMenu]" :default-open-keys="parentPath">
         <LayoutSideMenu ref="LayoutSideMenuRef" :data="menus"></LayoutSideMenu>
       </a-menu>
     </div>
-
-    <div class="layout-body" v-if="!menusLoad">
+    <div class="layout-body" v-show="!menusLoad">
       <router-view></router-view>
     </div>
     <div class="layout-footer">

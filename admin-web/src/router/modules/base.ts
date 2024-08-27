@@ -3,7 +3,6 @@ import BasicLayout from "@/components/layouts/index.vue";
 import system from './system'
 import media from './media'
 import plugins from './plugins'
-import member from './member'
 
 export default [{
     path: '/',
@@ -34,7 +33,6 @@ export default [{
         },
         ...system,
         ...media,
-        ...plugins,
-        ...member
+        ...plugins
     ]
 }]

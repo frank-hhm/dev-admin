@@ -36,7 +36,6 @@
     "spatie/macroable": "^1.0",
     "myclabs/php-enum": "^1.8",
     "topthink/think-migration": "^3.1",
-    "topthink/think-swoole": "^4.0",
     "topthink/think-queue": "*",
     "zoujingli/ip2region": "^2.0",
     "itbdw/ip-database": "^2.0"

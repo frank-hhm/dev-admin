@@ -8,7 +8,6 @@ export const useMenusStore = defineStore("menus", () => {
 
     const setMenus = (value: MenusListsType) => {
         setCacheMenus(value)
-        console.log(value)
         menus.value = value
     }
     return { menus, setMenus }

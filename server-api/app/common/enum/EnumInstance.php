@@ -19,7 +19,7 @@ abstract class EnumInstance
     protected static $data;
 
     public static $class = [
-        'status'=> '\\app\\common\\enum\\StatusEnum',
+        'status'=> '\\app\\common\\enum\\StatusEnum'
     ];
     public function __construct(){
     }

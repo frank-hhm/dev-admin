@@ -244,6 +244,7 @@ const onUpload = () => {
 const mediaUploadVisible = ref<boolean>(true)
 
 const onUploadClose = () => {
+    console.log(111111111)
     mediaUploadVisible.value = false
     toInit()
     nextTick(() => {

@@ -157,13 +157,11 @@ const previewCover = ref<any>(null)
 const previewCoverStyle = ref<any>(null)
 
 const onChangeRealTime = (data: any) => {
-    console.log(data)
     previewCover.value = data
 
 }
 
 const onChangeScale = (type: number) => {
-    console.log(proxy?.$refs['cropperRef'])
     proxy?.$refs['cropperRef']?.changeScale(type || 1)
 }
 
@@ -191,7 +189,6 @@ const dataURLtoFile = (dataUrl: string, filename: string) => {
 const onOk = () => {
     proxy?.$refs['cropperRef']?.getCropData(async (data: string) => {
         const dataFile: File = dataURLtoFile(data, 'images.' + props.outputType)
-        console.log(dataFile)
         // 触发自定义事件
         emit('change', dataFile)
         if (props.autoClose) {

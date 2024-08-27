@@ -17,8 +17,8 @@
         <div>
             <template v-if="mediaFormData.length > 0">
                 <a-table class="mt20" :data="mediaFormData" :scroll="{
-                    maxHeight: '300px'
-                }" :pagination="false">
+        maxHeight: '300px'
+    }" :pagination="false">
                     <template #columns>
                         <a-table-column title="名称">
                             <template #cell="{ record }">
@@ -41,7 +41,7 @@
                                     <span class="fz12 text-grey">正在上传...</span>
                                 </template>
                                 <template v-else-if="record.status == 4
-                                    ">
+        ">
                                     <span class="fz12 text-green">上传成功</span>
                                 </template>
                                 <template v-else>
@@ -192,8 +192,8 @@ const toAxios = (item: any, cell: Function) => {
         fd.append('group_id', String(groupId.value));
     }
     eventController.value = new AbortController();
-    const { progress, request } = uploadMediaApi(fd,{
-        isAllow:true,
+    const { progress, request } = uploadMediaApi(fd, {
+        isAllow: true,
         signal: eventController.value.signal
     })
     item.progress = progress

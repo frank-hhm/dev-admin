@@ -25,7 +25,7 @@ abstract class BaseService
     // 错误信息
     protected mixed $error;
 
-    protected mixed $dao;
+    public mixed $dao;
     /**
      * Service constructor.
      * @param App $app

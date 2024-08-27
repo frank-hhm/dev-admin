@@ -7,7 +7,7 @@
             <template v-for="(item, index) in tabs" :key="index">
               <div class="layout-body-tabs-nav-head-item" :class="[
     item.value == tabActive ? 'is-active' : '',
-    loading && item.value != tabActive  ? 'is-loading' : ''
+    loading && item.value != tabActive ? 'is-loading' : ''
   ]" @click="selected(item)">
                 {{ item.name }}
               </div>
@@ -62,8 +62,8 @@ const selected = (item: { name: string; value: number | string }) => {
 .layout-body-tabs {
   border: 1px solid var(--color-border-1);
   background: var(--color-bg-2);
-  ;
-  border-radius: 2px;
+  border-radius: var(--base-radius-default);
+  overflow: hidden;
 }
 
 .layout-body-tabs-main {
@@ -130,9 +130,9 @@ const selected = (item: { name: string; value: number | string }) => {
   border-right-color: var(--color-border-1);
   border-left-color: var(--color-border-1);
 }
+
 .layout-body-tabs-nav-head-item.is-loading {
   cursor: no-drop;
   color: rgba(var(--gray-6));
 }
-
 </style>
