@@ -11,7 +11,7 @@
             <!-- 列表 -->
             <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
             x: '100%',
-            y: height - 42
+            y: height - 39 - 32
         }">
                 <template #columns>
                     <a-table-column title="角色名称" data-index="role_name">
