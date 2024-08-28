@@ -28,6 +28,7 @@
     "ext-bcmath": "*",
     "ext-gd": "*",
     "ext-openssl": "*",
+    "ext-swoole": "*",
     "ext-dom": "*",
     "ext-simplexml": "*",
     "ext-libxml": "*",
