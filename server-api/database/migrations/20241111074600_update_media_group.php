@@ -28,6 +28,11 @@ class UpdateMediaGroup extends Migrator
      */
     public function change()
     {
+        $table = $this->table('media_group');
+        $table
+            ->addColumn(Column::integer('pid')->setLimit(11)->setDefault(0)->setComment('父级id'))
+            ->addIndex(['pid'])
+            ->update();
 
     }
 }

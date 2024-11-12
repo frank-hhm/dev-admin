@@ -194,7 +194,7 @@ class ArrayHelper
         if ($clear) $list = [];
         foreach ($data as $k => $res) {
             if ($res[$field] == $pid) {
-                $res['html'] = str_repeat($html, $level);
+                $res['html'] = str_repeat($html, $level - 1);
                 $list[] = $res;
                 unset($data[$k]);
                 self::sortListTier($data, $res[$pk], $field, $pk, $html, $level + 1, false);

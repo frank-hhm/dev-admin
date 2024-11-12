@@ -54,7 +54,8 @@ class MediaGroup extends Base
     {
         $data = $this->request->postMore([
             ['group_name', ''],
-            ['type', 'image']
+            ['type', 'image'],
+            ['pid', 0]
         ]);
         $group = $this->service->getOne(['group_name' => $data['group_name'],'type' => $data['type']]);
         if ($group) {
@@ -76,6 +77,7 @@ class MediaGroup extends Base
     {
         $data = $this->request->postMore([
             ['group_name', ''],
+            ['pid', 0]
         ]);
         if (!$data['group_name']) $this->error('请输入分组名称');
         $group = $this->service->getOne(['group_name' => $data['group_name']]);
@@ -103,6 +105,21 @@ class MediaGroup extends Base
             $this->success('删除成功!');
         }
         $this->error('删除失败!');
+    }
+    /**
+     * 获取级联
+     * @noAuth(true)
+     * @method(GET)
+     */
+    public function getCascaderApi(){
+        $pid = $this->request->get('pid',0);
+        $data = $this->request->postMore([
+            ['type', 'image']
+        ]);
+        $data['source'] = 1;
+        $data['source_id'] = $this->adminId;
+        [$list, $ids] = $this->service->getCascader($data,$pid);
+        $this->success(compact('list','ids'));
     }
 }
 
