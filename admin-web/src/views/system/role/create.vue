@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <a-modal :title="operation == 'create' ? '添加角色' : '编辑角色'" @BeforeOk="onCreateOk" @BeforeCancel="close" width="400px"
+        <a-modal :title="operation == 'create' ? '添加角色' : '编辑角色'" @BeforeOk="onCreateOk" @BeforeCancel="close"  :width="isMobile?'calc(100% - 20px)':'400px'"
             :top="useSetting().ModalTop" class="modal" v-model:visible="visible" :align-center="false" title-align="start"
             render-to-body>
             <a-form layout="vertical" :model="createForm" ref="createRef" :rules="createRules" v-loading="initLoading">
@@ -33,6 +33,10 @@ import { ref, getCurrentInstance, nextTick, reactive } from "vue";
 import { createRoleApi, updateRoleApi, getDetailRoleApi } from "@/api/system/role";
 import type { Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 const {
     proxy,
     proxy: { $utils },

@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:visible="visible" title="修改密码" @BeforeOk="onSave" @BeforeCancel="close" width="400px"
+    <a-modal v-model:visible="visible" title="修改密码" @BeforeOk="onSave" @BeforeCancel="close" :width="isMobile?'calc(100% - 20px)':'400px'"
         :top="useSetting().ModalTop" :align-center="false" title-align="start" render-to-body>
         <div v-loading="initLoading">
             <a-form layout="vertical" :model="createForm" ref="createRef" :rules="createRules">
@@ -33,6 +33,10 @@ import { ref, getCurrentInstance, reactive, onMounted } from "vue";
 import { updatePassAdminApi } from "@/api/system/admin";
 import type { Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const labelColFlex = ref<string>("80px");
 

@@ -1,19 +1,27 @@
 <template>
     <router-view />
 </template>
-    
+
 <script lang="ts" setup>
-import { onMounted, watch } from "vue";
+import { getCurrentInstance, onMounted, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useAdminStore, useAppStore, useEnumStore, useWebsocketStore } from "@/store";
 
-const { systemInfo,isDark } = storeToRefs(useAppStore());
+const { systemInfo, isDark } = storeToRefs(useAppStore());
+
+const {
+    proxy,
+    proxy: { $utils },
+} = getCurrentInstance() as any;
 
 useEnumStore().initEnum();
 
 useAppStore().getSystemInfo();
 useAppStore().setDark(isDark.value)
 
+window.addEventListener('resize',  () => {
+    useAppStore().setMobile($utils.isMobileOrSmallScreen())
+});
 onMounted(() => {
     if (useAdminStore().token) {
         useAdminStore().initInfo()
@@ -21,6 +29,7 @@ onMounted(() => {
     }
     document.title = import.meta.env.VITE_BASE_SYSTEM_NAME;
     setHeadLinks()
+    useAppStore().setMobile($utils.isMobileOrSmallScreen())
 });
 
 const setHeadLinks = () => {
@@ -39,9 +48,9 @@ watch(
     { deep: true }
 );
 </script>
-    
-    
-    
+
+
+
 <style>
 #nprogress .bar {
     background: rgba(var(--primary-6)) !important;
@@ -51,6 +60,3 @@ watch(
     box-shadow: 0 0 10px rgba(var(--primary-6)), 0 0 5px rgba(var(--primary-6)) !important;
 }
 </style>
-    
-    
-    

@@ -2,17 +2,18 @@
     <!-- <div>
         <el-button link type="primary">{{btn}}</el-button>
     </div>-->
-
-    <a-popover class="audio-popover-main" placement="bottom" :width="380" trigger="click" @hide="onEnded()"
+    <a-popover class="audio-popover-main" placement="bottom" :style="{
+        width:isMobile?'calc(100% - 20px)':'380px'
+    }" trigger="click" @hide="onEnded()"
         @show="onPlay()">
         <div v-if="btn" class="audio-btn">{{ btn }}</div>
         <div v-else class="icon icon-bofang"></div>
         <template #content>
-            <div class="audio-player" v-loading="audioLoading">
+            <div class="audio-player" :class="isMobile?'mobile':''" v-loading="audioLoading">
                 <span class="play-time">
                     {{ transTime(audioCurrent) }}/{{ transTime(audioDuration) }}
                 </span>
-                <div class="play-progress">
+                <div class="play-progress" >
                     <a-slider v-model="playProgress" :show-tooltip="false" @change="progressChange" />
                     <!-- <div class="play-current-progress" :style="{ width: `${playProgress}%` }"></div> -->
                 </div>
@@ -34,6 +35,10 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref, getCurrentInstance, onBeforeMount, nextTick } from "vue";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,
@@ -179,7 +184,9 @@ const formatTime = (value: string) => {
     display: flex;
     align-items: center;
 }
-
+.audio-player.mobile{
+    width:calc( 100% - 20px);
+}
 .play-icon {
     width: 30px;
     height: 30px;

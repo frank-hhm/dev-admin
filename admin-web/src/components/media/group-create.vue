@@ -1,8 +1,9 @@
 <template>
     <div>
         <a-modal title-align="start" v-model:visible="visible" :title="operation == 'create' ? '添加分组' : '编辑分组'"
-            @BeforeOk="onSave" @BeforeCancel="close" width="400px" esc-to-close unmount-on-close>
-            <a-form :model="createForm" layout="vertical" ref="createRef" :rules="createRules">
+            @BeforeOk="onSave" @BeforeClose="close()" :width="isMobile ? 'calc(100% - 20px)' : '400px'" esc-to-close
+            unmount-on-close>
+            <a-form :model="createForm" :layout="isMobile ? 'vertical' : 'horizontal'" ref="createRef" :rules="createRules">
                 <a-form-item field="group_name" hide-label hide-asterisk class="group-form-item ">
                     <a-input v-model="createForm.group_name" placeholder="请输入分组名称"></a-input>
                 </a-form-item>
@@ -10,7 +11,8 @@
             <template #footer>
                 <a-space>
                     <a-button @click="visible = false">取消</a-button>
-                    <a-button type="primary" :loading="btnLoading" :disabled="btnLoading" @click="onSave()">确定</a-button>
+                    <a-button type="primary" :loading="btnLoading" :disabled="btnLoading"
+                        @click="onSave()">确定</a-button>
                 </a-space>
             </template>
         </a-modal>
@@ -24,11 +26,15 @@ export default {
 <script lang="ts" setup>
 import { ref, reactive, getCurrentInstance, nextTick } from "vue";
 import { Result, ResultError } from "@/types";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
 
 import {
     createMediaGroupApi,
     updateMediaGroupApi,
 } from "@/api/media";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,

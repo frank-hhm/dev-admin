@@ -14,12 +14,12 @@
             y: height - 39 - 32
         }">
                 <template #columns>
-                    <a-table-column title="角色名称" data-index="role_name">
+                    <a-table-column title="角色名称" data-index="role_name" :width="isMobile ? 160 : undefined">
                         <template #cell="{ record }">
                             <span>{{ record.role_name }}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column title="备注" data-index="remarks">
+                    <a-table-column title="备注" data-index="remarks" :width="isMobile ? 160 : undefined">
                         <template #cell="{ record }">
                             <span class="text-grey">{{ record.remarks }}</span>
                         </template>
@@ -30,7 +30,7 @@
                             <span class="text-grey">{{ record.create_time }}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column title="操作" align="right" fixed="right" :width="180">
+                    <a-table-column title="操作" align="right" :fixed="!isMobile ? 'right' : undefined" :width="180">
                         <template #cell="{ record }">
                             <a-space>
                                 <a-button v-permission="'system-role-auth'" @click=" goAuthRole(record.id)"
@@ -64,7 +64,11 @@ import systemRoleAuth from "./auth.vue"
 import { getListRoleApi, deleteRoleApi } from "@/api/system/role";
 import { PageLimitType, Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
-import router from "@/router";
+
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const { proxy } = getCurrentInstance() as any;
 const {

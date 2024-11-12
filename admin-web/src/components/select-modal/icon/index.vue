@@ -2,7 +2,7 @@
     <a-dropdown trigger="click" v-model:popup-visible="visible" ref="iconDropdown">
         <span></span>
         <template #content>
-            <div class="select-icon-modal">
+            <div class="select-icon-modal" :class="isMobile ? 'mobile' : ''">
                 <div class="select-icon-search">
                     <a-input v-model="searchInput">
                         <template #prefix>
@@ -58,7 +58,10 @@ export default {
 <script setup lang="ts">
 import { getCurrentInstance, ref, watch } from "vue";
 import iconData from "./icon.json";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
 
+const { isMobile } = storeToRefs(useAppStore());
 const {
     proxy,
 } = getCurrentInstance() as any;
@@ -177,6 +180,9 @@ defineExpose({ open });
     width: 320px;
     height: 198px;
     overflow: hidden;
+}
+.select-icon-modal.mobile{
+    width: 260px;
 }
 
 .select-icon-search {

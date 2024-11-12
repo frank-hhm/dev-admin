@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-drawer class="drawer-default" title="授权设置" v-model:visible="visible" :width="500">
+        <a-drawer class="drawer-default" title="授权设置" v-model:visible="visible" :width="isMobile?'calc(100% - 20px)':'500px'">
             <template #default>
                 <div v-loading="initLoading">
                     <a-tree :data="ruleList" ref="treeRef" :checkable="true" v-model:selected-keys="checkedKeys"
@@ -32,6 +32,10 @@ import { getRoleRule } from "@/api/system/role";
 import { useRouter } from "vue-router";
 import { saveRules, getDetailRoleApi } from "@/api/system/role";
 import { Result, ResultError } from '@/types';
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,

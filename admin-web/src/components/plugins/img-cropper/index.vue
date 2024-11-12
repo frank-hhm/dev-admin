@@ -1,8 +1,8 @@
 <template>
     <div>
-        <a-modal :title="title" width="808px" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
-            :align-center="false" title-align="start" @BeforeCancel="close">
-            <div class="cropper-body" v-if="visible">
+        <a-modal :title="title" :width="isMobile ? 'calc(100% - 20px)' : '808px'" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
+            :align-center="false" title-align="start" @BeforeClose="close()">
+            <div class="cropper-body" :class="isMobile ? 'mobile' : ''" v-if="visible">
                 <a-upload v-if="!selectFileItem" @change="uploadChange" :auto-upload="false" draggable
                     :show-file-list="false" :accept="accept">
                     <template #upload-button>
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <template #footer>
-                <div class="flex between">
+                <div class="cropper-footer" :class="isMobile ? 'mobile' : ''">
                     <a-space>
                         <template v-if="visible && selectFileItem">
                             <a-upload @change="uploadChange" :show-file-list="false" :auto-upload="false"
@@ -81,6 +81,11 @@ export default defineComponent({
 import { defineComponent, getCurrentInstance, nextTick, ref } from "vue";
 import { FileItem } from "@arco-design/web-vue";
 import { useSetting } from "@/hooks/useSetting";
+
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const props = withDefaults(
     defineProps<{
@@ -252,7 +257,31 @@ defineExpose({ open, close });
     border: 1px dashed var(--color-border-1);
     border-radius: var(--border-radius-small);
 }
-
+.cropper-footer{
+    display: block;
+    justify-content: space-between;
+}
+.cropper-footer>div{
+    margin-bottom: 10px;
+}
+.cropper-body.mobile{
+    width: calc(100%);
+}
+.cropper-body.mobile .cropper-mian{
+    width: calc(100%);
+    display: block;
+}
+.cropper-body.mobile .cropper-box{
+    width: calc(100%);
+}
+.cropper-body.mobile .cropper-cover-box{
+    margin-top:20px;
+    width: calc(100%);
+}
+.cropper-footer.mobile{
+    display: flex;
+    flex-wrap:wrap;
+}
 .cropper-cover {
     width: calc(100% - 20px);
     display: flex;

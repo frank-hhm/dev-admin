@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:visible="visible" title="上传素材" width="800px" :top="useSetting().ModalTop" @BeforeCancel="close"
+    <a-modal v-model:visible="visible" title="上传素材" :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" @BeforeClose="close()"
         :align-center="false" :mask-closable="false">
         <a-upload ref="uploadRef" draggable multiple :auto-upload="false" @success="uploadSuccess" @error="uploadError"
             @change="uploadChange" v-model:file-list="uploadMediaLists" :show-file-list="false" :accept="uploadAccept"
@@ -14,31 +14,31 @@
                 </div>
             </template>
         </a-upload>
-        <div>
+        <div :class="isMobile ? 'table-mobile' : ''">
             <template v-if="mediaFormData.length > 0">
                 <a-table class="mt20" :data="mediaFormData" :scroll="{
         maxHeight: '300px'
     }" :pagination="false">
                     <template #columns>
-                        <a-table-column title="名称">
+                        <a-table-column title="名称" :width="isMobile ? 80 : undefined">
                             <template #cell="{ record }">
-                                <div class="text-grey">{{ record.name }} </div>
+                                <div class="text-grey table-file-name">{{ record.name }} </div>
                             </template>
                         </a-table-column>
-                        <a-table-column title="" align="center" :width="120">
+                        <a-table-column title="" align="center" :width="isMobile ? 30 : 120">
                             <template #cell="{ record }">
                                 <template v-if="record.status == 2 || record.status == 3">
-                                    <a-progress :percent="record.progress.percent / 100" />
+                                    <a-progress size="mini" :percent="record.progress.percent / 100" />
                                 </template>
                             </template>
                         </a-table-column>
-                        <a-table-column title="状态" align="center" :width="120">
+                        <a-table-column title="状态" align="center" :width="isMobile ? 80 : 120">
                             <template #cell="{ record }">
                                 <template v-if="record.status == 1">
                                     <span class="fz12 text-grey">待上传</span>
                                 </template>
                                 <template v-else-if="record.status == 2 || record.status == 3">
-                                    <span class="fz12 text-grey">正在上传...</span>
+                                    <span class="fz12 text-grey">正在上传</span>
                                 </template>
                                 <template v-else-if="record.status == 4
         ">
@@ -59,7 +59,7 @@
                                 </template>
                             </template>
                         </a-table-column>
-                        <a-table-column title="操作" align="right" :width="120">
+                        <a-table-column title="操作" align="right" :width="isMobile ? undefined : 120">
                             <template #cell="{ record, rowIndex }">
                                 <template v-if="record.status == 5">
                                     <a-button v-btn link type="text" @click="onOneUpload(record)"
@@ -97,7 +97,10 @@ import { getToken } from '@/utils';
 import { uploadMediaApi } from '@/api/media';
 import { Modal, type FileItem } from '@arco-design/web-vue';
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
 
+const { isMobile } = storeToRefs(useAppStore());
 const {
     proxy,
     proxy: { $utils },
@@ -285,5 +288,11 @@ defineExpose({ open, close });
     border: 1px dashed var(--color-border-1);
     border-radius: var(--border-radius-small);
     transition: all .2s ease;
+}
+.table-mobile .table-file-name {
+    width: 50px;
+    white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
 }
 </style>

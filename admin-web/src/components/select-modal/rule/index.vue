@@ -1,8 +1,8 @@
 <template>
     <div>
-        <a-modal title="接口列表" width="1000px" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
+        <a-modal title="接口列表" :width="isMobile ? 'calc(100% - 20px)' : '1000px'" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
             :align-center="false" title-align="start" @BeforeCancel="close">
-            <div class="rule-select-body">
+            <div class="rule-select-body" :class="isMobile ? 'mobile' : ''">
                 <div class="mt10 mb10 flex">
                     <a-input placeholder="搜索名称" v-model="search_value">
                         <template #prefix>
@@ -37,6 +37,11 @@ import { getRuleListMenusApi } from "@/api/system/menus";
 import { Result, ResultError } from "@/types";
 import { Message } from '@arco-design/web-vue';
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
+
 const {
     proxy,
     proxy: { $utils },
@@ -132,5 +137,12 @@ defineExpose({ open });
 
 .rule-select-body .rules-item:hover {
     border-color: rgba(var(--primary-6));
+}
+.rule-select-body.mobile .rules-list{
+    display: block;
+}
+.rule-select-body.mobile  .rules-item{
+    width: calc(100% - 20px);
+    margin:5px 0;
 }
 </style>

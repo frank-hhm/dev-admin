@@ -1,28 +1,29 @@
 <template>
-    <template v-for="(item, index) in menuList" :key="index">
-        <template v-if="item.children">
-            <a-sub-menu class="layout-side-sub-item" :key="item.menu_path" :index="item.menu_path">
-                <template #title>
-                    <i class="icon mr10" v-if="item.icon" :class="item.icon"></i>
-                    <span>{{ item.menu_name }}</span>
-                </template>
-                <LayoutSideMenu :data="item.children" ref="LayoutSideMenuRef" :name="item.menu_name"></LayoutSideMenu>
-            </a-sub-menu>
+    <div>
+        <template v-for="(item, index) in menuList" :key="index">
+            <template v-if="item.children">
+                <a-sub-menu class="layout-side-sub-item" :key="item.menu_path" :index="item.menu_path">
+                    <template #icon><i class="icon" v-if="item.icon" :class="item.icon"></i></template>
+                    <template #title>{{ item.menu_name }}</template>
+                    <LayoutSideMenu :data="item.children" ref="LayoutSideMenuRef" :name="item.menu_name">
+                    </LayoutSideMenu>
+                </a-sub-menu>
+            </template>
+            <template v-else>
+                <a-menu-item :key="item.menu_path" :route="item.menu_path + (item.params ? '?' + item.params : '')"
+                    class="layout-side-item" :class="cur.path == item.menu_path ||
+            (parentCur.meta.parent && parentCur.meta.parent == item.menu_path) ||
+            item.menu_path == $utils.getMenuString(cur.path) ||
+            $utils.getMenuActionParent(item, cur.path)
+            ? 'is-active'
+            : ''
+            " v-permission="item.menu_node" @click="goPath(item)" :index="item.menu_path">
+                    <template #icon><i class="icon " v-if="item.icon" :class="item.icon"></i></template>
+                    <span class="layout-side-item-title">{{ item.menu_name }}</span>
+                </a-menu-item>
+            </template>
         </template>
-        <template v-else>
-            <a-menu-item :key="item.menu_path" :route="item.menu_path + (item.params ? '?' + item.params : '')"
-                class="layout-side-item" :class="cur.path == item.menu_path ||
-        (parentCur.meta.parent && parentCur.meta.parent == item.menu_path) ||
-        item.menu_path == $utils.getMenuString(cur.path) ||
-        $utils.getMenuActionParent(item, cur.path)
-        ? 'is-active'
-        : ''
-        " v-permission="item.menu_node" @click="goPath(item)" :index="item.menu_path">
-                <i class="icon mr10" v-if="item.icon" :class="item.icon"></i>
-                <span class="layout-side-item-title">{{ item.menu_name }}</span>
-            </a-menu-item>
-        </template>
-    </template>
+    </div>
 </template>
 <script lang="ts">
 export default {
@@ -104,8 +105,9 @@ defineExpose({ refreshMenuList });
     transition: all 0.1s ease-in-out;
 }
 
-.layout-side-item-title{
+.layout-side-item-title {
     user-select: none;
 }
+
 .layout-side-item.is-active {}
 </style>

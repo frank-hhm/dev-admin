@@ -1,14 +1,16 @@
 <template>
-  <div class="layout-nav">
+  <div class="layout-nav" :class="isMobile ? 'mobile' : ''">
     <div class="layout-nav-left">
       <div class="layout-nav-logo">
-        <img class="logo-image" v-if="systemInfo?.system_logo" :src="systemInfo?.system_logo" alt="logo">
-        <span class="name">{{ systemInfo?.system_name }} </span>
-        <span class="version">v{{ systemInfo?.system_version || "0.01" }}</span>
+        <img class="logo-image" id="logoImage" v-if="systemInfo?.system_logo" :src="systemInfo?.system_logo" />
+        <div class="layout-nav-name-wrap">
+          <div class="name">{{ systemInfo?.system_name }} </div>
+          <div class="version">v{{ systemInfo?.system_version || "0.01" }}</div>
+        </div>
       </div>
     </div>
     <div class="layout-nav-right" ref="rightRef">
-      <a-button class="mr20" shape="circle" size="mini" @click="onFull">
+      <a-button class="mr20" v-if="!isMobile" shape="circle" size="mini" @click="onFull">
         <icon-expand v-if="!isFull" />
         <icon-shrink v-else />
       </a-button>
@@ -16,7 +18,7 @@
       <a-dropdown v-if="adminInfo?.id">
         <div class="layout-nav-user">
           <a-avatar :size="24" :imageUrl="adminInfo?.avatar"></a-avatar>
-          <div class="ml10">
+          <div class="ml10" v-if="!isMobile">
             {{ adminInfo.real_name }}
             ({{ adminInfo.account }})
           </div>
@@ -47,7 +49,7 @@ import { Message } from '@arco-design/web-vue';
 import adminPassModal from "@/components/system/admin/update-password.vue";
 import selectBtn from "@/components/layouts/select-btn.vue";
 
-const { systemInfo } = storeToRefs(useAppStore());
+const { systemInfo, isMobile } = storeToRefs(useAppStore());
 
 const { adminInfo } = storeToRefs(useAdminStore());
 
@@ -57,6 +59,21 @@ const {
   proxy,
   proxy: { $utils },
 } = getCurrentInstance() as any;
+
+const logoImageEl = ref<HTMLElement | null>();
+
+onMounted(() => {
+  logoImageEl.value = document.getElementById("logoImage");
+  logoImageEl.value?.addEventListener("error", () => {
+    onImageError()
+  });
+});
+
+const onImageError = () => {
+  if (logoImageEl.value) {
+    logoImageEl.value.style.display = "none";
+  }
+}
 
 const isFull = ref<boolean>(false);
 
@@ -203,7 +220,7 @@ onBeforeUnmount(() => {
   text-align: center;
   display: flex;
   align-items: center;
-  
+
 }
 
 .layout-nav .layout-nav-logo .logo-image {
@@ -211,11 +228,16 @@ onBeforeUnmount(() => {
   max-width: 120px;
   margin-right: 6px;
 }
+.layout-nav .layout-nav-logo .layout-nav-name-wrap{
+  display: flex;
+  align-items: center;
+  max-width: 280px;
+}
 
 .layout-nav .layout-nav-logo .name {
   font-size: 16px;
   color: var(--color-text-1);
-  overflow: hidden; 
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -272,4 +294,24 @@ onBeforeUnmount(() => {
   user-select: none;
   color: var(--color-text-1)
 }
+
+
+.layout-nav.mobile .layout-nav-left {
+  max-width: 140px;
+  margin-left: 4px;
+}
+
+.layout-nav.mobile .layout-nav-logo {
+  max-width: 140px;
+}
+.layout-nav.mobile .layout-nav-logo .layout-nav-name-wrap{
+  display: block;
+  max-width: 100px;
+  padding: 10px 0;
+}
+.layout-nav.mobile .layout-nav-logo .layout-nav-name-wrap>div{
+  line-height: 18px;
+  text-align: left;
+}
+
 </style>

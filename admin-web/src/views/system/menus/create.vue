@@ -1,9 +1,9 @@
 <template>
     <div>
-        <a-modal :title="operation == 'create' ? '添加菜单' : '编辑菜单'" @BeforeOk="onCreateOk" @BeforeCancel="close" width="900px"
+        <a-modal :title="operation == 'create' ? '添加菜单' : '编辑菜单'" @BeforeOk="onCreateOk" @BeforeCancel="close" :width="isMobile ? 'calc(100% - 20px)' : '900px'"
             :top="useSetting().ModalTop" class="modal" v-model:visible="visible" :align-center="false" title-align="start"
             render-to-body>
-            <a-form :model="createForm" ref="createRef" :rules="createRules" v-loading="initLoading">
+            <a-form :model="createForm" :layout="isMobile?'vertical':'horizontal'" ref="createRef" :rules="createRules" v-loading="initLoading">
 
                 <a-row :gutter="20">
                     <a-col :md="24" :xs="24">
@@ -125,10 +125,14 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref, reactive, getCurrentInstance, nextTick } from "vue";
-import { useEnumStore } from "@/store";
+import { useEnumStore,useAppStore } from "@/store";
 import { getCascaderMenusApi, createMenusApi, getDetailMenusApi, updateMenusApi } from "@/api/system/menus";
 import type { EnumItemType, Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
+
+import { storeToRefs } from "pinia";
+
+const { isMobile } = storeToRefs(useAppStore());
 const {
     proxy,
     proxy: { $utils },

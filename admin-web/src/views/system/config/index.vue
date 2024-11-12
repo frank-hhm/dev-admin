@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-card title="网站配置" class="card" v-loading="initLoading">
-            <div class="card-form-box">
+            <div class="card-form-box" :style="`width:${isMobile ? 'calc(100% - 20px)' : '400px'}`">
                 <a-form :model="configForm" ref="configFormRef">
                     <a-form-item :label-col-flex="labelColFlex" label="网站名称" field="system_name">
                         <a-input v-model="configForm.system_name" placeholder="请输入网站名称" allow-clear />
@@ -38,6 +38,9 @@ import { getCurrentInstance, onMounted, ref } from "vue";
 import { getConfigApi, saveConfigApi } from "@/api/system/config";
 import { Result, ResultError } from "@/types";
 import { useAppStore } from "@/store";
+import { storeToRefs } from "pinia";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,

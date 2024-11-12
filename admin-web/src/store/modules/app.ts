@@ -7,6 +7,7 @@ import { setCacheSystemInfo, getCacheSystemInfo, getCacheTemplateDark,setCacheTe
 export const useAppStore = defineStore("app", () => {
 
     const isMapScriptLoad = ref<boolean>(false)
+    const isMobile = ref<boolean>(false)
 
     const layout = ref<string>(getCacheLayout() || "default")
 
@@ -41,7 +42,14 @@ export const useAppStore = defineStore("app", () => {
         setCacheLayout(layout.value)
     }
 
-    return { isDark, setDark, systemInfo, getSystemInfo, isMapScriptLoad, setMapScriptLoad, layout, setLayout }
+    const setMobile = (value: boolean) => {
+        isMobile.value = value
+        if(isMobile.value){
+            setLayout('layout1')
+        }
+    }
+
+    return { isDark, setDark, systemInfo, getSystemInfo, isMapScriptLoad, setMapScriptLoad, layout, setLayout,setMobile,isMobile }
 })
 
 /** 在 setup 外使用 */

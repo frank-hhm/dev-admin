@@ -39,7 +39,7 @@
                             <span class="text-grey">{{ record.menu_node }}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column title="状态" fixed="right" data-index="status" align="center" :width="80">
+                    <a-table-column title="状态" :fixed="isMobile?undefined:'right'" data-index="status" align="center" :width="80">
                         <template #cell="{ record }">
                             <a-switch v-model="record.status.value" size="small" type="round" :loading="record.loading"
                                 :beforeChange="() => {
@@ -48,7 +48,7 @@
 
                         </template>
                     </a-table-column>
-                    <a-table-column title="操作" fixed="right" align="center" :width="140">
+                    <a-table-column title="操作" :fixed="isMobile?undefined:'right'" align="center" :width="140">
                         <template #cell="{ record }">
                             <a-space>
                                 <a-button :hoverable="false" @click="onCreate(record.id)"
@@ -78,6 +78,10 @@ import menusCreateComponent from "./create.vue";
 import { useEnumStore, useMenusStore } from "@/store";
 import { EnumType, Result, ResultError } from "@/types";
 
+import { useAppStore } from "@/store";
+import { storeToRefs } from "pinia";
+
+const { isMobile } = storeToRefs(useAppStore());
 const MenusStore = useMenusStore();
 
 const { proxy } = getCurrentInstance() as any;

@@ -141,6 +141,10 @@ export const downloadVideo = (url: string, fileName: string = '') => {
     a.click()
     document.body.removeChild(a)
 };
+export const  isMobileOrSmallScreen = (width: number = 699) => {
+    // 检查屏幕宽度是否小于699px
+    return window.innerWidth < width;
+}
 
 export default {
     baseApiUrl,
@@ -153,5 +157,6 @@ export default {
     staticImgPath,
     getUrlParams,
     getEnumName,
-    downloadVideo
+    downloadVideo,
+    isMobileOrSmallScreen
 }

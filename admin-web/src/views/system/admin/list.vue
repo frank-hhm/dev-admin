@@ -2,7 +2,7 @@
     <layout-body-content>
         <template #header>
             <a-card class="card-form">
-                <a-form layout="horizontal" :model="searchForm" ref="searchFormRef">
+                <a-form  :layout="isMobile?'vertical':'horizontal'" :model="searchForm" ref="searchFormRef">
                     <a-row :gutter="20">
                         <a-col :md="12" :xs="24" :xl="6">
                             <a-form-item :label-col-flex="labelColFlex" label="账号" prop="account_like">
@@ -81,7 +81,7 @@
                             <div class="text-grey">{{ record.last_ip?.text }}</div>
                         </template>
                     </a-table-column>
-                    <a-table-column title="状态" fixed="right" data-index="status" align="center" :width="80">
+                    <a-table-column title="状态" :fixed="isMobile?undefined:'right'" data-index="status" align="center" :width="80">
                         <template #cell="{ record }">
                             <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small"
                                 type="round" :loading="record.loading" :beforeChange="() => {
@@ -90,7 +90,7 @@
 
                         </template>
                     </a-table-column>
-                    <a-table-column title="操作" fixed="right" align="center" :width="140">
+                    <a-table-column title="操作" :fixed="isMobile?undefined:'right'" align="center" :width="140">
                         <template #cell="{ record }">
                             <a-space>
                                 <a-button v-if="Number(adminInfo.level) < 1 || adminInfo.id == record.id"
@@ -125,13 +125,14 @@ import {
 import { getListAdminApi, updateStatusAdminApi, deleteAdminApi } from "@/api/system/admin";
 import systemAdminCreate from "./create.vue";
 import { PageLimitType, Result, ResultError } from "@/types";
-import { useAdminStore } from "@/store";
+import { useAdminStore,useAppStore } from "@/store";
 import { useSetting } from "@/hooks/useSetting";
 import { storeToRefs } from "pinia";
 
 const labelColFlex = ref<string>("50px");
 
 const { adminInfo } = storeToRefs(useAdminStore());
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,

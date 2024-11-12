@@ -1,11 +1,11 @@
 <template>
-    <div class="media-body">
+    <div class="media-body" :class="isMobile ? 'mobile' : ''">
         <mediaGroup ref="mediaGroupRef" :type="props.type" @change="changeGroup" @initChange="initGroup"
             :width="groupWidth + 'px'" :isModal="isModal">
         </mediaGroup>
         <div v-loading="initLoading" class="media-box" :style="[`min-width:calc(100% - 1px - ` + groupWidth + `px)`]">
             <div class="media-select-group-name">
-                <div>{{ activeGroupName }}</div>
+                <div class="active-name">{{ activeGroupName }}</div>
                 <div class="flex">
                     <a-button class="mr15" size="small" v-permission="'media-delete'" @click="onDeletes()">删除</a-button>
                     <div v-permission="'media-update-group'" v-if="groupList.length > 0">
@@ -60,7 +60,7 @@
                             <div class="media-item-tool">
                                 <a-checkbox v-model="item.check" v-if="!isModal"></a-checkbox>
                                 <div class="media-name ml5">{{ item.former_name }}</div>
-                                <a-dropdown trigger="hover">
+                                <a-dropdown :trigger="isModal ? 'hover' :'click'">
                                     <span class="icon icon-gengduo-2"></span>
                                     <template #content>
                                         <a-doption @click.stop="onCopy(item.file_url)">复制链接</a-doption>
@@ -118,9 +118,12 @@ import mediaGroup from "@/components/media/group.vue";
 import mediaUpdateName from "@/components/media/update-name.vue";
 import mediaUpload from "@/components/media/upload.vue";
 import { getMediaListApi, setMediaGroupApi, deleteMediaApi } from "@/api/media";
-import router from "@/router/index";
 import type { PageLimitType, Result, ResultError } from "@/types";
 import { Modal } from '@arco-design/web-vue';
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 
 const { proxy } = getCurrentInstance() as any;
@@ -244,7 +247,6 @@ const onUpload = () => {
 const mediaUploadVisible = ref<boolean>(true)
 
 const onUploadClose = () => {
-    console.log(111111111)
     mediaUploadVisible.value = false
     toInit()
     nextTick(() => {
@@ -384,8 +386,13 @@ onMounted(() => {
         listPage.limit = 21;
     } else {
         mediaWidth.value = proxy?.$refs["mediaRef"]?.offsetWidth - 10;
-        listPage.limit =
-            parseInt(Math.floor(mediaWidth.value / 144).toString()) * 3;
+        let limit = parseInt(Math.floor(mediaWidth.value / 144).toString()) * 3;
+        if(limit > 10){
+            listPage.limit = limit
+        }else{
+            listPage.limit = 10
+        }
+        console.log(listPage.limit)
     }
 });
 
@@ -568,6 +575,7 @@ defineExpose({ open, close, toTypeInit, setYes });
     justify-content: space-between;
     height: calc(100% - 96px);
     border-bottom: 1px solid var(--color-border-1);
+    overflow: scroll;
 }
 
 .media-list-box .media-right-box {
@@ -664,6 +672,40 @@ defineExpose({ open, close, toTypeInit, setYes });
     line-height: 14px;
     border-radius: var(--base-radius);
     color: var(--color-text-3);
+}
+
+.media-body.mobile{
+    display: block;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.media-body.mobile .media-group-box{
+    width: 100%;
+    height: auto;
+}
+.media-body.mobile .media-group-list{
+    height: auto;
+}
+
+.media-body.mobile .media-box{
+    width: 100%;
+    margin-top: 10px;
+    border-top: 1px solid var(--color-border-1);
+}
+.media-body.mobile .media-list-box{
+    height: auto;
+    overflow: unset;
+}
+.media-body.mobile .media-list{
+    height: auto;
+    width: calc(100% - 10px);
+}
+.media-body.mobile .media-item{
+    width: calc(50% - 20px);
+    margin: 0 5px 5px 0;
+}
+.media-body.mobile .media-select-group-name .active-name{
+    display: none;
 }
 </style>
         

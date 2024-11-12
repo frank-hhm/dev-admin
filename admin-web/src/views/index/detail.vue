@@ -21,7 +21,6 @@
                     <div v-if="avatarLoading" class="avatar-progress">
                         <a-progress size="mini" :percent="avatarProgress.percent / 100" />
                     </div>
-
                     <img-cropper ref="cropperRef" @change="onChangeAvatar" :autoClose="false"
                         outputType="png"></img-cropper>
                 </div>
@@ -36,9 +35,9 @@
                     </div>
                     <div class="detail-item">
                         <div class="title">登录IP：</div>
-                        <div class="desc flex ">
+                        <div class="content">
                             <div class="fz12">{{ adminInfo.last_ip?.value }}</div>
-                            <div class="text-grey ml20 fz12" v-if="adminInfo.last_ip?.text">{{ adminInfo.last_ip?.text
+                            <div class="text-grey" v-if="adminInfo.last_ip?.text">{{ adminInfo.last_ip?.text
                                 }}</div>
                         </div>
                     </div>
@@ -146,23 +145,24 @@ const toLogin = () => {
 }
 
 .detail-right {
-    margin-left:30px;
+    margin-left: 30px;
 }
 
 .detail-item {
     display: flex;
-    height: 30px;
-    line-height: 30px;
+    line-height: 20px;
     align-items: center;
-}
-
-.detail-item .desc {
-    font-size: 12px;
+    margin-bottom: 20px;
 }
 
 .detail-item .desc {
     font-size: 16px;
     color: var(--color-text-1);
+
+}
+
+.detail-item .content {
+    display: flex;
 }
 
 .avatar-main {
@@ -175,5 +175,24 @@ const toLogin = () => {
     position: absolute;
     left: calc(50% - 8px);
     top: calc(50% - 8px);
+}
+
+
+
+@media screen and (max-width:699px) {
+    .detail-main {
+        display: block;
+    }
+
+    .avatar-main {
+        margin: 0 auto 20px;
+    }
+
+    .detail-item .content {
+        display: block;
+    }
+    .detail-right{
+        margin-left: 0;
+    }
 }
 </style>

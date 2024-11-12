@@ -1,12 +1,12 @@
 <template>
     <div>
-        <a-modal :title="operation == 'create' ? '添加账号' : '编辑账号'" @BeforeOk="onCreateOk" @BeforeCancel="close" width="800px"
-            :top="useSetting().ModalTop" class="modal" v-model:visible="visible" :align-center="false" title-align="start"
-            render-to-body>
+        <a-modal :title="operation == 'create' ? '添加账号' : '编辑账号'" @BeforeOk="onCreateOk" @BeforeClose="close()"
+            :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" class="modal"
+            v-model:visible="visible" :align-center="false" title-align="start" render-to-body>
             <div v-loading="initLoading">
-                <a-form :model="createForm" ref="createRef" :rules="createRules">
+                <a-form :model="createForm" :layout="isMobile?'vertical':'horizontal'" ref="createRef" :rules="createRules">
                     <a-row :gutter="20">
-                        <a-col :md="12" :xs="12">
+                        <a-col :md="12" :xs="24">
                             <a-form-item :label-col-flex="labelColFlex" label="姓名" field="real_name">
                                 <a-input v-model="createForm.real_name" placeholder="请输入姓名"></a-input>
                             </a-form-item>
@@ -14,32 +14,35 @@
                                 <a-input v-model="createForm.account" placeholder="请输入账号"></a-input>
                             </a-form-item>
                         </a-col>
-                        <a-col :md="12" :xs="12">
+                        <a-col :md="12" :xs="24">
                             <a-form-item :label-col-flex="labelColFlex" label="头像" field="avatar">
                                 <upload-btn v-model="createForm.avatar" count="1"></upload-btn>
                             </a-form-item>
                         </a-col>
-                        <a-col :md="24" :xs="24">
-                            <a-form-item v-if="adminLevel" :label-col-flex="labelColFlex" label="角色" field="roles">
+                    </a-row>
+                    <a-row :gutter="20">
+                        <a-col v-if="adminLevel" :md="12" :xs="24">
+                            <a-form-item :label-col-flex="labelColFlex" label="角色" field="roles">
                                 <a-select v-model="createForm.roles" multiple collapse-tags placeholder="选择角色"
                                     class="form-select-fil" @change="$forceUpdate()">
-                                    <a-option v-for="item in roleSelect" :key="item.id" :value="item.id">{{ item.role_name
-                                    }}</a-option>
+                                    <a-option v-for="item in roleSelect" :key="item.id" :value="item.id">{{ item.role_name }}</a-option>
                                 </a-select>
                             </a-form-item>
-                            <a-form-item :label-col-flex="labelColFlex" label="角色：" v-else>
+                        </a-col>
+                        <a-col :md="12" :xs="24" v-else>
+                            <a-form-item :label-col-flex="labelColFlex" label="角色：">
                                 <div class="text-red" v-if="adminLevel == 0"><icon-user-group />超级管理员</div>
                                 <div class="text-red" v-if="adminLevel == -1"><icon-face-smile-fill />开发者</div>
                             </a-form-item>
                         </a-col>
                     </a-row>
                     <a-row :gutter="20">
-                        <a-col :md="12" :xs="12">
+                        <a-col :md="12" :xs="24">
                             <a-form-item :label-col-flex="labelColFlex" label="密码：" field="pwd">
                                 <a-input v-model="createForm.pwd" type="password" placeholder="请输入密码"></a-input>
                             </a-form-item>
                         </a-col>
-                        <a-col :md="12" :xs="12">
+                        <a-col :md="12" :xs="24">
                             <a-form-item :label-col-flex="labelColFlex" label="确定密码：" field="conf_pwd">
                                 <a-input v-model="createForm.conf_pwd" type="password" placeholder="请再次输入密码"></a-input>
                             </a-form-item>
@@ -57,7 +60,7 @@
         </a-modal>
     </div>
 </template>
-      
+
 <script lang="ts">
 export default {
     name: "systemAdminCreate",
@@ -68,8 +71,12 @@ import { ref, getCurrentInstance, nextTick, reactive, onMounted } from "vue";
 import { createAdminApi, updateAdminApi, getDetailAdminApi } from "@/api/system/admin";
 import { getRoleSelectList } from "@/api/system/role";
 import { EnumItemType, Result, ResultError } from "@/types";
-import { useEnumStore } from '@/store';
+import { useEnumStore, useAppStore } from '@/store';
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+
+const { isMobile } = storeToRefs(useAppStore());
+
 const {
     proxy,
     proxy: { $utils },
@@ -94,7 +101,7 @@ const createRef = ref<HTMLElement>();
 const createForm = ref<any>({
     account: "",
     real_name: "",
-    avatar:  "",
+    avatar: "",
     roles: [],
     pwd: "",
     conf_pwd: "",

@@ -3,7 +3,7 @@
         <div @click="onOpen">
             <slot></slot>
         </div>
-        <a-modal v-model:visible="visible" hide-title width="860px" @BeforeCancel="onClose"
+        <a-modal v-model:visible="visible" hide-title :width="isMobile ? 'calc(100% - 20px)' : '860px'" @BeforeClose="onClose()"
             :align-center="false" titleAlign="start" esc-to-close unmount-on-close render-to-body>
             <div class="video-mian" v-if="visible">
                 <video :src="videoSrc" ref="videoPlayRef" :poster="cover" class="video-box" @error="onError" controls
@@ -33,6 +33,10 @@ export default {
 </script>
 <script lang="ts" setup>
 import { ref, getCurrentInstance, reactive } from "vue";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
 
 const {
     proxy,
