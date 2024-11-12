@@ -1,6 +1,6 @@
 <template>
     <div>
-        <a-modal :title="operation == 'create' ? '添加账号' : '编辑账号'" @BeforeOk="onCreateOk" @BeforeClose="close()"
+        <a-modal :title="operation == 'create' ? '添加账号' : '编辑账号'" @BeforeOk="onCreateOk" @BeforeCancel="close"
             :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" class="modal"
             v-model:visible="visible" :align-center="false" title-align="start" render-to-body>
             <div v-loading="initLoading">

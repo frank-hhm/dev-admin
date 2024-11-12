@@ -1,7 +1,7 @@
 <template>
     <div>
         <a-modal :title="title" :width="isMobile ? 'calc(100% - 20px)' : '808px'" :top="useSetting().ModalTop" class="modal" v-model:visible="visible"
-            :align-center="false" title-align="start" @BeforeClose="close()">
+            :align-center="false" title-align="start" @BeforeCancel="close">
             <div class="cropper-body" :class="isMobile ? 'mobile' : ''" v-if="visible">
                 <a-upload v-if="!selectFileItem" @change="uploadChange" :auto-upload="false" draggable
                     :show-file-list="false" :accept="accept">

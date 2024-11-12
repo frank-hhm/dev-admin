@@ -71,3 +71,13 @@ export const uploadMediaApi = (data:any,options:any = {
         data
     },options)
 }
+export const getCascaderApi = (params:{
+    pid:number|string
+}) => {
+    return request({
+        url: `mediaGroup/getCascaderApi`,
+        method: 'GET',
+        params
+    })
+}
+

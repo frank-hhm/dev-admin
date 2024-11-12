@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:visible="visible" title="上传素材" :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" @BeforeClose="close()"
+    <a-modal v-model:visible="visible" title="上传素材" :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" @BeforeCancel="close"
         :align-center="false" :mask-closable="false">
         <a-upload ref="uploadRef" draggable multiple :auto-upload="false" @success="uploadSuccess" @error="uploadError"
             @change="uploadChange" v-model:file-list="uploadMediaLists" :show-file-list="false" :accept="uploadAccept"

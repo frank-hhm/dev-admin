@@ -1,6 +1,6 @@
 <template>
-    <a-modal title-align="start" v-model:visible="visible" title="编辑素材名称" @BeforeOk="onSave" @BeforeClose="close()"
-        :width="isMobile ? 'calc(100% - 20px)' : '400px'" esc-to-close unmount-on-close>
+    <a-modal title-align="start" v-model:visible="visible" title="编辑素材名称" @BeforeOk="onSave" @BeforeCancel="close"
+        :width="isMobile ? 'calc(100% - 20px)' : '400px'" esc-to-close>
         <a-form class="mt10" layout="vertical" :model="createForm" ref="createRef" :rules="createRules"
             label-width="100px" size="large">
             <a-form-item field="former_name" hide-label hide-asterisk label="素材名称：">
