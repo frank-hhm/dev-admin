@@ -1,18 +1,23 @@
 <template>
-    <layout-body-content>
-        <template v-slot:content="{
-            height
-        }">
-            <a-button type="primary" @click="onCreate(0)" v-permission="'system-role-create'">
+    <layout-body-content pageHeader>
+        <template v-slot:page-header-left>
+            列表
+        </template>
+        <template v-slot:page-header-right>
+            <a-button type="text" size="small" @click="onCreate(0)" v-permission="'system-role-create'">
                 添加角色
             </a-button>
             <systemRoleCreate ref="createComponentRef" @success=" toInit(true)"></systemRoleCreate>
             <systemRoleAuth ref="systemRoleAuthRef" @success=" toInit(true)"></systemRoleAuth>
+        </template>
+        <template v-slot:content="{
+                height
+            }">
             <!-- 列表 -->
-            <a-table :loading="initLoading" class="mt12" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
-            x: '100%',
-            y: height - 39 - 32
-        }">
+            <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
+                x: '100%',
+                y: height - 39
+            }">
                 <template #columns>
                     <a-table-column title="角色名称" data-index="role_name" :width="isMobile ? 160 : undefined">
                         <template #cell="{ record }">
@@ -21,7 +26,7 @@
                     </a-table-column>
                     <a-table-column title="备注" data-index="remarks" :width="isMobile ? 160 : undefined">
                         <template #cell="{ record }">
-                            <span class="text-grey">{{ record.remarks }}</span>
+                            <span class="text-grey">{{ record.remarks || '--' }}</span>
                         </template>
                     </a-table-column>
 

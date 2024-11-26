@@ -1,22 +1,22 @@
 <template>
-    <layout-body-content>
+    <layout-body-content pageHeader header>
         <template #header>
             <a-card class="card-form">
-                <a-form  :layout="isMobile?'vertical':'horizontal'" :model="searchForm" ref="searchFormRef">
+                <a-form :layout="isMobile ? 'vertical' : 'horizontal'" :model="searchForm" ref="searchFormRef">
                     <a-row :gutter="20">
-                        <a-col :md="12" :xs="24" :xl="6">
+                        <a-col :md="8" :xs="24" :xl="6">
                             <a-form-item :label-col-flex="labelColFlex" label="账号" prop="account_like">
                                 <a-input class="form-input-inline" v-model="searchForm.account_like"
-                                    placeholder="请输入账号手机号" clearable />
+                                    placeholder="请输入账号手机号" allow-clear />
                             </a-form-item>
                         </a-col>
-                        <a-col :md="12" :xs="24" :xl="12">
+                        <a-col :md="8" :xs="24" :xl="8">
                             <a-form-item :label-col-flex="labelColFlex" label="注册时间" prop="create_time">
                                 <shortcuts-time v-model="searchForm.time" :btnShortcuts="false" />
                             </a-form-item>
                         </a-col>
-                        <a-col :md="12" :xs="24" :xl="6">
-                            <a-form-item :label-col-flex="labelColFlex">
+                        <a-col :md="12" :xs="24" :xl="8">
+                            <a-form-item :label-col-flex="labelColFlex" hide-label>
                                 <a-space>
                                     <a-button @click="toInit()">查询</a-button>
                                     <a-button plain @click="onSearchReset()">重置</a-button>
@@ -28,14 +28,19 @@
             </a-card>
             <div class="mt12"></div>
         </template>
+        <template v-slot:page-header-left>
+            列表
+        </template>
+        <template v-slot:page-header-right>
+            <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>
+            <a-button type="text" size="small" @click="onCreate(0)" v-permission="'system-admin-create'">添加账号</a-button>
+        </template>
         <template v-slot:content="{
                     height
                 }">
-            <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>
-            <a-button type="primary" @click="onCreate(0)" v-permission="'system-admin-create'">添加账号</a-button>
-            <a-table class="mt12" :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
+            <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
                     x: '100%',
-                    y: height - 39 - 12 - 32
+                    y: height - 39
                 }" :table-layout-fixed="true">
                 <template #columns>
                     <a-table-column title="级别" data-index="level" align="left" :width="120">
@@ -81,7 +86,8 @@
                             <div class="text-grey">{{ record.last_ip?.text }}</div>
                         </template>
                     </a-table-column>
-                    <a-table-column title="状态" :fixed="isMobile?undefined:'right'" data-index="status" align="center" :width="80">
+                    <a-table-column title="状态" :fixed="isMobile ? undefined : 'right'" data-index="status" align="center"
+                        :width="80">
                         <template #cell="{ record }">
                             <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small"
                                 type="round" :loading="record.loading" :beforeChange="() => {
@@ -90,7 +96,7 @@
 
                         </template>
                     </a-table-column>
-                    <a-table-column title="操作" :fixed="isMobile?undefined:'right'" align="center" :width="140">
+                    <a-table-column title="操作" :fixed="isMobile ? undefined : 'right'" align="center" :width="140">
                         <template #cell="{ record }">
                             <a-space>
                                 <a-button v-if="Number(adminInfo.level) < 1 || adminInfo.id == record.id"
@@ -125,7 +131,7 @@ import {
 import { getListAdminApi, updateStatusAdminApi, deleteAdminApi } from "@/api/system/admin";
 import systemAdminCreate from "./create.vue";
 import { PageLimitType, Result, ResultError } from "@/types";
-import { useAdminStore,useAppStore } from "@/store";
+import { useAdminStore, useAppStore } from "@/store";
 import { useSetting } from "@/hooks/useSetting";
 import { storeToRefs } from "pinia";
 
@@ -238,9 +244,4 @@ onMounted(() => {
     toInit();
 });
 </script>
-<style scoped>
-.admin-box {
-    /* display: flex;
-    align-items: center; */
-}
-</style>
+<style scoped></style>

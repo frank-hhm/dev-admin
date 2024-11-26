@@ -1,5 +1,8 @@
 <template>
-  <div class="layout-body-tabs" :class="heightFil ? 'height-fil' : ''">
+  <div class="layout-body-tabs" :class="[
+    heightFil ? 'height-fil' : '',
+    border?'border':''
+  ]">
     <div class="layout-body-tabs-nav">
       <div class="layout-body-tabs-nav-wrap">
         <div class="layout-body-tabs-nav-scroll">
@@ -35,6 +38,7 @@ const props = withDefaults(
     modelValue?: number | string;
     heightFil?: boolean;
     loading?: boolean;
+    border?:boolean;
   }>(),
   {
     tabs: () => {
@@ -43,6 +47,7 @@ const props = withDefaults(
     modelValue: 0,
     heightFil: false,
     loading: false,
+    border:true
   }
 );
 
@@ -60,10 +65,12 @@ const selected = (item: { name: string; value: number | string }) => {
 </script>
 <style scoped>
 .layout-body-tabs {
-  border: 1px solid var(--color-border-1);
   background: var(--color-bg-2);
-  border-radius: var(--base-radius-default);
   overflow: hidden;
+}
+.layout-body-tabs.border{
+  border: 1px solid var(--color-border-1);
+  border-radius: var(--base-radius-default);
 }
 
 .layout-body-tabs-main {
@@ -80,13 +87,14 @@ const selected = (item: { name: string; value: number | string }) => {
 
 .layout-body-tabs-nav {
   background-color: var(--color-bg-2);
-  border-bottom: 1px solid var(--color-border-1);
   margin: 0;
   padding: 0;
   height: 39px;
   position: relative;
 }
-
+.layout-body-tabs.border .layout-body-tabs-nav{
+  border-bottom: 1px solid var(--color-border-1);
+}
 .layout-body-tabs-nav-wrap {
   overflow: hidden;
   margin-bottom: -1px;

@@ -135,7 +135,7 @@ onMounted(() => {
             levelTabs.value.push(AppsTypeEnum[k]);
         }
     });
-    toInit(true);
+    toInit(false);
 });
 
 const menusLevel = ref<string | number>("all");

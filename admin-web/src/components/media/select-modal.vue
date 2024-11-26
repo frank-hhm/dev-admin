@@ -1,5 +1,5 @@
 <template>
-    <a-modal v-model:visible="visible" width="1168px" @BeforeCancel="close" class="modal media-select-modal"
+    <a-modal v-model:visible="visible" :width="isMobile ? 'calc(100% - 20px)' : '1168px'" @BeforeCancel="close" class="modal media-select-modal"
         titleAlign="start" :footer="Number(count) > 1 || count == -1" :top="useSetting().ModalTop" :align-center="false"
         
         render-to-body>
@@ -32,6 +32,11 @@ export default {
 import { ref, getCurrentInstance, nextTick } from "vue";
 import mediaFiles from "@/components/media/list.vue";
 import { useSetting } from "@/hooks/useSetting";
+import { storeToRefs } from "pinia";
+import { useAppStore } from "@/store";
+
+const { isMobile } = storeToRefs(useAppStore());
+
 const props = withDefaults(
     defineProps<{
         count?: number | string;
