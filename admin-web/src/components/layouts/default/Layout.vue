@@ -6,9 +6,10 @@
         <LayoutSideMenu ref="LayoutSideMenuRef" @change="selectChange"></LayoutSideMenu>
       </div>
       <div class="layout-side-childen" v-if="childrenMenu.length">
-        <a-menu v-if="!menusLoad" :auto-open-selected="true" :default-selected-keys="[activeMenu]" :default-open-keys="parentPath" >
+        <a-menu v-if="!menusLoad" :auto-open="true" :auto-open-selected="true" :default-selected-keys="activeMenu"
+          v-model:selected-keys="activeMenu" v-model:open-keys="parentPath">
           <LayoutSideMenuChilden ref="LayoutSideMenuChildenRef" :data="childrenMenu"></LayoutSideMenuChilden>
-        </a-menu >
+        </a-menu>
       </div>
     </div>
 
@@ -63,21 +64,24 @@ const selectChange = (children: any) => {
 };
 
 onMounted(() => {
-  
+
 });
 
 const activeMenu = computed(() => {
   const { meta, path } = route;
   if (meta.activeMenu) {
-    return meta.activeMenu as string;
+    return [meta.activeMenu as string];
   }
-  return path;
+  return [path];
 });
 
 const parentPath = ref<string[]>([]);
 
+
 const _common = common((res: any) => {
-  parentPath.value = res
+  if (res.value) {
+    parentPath.value = [res.value]
+  }
   nextTick(() => {
     menusLoad.value = false;
   });
@@ -110,7 +114,7 @@ const _common = common((res: any) => {
   width: 60px;
   z-index: 99;
   height: calc(100% - 60px);
-  top: 51px; 
+  top: 51px;
   padding: 10px 10px;
   border-right: 1px solid var(--color-border-1);
 }

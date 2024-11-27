@@ -66,9 +66,6 @@ const refreshMenuList = (data: MenusListsType) => {
     nextTick(() => {
         menuList.value = data;
     })
-    setTimeout(() => {
-
-    }, 100);
 };
 
 const goPath = (menu: any) => {

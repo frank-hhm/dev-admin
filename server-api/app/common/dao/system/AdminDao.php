@@ -42,6 +42,11 @@ class AdminDao extends \app\common\dao\BaseDao
         return $this->model->where(['account' => $account, 'status' => 1])->find();
     }
 
+    public function accountByAdminToId(string $account)
+    {
+        return $this->model->where(['account' => $account, 'status' => 1])->value('id');
+    }
+
     public function accountById(int $id)
     {
         return $this->model->where(['id' => $id])->field($this->field)->find($id);

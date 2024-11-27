@@ -1,8 +1,8 @@
 import router from "@/router"
 import NProgress from "nprogress"
 import "nprogress/nprogress.css"
-import { getToken } from "@/utils"
-import { useAdminStoreHook, usePermissionStoreHook, useMenusStoreHook } from "@/store"
+import { getToken, setDocumentTitle } from "@/utils"
+import { useAdminStoreHook, usePermissionStoreHook, useMenusStoreHook, useAppStoreHook } from "@/store"
 
 NProgress.configure({
     showSpinner: false,
@@ -23,7 +23,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
                     // 如果已经登录，并准备进入 Login 页面，则重定向到主页
                     next({ path: "/" })
                     NProgress.done()
-                } else if ( useMenusStore.menus && ((typeof roleAction !== 'number' && roleAction.indexOf(to.meta.auth) > -1) || to.meta.auth === false || roleAction === -1)) {
+                } else if (useMenusStore.menus && ((typeof roleAction !== 'number' && roleAction.indexOf(to.meta.auth) > -1) || to.meta.auth === false || roleAction === -1)) {
                     next()
                 } else {
                 }
@@ -50,6 +50,7 @@ router.beforeEach(async (to: any, from: any, next: any) => {
     }
 })
 
-router.afterEach(() => {
+router.afterEach((to: any, from: any, next: any) => {
+    setDocumentTitle(to?.meta?.menu_name);
     NProgress.done()
 })

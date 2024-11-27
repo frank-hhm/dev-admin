@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, onMounted, watch } from "vue";
+import { getCurrentInstance, onMounted, watch, onBeforeUnmount } from "vue";
 import { storeToRefs } from "pinia";
 import { useAdminStore, useAppStore, useEnumStore, useWebsocketStore } from "@/store";
 
@@ -18,19 +18,20 @@ useEnumStore().initEnum();
 
 useAppStore().getSystemInfo();
 useAppStore().setDark(isDark.value)
-
-window.addEventListener('resize',  () => {
+const listenResizeFn = (e: any) => {
     useAppStore().setMobile($utils.isMobileOrSmallScreen())
-});
+}
+
 onMounted(() => {
+    $utils.eventsListener('resize', listenResizeFn,true);
     if (useAdminStore().token) {
         useAdminStore().initInfo()
-        // useWebsocketStore().initWebSocket();
     }
-    document.title = import.meta.env.VITE_BASE_SYSTEM_NAME;
     setHeadLinks()
-    useAppStore().setMobile($utils.isMobileOrSmallScreen())
 });
+onBeforeUnmount(() => {
+    $utils.dispatchEvents('resize', listenResizeFn);
+})
 
 const setHeadLinks = () => {
     const link = document.createElement('link');

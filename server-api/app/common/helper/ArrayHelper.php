@@ -17,6 +17,18 @@ namespace app\common\helper;
 class ArrayHelper
 {
     /**
+     * 检查状态集
+     */
+    public static function checkArr($res): bool
+    {
+        foreach ($res as $v) {
+            if (!$v) {
+                return false;
+            }
+        }
+        return true;
+    }
+    /**
      * 对数组增加默认值
      */
     public static function getDefaultValue(array $keys, array $configList = []): array

@@ -14,7 +14,7 @@
                             <template #content>
                                 <a-doption v-if="groupList.length == 0" disabled>无</a-doption>
                                 <template v-else v-for="(item, index) in groupList" :key="index">
-                                    <a-doption :value="item.id">{{ item.group_name }}</a-doption>
+                                    <a-doption :value="item.id">{{ item.html }}{{ item.group_name }}</a-doption>
                                 </template>
                             </template>
                         </a-dropdown>
@@ -701,10 +701,13 @@ defineExpose({ open, close, toTypeInit, setYes });
     width: calc(100% - 10px);
 }
 .media-body.mobile .media-item{
-    width: calc(50% - 20px);
+    width: calc(33.33% - 20px);
     margin: 0 5px 5px 0;
 }
 .media-body.mobile .media-select-group-name .active-name{
+    display: none;
+}
+.media-body.mobile .media-list-box .media-right-box{
     display: none;
 }
 </style>

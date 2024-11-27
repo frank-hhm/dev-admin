@@ -24,12 +24,12 @@
             </div>
             <div class="map-box-main" id="mapContainer"></div>
             <!--  -->
-            <div class="map-select-box" v-if="selectedData.title" v-show="!isSetHeight">
+            <div class="map-select-box" v-if="selectedData.location" v-show="!isSetHeight" v-loading="selectLoading">
                 <div>
                     经纬度:{{ selectedData.location.lng }},{{ selectedData.location.lat }}
                 </div>
                 <div class="map-select-box-name">
-                    {{ selectedData.title }}
+                    {{ selectedData?.formatted_addresses?.recommend || selectedData.title }}
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                             <div class="text-grey flex items-center">
                                 <icon-location />
                                 <div>
-                                    <span class="mr5">{{ item.address }}</span>
+                                    <span class="mr5">{{ item.formatted_addresses?.recommend || item.address }}</span>
                                 </div>
                             </div>
                         </div>
@@ -198,10 +198,17 @@ const toInit = () => {
         }
     })
     map.value.on("panend", () => {
-        mapCenter.value = map.value.getCenter();
-        addMarker(mapCenter.value.lng, mapCenter.value.lat)
-        searchExplore();
+        // mapCenter.value = map.value.getCenter();
+        // addMarker(mapCenter.value.lng, mapCenter.value.lat)
+        // searchExplore();
     })
+    map.value.on("click", (evt: any) => {
+        mapGeocoder(evt.latLng.lat, evt.latLng.lng);
+        mapCenter.value = new _TMap.value.LatLng(evt.latLng.lat, evt.latLng.lng)
+        addMarker(evt.latLng.lng, evt.latLng.lat)
+        searchExplore();
+        clearItem();
+    });
 };
 
 const marker = ref<any>();
@@ -238,6 +245,37 @@ const mapSearch = () => {
     })
 };
 
+const selectLoading = ref<boolean>(false)
+
+const mapGeocoder = (lat: string | number, lng: string | number) => {
+    selectLoading.value = true;
+    var geocoder = new _TMap.value.service.Geocoder();
+    geocoder.getAddress({
+        location: new _TMap.value.LatLng(lat, lng),
+    }).then((result: any) => {
+        selectLoading.value = false;
+        // console.log(result)
+        if (result.status === 0) {
+            let ad = result.result
+            selectedData.value = ad;
+            emit("change", {
+                province: ad.ad_info.province,
+                city: ad.ad_info.city,
+                district: ad.ad_info.district,
+                location_lat: lat,
+                location_lng: lng,
+                address: ad.formatted_addresses?.recommend || ad.address,
+            });
+            emit(
+                "update:modelValue",
+                props.valueType == "string"
+                    ? lng + "," + lat
+                    : [lng, lat]
+            );
+        }
+    })
+}
+
 const setSearchItem = (item: any) => {
     mapCenter.value = new _TMap.value.LatLng(item.location.lat, item.location.lng)
     map.value.setCenter(mapCenter.value);
@@ -248,12 +286,15 @@ const setSearchItem = (item: any) => {
 const searchExplore = () => {
     setSearchLoading(true);
     var search = new _TMap.value.service.Search({
-        pageSize: 20
+        pageSize: 20,
+        policy: 1,
+        regionFix: false,
     });
     search.explore({
         center: mapCenter.value,
         radius: 1000,
     }).then((result: any) => {
+        // console.log(result)
         lists.value = result.data;
         searchList.value = [];
         searchText.value = '';
@@ -275,26 +316,35 @@ const setSearchLoading = (v: boolean) => {
     searchLoading.value = v;
 };
 
+const clearItem = () => {
+    selectedIndex.value = -1;
+    searchText.value = '';
+    selectedData.value = {};
+}
+
 const selectItem = (item: any, index: number) => {
+    // console.log(item)
     selectedIndex.value = index;
     // 清除 marker
     clearMap();
     addMarker(item.location.lng, item.location.lat);
-    selectedData.value = item;
-    emit("change", {
-        province: item.ad_info.province,
-        city: item.ad_info.city,
-        district: item.ad_info.district,
-        location_lat: item.location.lat,
-        location_lng: item.location.lng,
-        address: item.address,
-    });
-    emit(
-        "update:modelValue",
-        props.valueType == "string"
-            ? item.location.lng + "," + item.location.lat
-            : [item.location.lng, item.location.lat]
-    );
+
+    mapGeocoder(item.location.lat, item.location.lng);
+    // selectedData.value = item;
+    // emit("change", {
+    //     province: item.ad_info.province,
+    //     city: item.ad_info.city,
+    //     district: item.ad_info.district,
+    //     location_lat: item.location.lat,
+    //     location_lng: item.location.lng,
+    //     address: item.formatted_addresses?.recommend || item.address,
+    // });
+    // emit(
+    //     "update:modelValue",
+    //     props.valueType == "string"
+    //         ? item.location.lng + "," + item.location.lat
+    //         : [item.location.lng, item.location.lat]
+    // );
 };
 
 const styles = ref<any>([
@@ -368,7 +418,7 @@ watch(
 .map-search-input {
     z-index: 2;
     width: 100%;
-    border: 1px solid  var(--color-border-1);
+    border: 1px solid var(--color-border-1);
     color: var(--color-text-1);
     background-color: var(--color-bg-1);
 }
@@ -457,7 +507,7 @@ watch(
     max-height: 240px;
     overflow-y: scroll;
     border-radius: var(--base-radius);
-    color:var(--color-text-1);
+    color: var(--color-text-1);
 }
 
 .map-search-list-item {

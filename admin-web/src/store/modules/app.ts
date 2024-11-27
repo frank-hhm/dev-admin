@@ -18,6 +18,7 @@ export const useAppStore = defineStore("app", () => {
         system_version: '1',
     })
 
+
     /** 获取系统信息 */
     const getSystemInfo = async () => {
         const { data }: Result = await getSystemInfoApi()
@@ -44,6 +45,7 @@ export const useAppStore = defineStore("app", () => {
 
     const setMobile = (value: boolean) => {
         isMobile.value = value
+        console.log(isMobile.value)
         if(isMobile.value){
             setLayout('layout1')
         }

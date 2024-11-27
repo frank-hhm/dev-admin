@@ -1,6 +1,7 @@
 import { EnumType, Result, ResultError } from '@/types';
 import { Message } from '@arco-design/web-vue';
 import { request } from './request/default';
+import { useAppStoreHook } from '@/store';
 
 export const baseApiUrl = () => {
     let domain = window.location.protocol+"//"+window.location.hostname + '/'
@@ -146,6 +147,17 @@ export const  isMobileOrSmallScreen = (width: number = 699) => {
     return window.innerWidth < width;
 }
 
+export const setDocumentTitle = (menu_name: string) => {
+    if (menu_name) {
+        const useAppStore = useAppStoreHook();
+        let baseTitle = useAppStore?.systemInfo?.system_name || ""
+        if (!baseTitle) {
+            baseTitle = import.meta.env.VITE_BASE_SYSTEM_NAME;
+        }
+        document.title = baseTitle + '-' + menu_name
+    }
+}
+
 export default {
     baseApiUrl,
     baseWsUrl,
@@ -158,5 +170,6 @@ export default {
     getUrlParams,
     getEnumName,
     downloadVideo,
-    isMobileOrSmallScreen
+    isMobileOrSmallScreen,
+    setDocumentTitle
 }

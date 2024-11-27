@@ -11,7 +11,7 @@ export default {
   name: "LayoutSideMenu",
 };
 </script>
-<script setup  lang="ts">
+<script setup lang="ts">
 import {
   ref,
   getCurrentInstance,
@@ -131,9 +131,9 @@ onMounted(() => {
 </script>
 <style scoped>
 .layout-side-item {
-  width:40px;
+  width: 40px;
   /* height: 30px; */
-  height:40px;
+  height: 40px;
   text-align: center;
   padding: 10px;
   cursor: pointer;
@@ -147,11 +147,11 @@ onMounted(() => {
 .layout-side-item .icon {
   font-size: 24px;
   font-weight: 400;
-  line-height:24px;
+  line-height: 24px;
 }
 
 .layout-side-item .name {
-  font-size:12px;
+  font-size: 12px;
   line-height: 20px;
   display: flex;
   justify-content: center;
@@ -165,11 +165,11 @@ onMounted(() => {
 
 .layout-side-item.active {
   color: rgb(var(--primary-6));
-  background:var(--color-fill-2);
+  background: var(--color-fill-2);
 }
 
 .layout-side-item:hover {
   color: rgb(var(--primary-6));
-  background:var(--color-fill-2);
+  background: var(--color-fill-2);
 }
 </style>

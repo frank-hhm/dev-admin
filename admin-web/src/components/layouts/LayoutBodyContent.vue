@@ -5,7 +5,10 @@
         </div>
         <div class="layout-body-main-content" :style="[
             contentHeight ? `height:${contentHeight - footerHeight}px` : ''
-        ]" :class="[hideContentPadding ? 'hide-content-padding' : '']">
+        ]" :class="[
+            hideContentPadding ? 'hide-content-padding' : '',
+            hideFooter?'hide-footer':''
+            ]">
             <div class="layout-body-main-content-page-header" v-if="pageHeader">
                 <div class="page-header-left">
                     <slot name="page-header-left"></slot>
@@ -21,7 +24,7 @@
             </div>
         </div>
 
-        <div class="layout-body-main-footer" :class="[
+        <div class="layout-body-main-footer" v-if="!hideFooter" :class="[
             footerTopBorder ? 'footer-top-border' : ''
         ]">
             <slot name="footer"></slot>
@@ -43,12 +46,14 @@ const props = withDefaults(
         footerTopBorder?: boolean;
         pageHeader?: boolean;
         header?: boolean;
+        hideFooter?: boolean;
     }>(),
     {
         hideContentPadding: false,
         footerTopBorder: true,
         header: false,
         pageHeader: false,
+        hideFooter: false,
     }
 );
 
@@ -78,6 +83,9 @@ onMounted(() => {
                 contentHeight.value = _contentHeight - 12;
             } else {
                 contentHeight.value = _contentHeight;
+            }
+            if(props.hideFooter){
+                footerHeight.value = 0
             }
             contentBodyHeight.value = contentHeight.value - footerHeight.value - (props.hideContentPadding ? 0 : 24) - (props.pageHeader ? 49 : 0)
         }, 300);
@@ -129,6 +137,10 @@ onMounted(() => {
     border: 1px solid var(--color-border-1);
     overflow: hidden;
 }
+.layout-body-main-content.hide-footer{
+    border-bottom-left-radius: var(--base-radius-default);
+    border-bottom-right-radius: var(--base-radius-default);
+}
 
 .layout-body-main-content .layout-body-main-content-body {
     max-height: 100%;
@@ -139,5 +151,8 @@ onMounted(() => {
 .layout-body-main-content.hide-content-padding .layout-body-main-content-body {
     padding: 0;
     /* border: none; */
+}
+.layout-body-main-content  .page-header-left{
+  color: var(--color-text-1)
 }
 </style>

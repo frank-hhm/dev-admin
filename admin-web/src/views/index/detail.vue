@@ -3,12 +3,14 @@
         <a-card title="个人中心">
             <template #extra>
                 <a-space>
+                    <a-button size="mini" @click="onLoginLogs">登录记录</a-button>
                     <a-popconfirm content="确定要退出登录吗?" @ok="outLogin">
                         <a-button size="mini" type="text" status="danger">退出</a-button>
                     </a-popconfirm>
-                    <adminPassModal ref="adminPassModalRef"></adminPassModal>
                     <a-button size="mini" type="text" @click="onUpdatePass">修改密码</a-button>
                 </a-space>
+                <loginLogsComponent ref="loginLogsComponentRef"></loginLogsComponent>
+                <adminPassModal ref="adminPassModalRef"></adminPassModal>
             </template>
             <div class="detail-main">
                 <div class="avatar-main">
@@ -56,6 +58,8 @@ import { Message } from '@arco-design/web-vue';
 import adminPassModal from "@/components/system/admin/update-password.vue";
 import { uploadAvatarApi } from "@/api/system/admin";
 import { Result, ResultError } from "@/types";
+import loginLogsComponent from "@/views/system/admin/login-logs.vue";
+
 
 const { adminInfo } = storeToRefs(useAdminStore());
 
@@ -137,6 +141,12 @@ const toLogin = () => {
     });
 };
 
+
+const loginLogsComponentRef = ref<HTMLElement>();
+
+const onLoginLogs = () => {
+    proxy?.$refs["loginLogsComponentRef"]?.open(adminInfo?.value.id);
+}
 </script>
 <style scoped>
 .detail-main {
@@ -191,7 +201,8 @@ const toLogin = () => {
     .detail-item .content {
         display: block;
     }
-    .detail-right{
+
+    .detail-right {
         margin-left: 0;
     }
 }
