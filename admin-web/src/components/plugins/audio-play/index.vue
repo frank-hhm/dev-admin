@@ -3,7 +3,7 @@
         <el-button link type="primary">{{btn}}</el-button>
     </div>-->
     <a-popover class="audio-popover-main" placement="bottom" :style="{
-        width:isMobile?'calc(100% - 20px)':'380px'
+        width:isMobile?'calc(100% - 20px)':'320px'
     }" trigger="click" @hide="onEnded()"
         @show="onPlay()">
         <div v-if="btn" class="audio-btn">{{ btn }}</div>
