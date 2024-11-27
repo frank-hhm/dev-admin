@@ -701,7 +701,7 @@ defineExpose({ open, close, toTypeInit, setYes });
     width: calc(100% - 10px);
 }
 .media-body.mobile .media-item{
-    width: calc(33.33% - 20px);
+    width: calc(50% - 20px);
     margin: 0 5px 5px 0;
 }
 .media-body.mobile .media-select-group-name .active-name{
