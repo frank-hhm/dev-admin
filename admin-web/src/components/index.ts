@@ -12,6 +12,7 @@ import videoPlay from '@/components/plugins/video-play/index.vue'
 import searchMap from '@/components/plugins/search-map/index.vue'
 import page from '@/components/plugins/page/index.vue'
 import audioPlay from '@/components/plugins/audio-play/index.vue'
+import textOverflow from '@/components/plugins/text-overflow/index.vue'
 
 export const ComponentsPlugin: Plugin = {
     install(app: App) {
@@ -28,7 +29,8 @@ export const ComponentsPlugin: Plugin = {
         app.component('search-map', searchMap);
         app.component('page', page);
         app.component('audio-play', audioPlay);
+        app.component('text-overflow', textOverflow);
 
     },
 };
-export {  LayoutBody, LayoutBodyTabs, LayoutBodyContent,copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap, page, audioPlay };
+export {  LayoutBody, LayoutBodyTabs, LayoutBodyContent,copyright, uploadBtn, selectIconModal, selectRuleModal, shortcutsTime, editor, videoPlay, searchMap, page, audioPlay,textOverflow };

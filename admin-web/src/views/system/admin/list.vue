@@ -42,6 +42,7 @@
                     x: '100%',
                     y: height - 39
                 }" :table-layout-fixed="true">
+                <template #empty></template>
                 <template #columns>
                     <a-table-column title="级别" data-index="level" align="left" :width="120">
                         <template #cell="{ record }">

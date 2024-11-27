@@ -155,7 +155,7 @@ const toLogin = () => {
                 })
                 .catch((err: ResultError) => {
                     loginLoad.value = false;
-                    if (err.data?.code == 701) {
+                    if (err.data?.code == 702) {
                         loginForm.captcha_code = "";
                         toLoginCaptcha();
                     }
