@@ -31,6 +31,7 @@ class LoginLogs extends Base
 
     /**
      * 列表
+     * @noAuth(true)
      * @method(GET)
      */
     public function list()
