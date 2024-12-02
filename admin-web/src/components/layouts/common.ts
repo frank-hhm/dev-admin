@@ -11,7 +11,6 @@ export default function (_call: any) {
             }
         });
         if (typeof _call == "function") {
-            console.log(parentPath.value)
             nextTick(() => {
                 _call(parentPath.value)
             });
