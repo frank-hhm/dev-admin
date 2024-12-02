@@ -29,7 +29,7 @@
             <div class="mt12"></div>
         </template>
         <template v-slot:page-header-left>
-            列表
+            账号列表
         </template>
         <template v-slot:page-header-right>
             <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>

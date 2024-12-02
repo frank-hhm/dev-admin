@@ -1,7 +1,7 @@
 <template>
     <layout-body-content pageHeader>
         <template v-slot:page-header-left>
-            列表
+            角色列表
         </template>
         <template v-slot:page-header-right>
             <a-button type="text" size="small" @click="onCreate(0)" v-permission="'system-role-create'">
