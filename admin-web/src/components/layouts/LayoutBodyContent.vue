@@ -112,6 +112,7 @@ onMounted(() => {
 .layout-body-main-footer {
     display: flex;
     justify-content: end;
+    align-items: center;
     width: calc(100% - 2 * var(--base-padding) - 2px);
     position: absolute;
     bottom: 1px;
