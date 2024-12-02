@@ -57,6 +57,7 @@
             </a-table>
         </template>
         <template #footer>
+            <icon-refresh class="pointer mr10" @click="toInit(true)" />
             <page :listPage="listPage" @change="pageChange"></page>
         </template>
     </layout-body-content>
