@@ -21,7 +21,7 @@
                     <a-form-item :label-col-flex="labelColFlex" label="Copyright" field="copyright">
                         <a-input v-model="configForm.copyright" placeholder="请输入copyright" allow-clear />
                     </a-form-item>
-                    <a-form-item :label-col-flex="labelColFlex">
+                    <a-form-item :label-col-flex="labelColFlex"  v-permission="'system-config-system-update'">
                         <a-button type="primary" @click="onSave" :loading="btnLoading"
                             :disabled="btnLoading">保存</a-button>
                     </a-form-item>

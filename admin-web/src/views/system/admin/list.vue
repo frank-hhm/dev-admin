@@ -90,7 +90,7 @@
                     <a-table-column title="状态" :fixed="isMobile ? undefined : 'right'" data-index="status" align="center"
                         :width="80">
                         <template #cell="{ record }">
-                            <a-switch v-model="record.status.value" :disabled="record.level < 1" size="small"
+                            <a-switch  v-permission-disabled="'system-admin-status'" v-model="record.status.value" :disabled="record.level < 1" size="small"
                                 type="round" :loading="record.loading" :beforeChange="() => {
                     return (record.switch = true);
                 }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
