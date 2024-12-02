@@ -153,6 +153,7 @@ onMounted(() => {
     /* border: none; */
 }
 .layout-body-main-content  .page-header-left{
-  color: var(--color-text-1)
+    white-space: nowrap;
+    color: var(--color-text-1)
 }
 </style>
