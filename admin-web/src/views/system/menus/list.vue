@@ -8,7 +8,9 @@
         </template>
         <template v-slot:page-header-right>
             <a-space>
-                <a-button @click="toInit()" size="small"><icon-refresh /></a-button>
+                <a-tooltip content="刷新">
+                    <a-button @click="toInit()" size="small"><icon-refresh /></a-button>
+                </a-tooltip>
                 <a-button v-permission="'system-menus-create'" type="primary" size="small" @click="onCreate(0)">
                     添加菜单
                 </a-button>

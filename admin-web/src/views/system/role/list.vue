@@ -5,7 +5,9 @@
         </template>
         <template v-slot:page-header-right>
             <a-space>
+                <a-tooltip content="刷新">
                 <a-button @click="toInit(true)" size="small"><icon-refresh /></a-button>
+                </a-tooltip>
                 <a-button type="primary" size="small" @click="onCreate(0)" v-permission="'system-role-create'">
                     添加角色
                 </a-button>

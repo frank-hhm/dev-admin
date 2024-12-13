@@ -33,7 +33,9 @@
         </template>
         <template v-slot:page-header-right>
             <a-space>
-                <a-button @click="toInit(true)" size="small"><icon-refresh /></a-button>
+                <a-tooltip content="刷新">
+                    <a-button @click="toInit(true)" size="small"><icon-refresh /></a-button>
+                </a-tooltip>
                 <a-button type="primary" size="small" @click="onCreate(0)"
                     v-permission="'system-admin-create'">添加账号</a-button>
             </a-space>
