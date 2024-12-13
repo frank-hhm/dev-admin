@@ -510,7 +510,7 @@ defineExpose({ open, close, toTypeInit, setYes });
     padding: 5px;
     border: 2px solid var(--color-border-1);
     float: left;
-    width: 105px;
+    width: 104px;
     height: 130px;
     margin: 0 10px 10px 0;
 }
@@ -577,7 +577,7 @@ defineExpose({ open, close, toTypeInit, setYes });
     justify-content: space-between;
     height: calc(100% - 96px);
     border-bottom: 1px solid var(--color-border-1);
-    overflow: scroll;
+    overflow-y: scroll;
 }
 
 .media-list-box .media-right-box {
