@@ -2,8 +2,7 @@
     <div class="media-group-box" :class="[isModal ? 'is-modal' : '']">
         <div class="media-group-box-head">
             <div v-if="!isModal">分组</div>
-            <a-button size="small" @click="onCreate()"
-                v-permission="'media-group-create'">新增分组</a-button>
+            <a-button size="small" @click="onCreate()" v-permission="'media-group-create'">新增分组</a-button>
         </div>
         <div class="media-group-list" v-loading="groupLoading">
             <div class="media-group-item" :class="-1 == selectedGroupId ? 'is-active' : ''"
@@ -24,17 +23,21 @@
                 <div class="media-group-item" :class="item.id == selectedGroupId ? 'is-active' : ''"
                     @click.stop="onSelectedGroup(item.id, item.group_name)">
                     <div class="media-group-name">
-                            <div v-if="item.pid > 0" class="text-grey">
-                                {{ item.html }}
+                        <div v-if="item.pid > 0" class="text-grey">
+                            {{ item.html }}
+                        </div>
+                        <div style="width:12px;">
+                            <icon-folder />
+                        </div>
+                        <a-tooltip :content="item.group_name">
+                            <div :class="isModal ? 'ml5' : 'ml10'" class="media-group-name-text">
+                                {{ item.group_name }}
                             </div>
-                            <div style="width:12px;">
-                                <icon-folder />
-                            </div>
-                        <div :class="isModal ? 'ml5' : 'ml10'" class="media-group-name-text">{{ item.group_name }}</div>
+                        </a-tooltip>
                     </div>
                     <div class="media-group-item-action">
                         <icon-edit v-if="isModal" v-permission="'media_group-update'"
-                            @click.stop="onCreate(item.id, item.group_name,item.pid)" />
+                            @click.stop="onCreate(item.id, item.group_name, item.pid)" />
                         <a-button type="text" v-else v-permission="'media_group-update'"
                             @click.stop="onCreate(item.id, item.group_name, item.pid)" size="mini">编辑</a-button>
                         <a-popconfirm content="确定删除吗？" @ok.stop="onDelete(item.id)">
@@ -107,8 +110,8 @@ const toInit = () => {
         });
 };
 
-const onCreate = (id: number | string = 0,group_name: string = '',pid:number | string | undefined | unknown = '') => {
-    proxy?.$refs['createComponentRef']?.open(mediaType.value,id,group_name,pid);
+const onCreate = (id: number | string = 0, group_name: string = '', pid: number | string | undefined | unknown = '') => {
+    proxy?.$refs['createComponentRef']?.open(mediaType.value, id, group_name, pid);
 }
 
 
@@ -131,7 +134,7 @@ const onSelectedGroup = (val: number | string, title: string) => {
     emit("change", { group_id: val, group_name: title })
 }
 
-const toTypeInit = (type: string) =>{
+const toTypeInit = (type: string) => {
     mediaType.value = type;
     toInit();
 }
@@ -203,7 +206,7 @@ defineExpose({ toTypeInit });
     display: flex;
     align-items: center;
     width: calc(100% - 120px);
-    min-width:40px;
+    min-width: 40px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -237,7 +240,6 @@ defineExpose({ toTypeInit });
 }
 
 .media-group-item.is-active {
-    background:var(--color-fill-2);
+    background: var(--color-fill-2);
 }
 </style>
-      

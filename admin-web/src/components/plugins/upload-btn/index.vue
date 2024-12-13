@@ -272,9 +272,10 @@ onMounted(() => {
     line-height: 14px;
     cursor: pointer;
     border-radius: var(--base-radius-small);
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.6);
     text-align: center;
     opacity: 0;
+    transition: all 0.3s;
 }
 
 
@@ -288,13 +289,14 @@ onMounted(() => {
     left: 0;
     width: 100%;
     display: flex;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.6);
     line-height: 1.5;
     color: var(--color-white);
     justify-content: space-around;
     border-bottom-left-radius: var(--base-radius-small);
     border-bottom-right-radius: var(--base-radius-small);
     opacity: 0;
+    transition: all 0.3s;
 }
 
 .upload-select-btn:hover .upload-select-bottom {

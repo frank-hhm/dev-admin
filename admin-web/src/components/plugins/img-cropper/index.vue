@@ -34,7 +34,7 @@
             </div>
             <template #footer>
                 <div class="cropper-footer" :class="isMobile ? 'mobile' : ''">
-                    <a-space>
+                    <a-space wrap>
                         <template v-if="visible && selectFileItem">
                             <a-upload @change="uploadChange" :show-file-list="false" :auto-upload="false"
                                 :accept="accept">
@@ -55,8 +55,6 @@
                                 <icon-redo />
                             </a-button>
                         </template>
-                    </a-space>
-                    <a-space>
                         <a-button v-if="visible && selectFileItem" type="primary" @click="onOk">生成</a-button>
                         <a-button @click="close">关闭</a-button>
                     </a-space>
@@ -262,7 +260,7 @@ defineExpose({ open, close });
     justify-content: space-between;
 }
 .cropper-footer>div{
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
 }
 .cropper-body.mobile{
     width: calc(100%);

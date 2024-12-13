@@ -12,6 +12,7 @@
     </template>
     <template v-else>
       <div :key="item.id" class="layout-side-childen-item" :class="cur.path == item.menu_path ||
+    cur?.meta?.activeMenu == item.menu_path ||
     item.menu_path == $utils.getMenuString(cur.path) ||
     $utils.getMenuActionParent(item, cur.path)
     ? 'active'

@@ -1,18 +1,32 @@
 <template>
-    <div>
-        <a-button v-permission="'system-menus-create'" type="primary" @click="onCreate(0)">
-            添加菜单
-        </a-button>
-        <!-- 添加 -->
-        <menusCreateComponent ref="createComponentRef" @success=" toInit()"></menusCreateComponent>
-    </div>
-    <div class="mt12"></div>
-    <layout-body-tabs :tabs="levelTabs" v-model="menusLevel" v-model:loading="initLoading" @change="changeType">
-        <div class="m12">
+    <layout-body-content pageHeader hideFooter>
+        <template v-slot:page-header-left>
+            <a-radio-group type="button" v-model="menusLevel" @change="changeType">
+                <a-radio v-for="(item, index) in levelTabs" :key="index" :disabled="initLoading" :value="item.value">{{
+                item.name }}</a-radio>
+            </a-radio-group>
+        </template>
+        <template v-slot:page-header-right>
+            <a-space>
+                <a-button @click="toInit()" size="small"><icon-refresh /></a-button>
+                <a-button v-permission="'system-menus-create'" type="primary" size="small" @click="onCreate(0)">
+                    添加菜单
+                </a-button>
+            </a-space>
+            <!-- 添加 -->
+            <menusCreateComponent ref="createComponentRef" @success=" toInit()"></menusCreateComponent>
+        </template>
+        <template v-slot:content="{
+                height
+            }">
             <!-- 列表 -->
-            <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :bordered="false">
+            <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :bordered="false"
+                :scroll="{
+                x: '100%',
+                y: height - 39
+            }">
                 <template #columns>
-                    <a-table-column title="菜单名称" data-index="menu_name" :width="400">
+                    <a-table-column title="菜单名称" data-index="menu_name" :minWidth="240">
                         <template #cell="{ record }">
                             <span class="text-grey">{{ record.html }}</span>
                             <span>{{ record.menu_name }}</span>
@@ -29,7 +43,7 @@
                             <span class="text-grey">{{ record.menu_path }}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column title="Api接口" data-index="api_rule" :width="160">
+                    <a-table-column title="Api接口" data-index="api_rule" :minWidth="200">
                         <template #cell="{ record }">
                             <span class="text-grey">{{ record.api_rule }}</span>
                         </template>
@@ -39,16 +53,17 @@
                             <span class="text-grey">{{ record.menu_node }}</span>
                         </template>
                     </a-table-column>
-                    <a-table-column title="状态" :fixed="isMobile?undefined:'right'" data-index="status" align="center" :width="80">
+                    <a-table-column title="状态" :fixed="isMobile ? undefined : 'right'" data-index="status"
+                        align="center" :width="80">
                         <template #cell="{ record }">
-                            <a-switch  v-permission-disabled="'system-menus-status'" v-model="record.status.value" size="small" type="round" :loading="record.loading"
-                                :beforeChange="() => {
-            return (record.switch = true);
-        }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
+                            <a-switch v-permission-disabled="'system-menus-status'" v-model="record.status.value"
+                                size="small" type="round" :loading="record.loading" :beforeChange="() => {
+                return (record.switch = true);
+            }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
 
                         </template>
                     </a-table-column>
-                    <a-table-column title="操作" :fixed="isMobile?undefined:'right'" align="center" :width="140">
+                    <a-table-column title="操作" :fixed="isMobile ? undefined : 'right'" align="center" :width="140">
                         <template #cell="{ record }">
                             <a-space>
                                 <a-button :hoverable="false" @click="onCreate(record.id)"
@@ -67,8 +82,8 @@
                     </a-table-column>
                 </template>
             </a-table>
-        </div>
-    </layout-body-tabs>
+        </template>
+    </layout-body-content>
 </template>
 <script lang="ts" setup>
 import { ref, getCurrentInstance, onMounted, nextTick } from "vue";
@@ -140,8 +155,8 @@ onMounted(() => {
 
 const menusLevel = ref<string | number>("all");
 
-const changeType = (val: string | number) => {
-    menusLevel.value = val;
+const changeType = (val: string | number | boolean) => {
+    menusLevel.value = String(val);
     toInit();
 };
 

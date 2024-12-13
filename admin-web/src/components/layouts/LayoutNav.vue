@@ -23,6 +23,7 @@
             ({{ adminInfo.account }})
           </div>
         </div>
+        
         <template #content>
           <a-doption @click="onDetail">个人中心</a-doption>
           <a-doption @click="onUpdatePass">修改密码</a-doption>

@@ -4,20 +4,23 @@
             角色列表
         </template>
         <template v-slot:page-header-right>
-            <a-button type="text" size="small" @click="onCreate(0)" v-permission="'system-role-create'">
-                添加角色
-            </a-button>
+            <a-space>
+                <a-button @click="toInit(true)" size="small"><icon-refresh /></a-button>
+                <a-button type="primary" size="small" @click="onCreate(0)" v-permission="'system-role-create'">
+                    添加角色
+                </a-button>
+            </a-space>
             <systemRoleCreate ref="createComponentRef" @success=" toInit(true)"></systemRoleCreate>
             <systemRoleAuth ref="systemRoleAuthRef" @success=" toInit(true)"></systemRoleAuth>
         </template>
         <template v-slot:content="{
-                height
-            }">
+                    height
+                }">
             <!-- 列表 -->
             <a-table :loading="initLoading" :data="lists" row-key="id" isLeaf :pagination="false" :scroll="{
-                x: '100%',
-                y: height - 39
-            }">
+                    x: '100%',
+                    y: height - 39
+                }">
                 <template #columns>
                     <a-table-column title="角色名称" data-index="role_name" :width="isMobile ? 160 : undefined">
                         <template #cell="{ record }">
@@ -57,7 +60,6 @@
             </a-table>
         </template>
         <template #footer>
-            <icon-refresh class="pointer mr10" @click="toInit(true)" />
             <page :listPage="listPage" @change="pageChange"></page>
         </template>
     </layout-body-content>

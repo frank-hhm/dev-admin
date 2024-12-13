@@ -70,7 +70,7 @@ onMounted(() => {
 const activeMenu = computed(() => {
   const { meta, path } = route;
   if (meta.activeMenu) {
-    return [meta.activeMenu as string];
+    return [meta.activeMenu];
   }
   return [path];
 });

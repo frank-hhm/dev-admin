@@ -32,8 +32,12 @@
             账号列表
         </template>
         <template v-slot:page-header-right>
+            <a-space>
+                <a-button @click="toInit(true)" size="small"><icon-refresh /></a-button>
+                <a-button type="primary" size="small" @click="onCreate(0)"
+                    v-permission="'system-admin-create'">添加账号</a-button>
+            </a-space>
             <systemAdminCreate ref="createComponentRef" @success="toInit(true)"></systemAdminCreate>
-            <a-button type="text" size="small" @click="onCreate(0)" v-permission="'system-admin-create'">添加账号</a-button>
         </template>
         <template v-slot:content="{
                     height
@@ -87,11 +91,12 @@
                             <div class="text-grey">{{ record.last_ip?.text }}</div>
                         </template>
                     </a-table-column>
-                    <a-table-column title="状态" :fixed="isMobile ? undefined : 'right'" data-index="status" align="center"
-                        :width="80">
+                    <a-table-column title="状态" :fixed="isMobile ? undefined : 'right'" data-index="status"
+                        align="center" :width="80">
                         <template #cell="{ record }">
-                            <a-switch  v-permission-disabled="'system-admin-status'" v-model="record.status.value" :disabled="record.level < 1" size="small"
-                                type="round" :loading="record.loading" :beforeChange="() => {
+                            <a-switch v-permission-disabled="'system-admin-status'" v-model="record.status.value"
+                                :disabled="record.level < 1" size="small" type="round" :loading="record.loading"
+                                :beforeChange="() => {
                     return (record.switch = true);
                 }" @change=" onStatusChange($event, record)" :checked-value="1" :unchecked-value="0" />
 
@@ -118,7 +123,6 @@
             </a-table>
         </template>
         <template #footer>
-            <icon-refresh class="pointer mr10" @click="toInit(true)" />
             <page :listPage="listPage" @change="pageChange"></page>
         </template>
     </layout-body-content>

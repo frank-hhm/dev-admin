@@ -33,8 +33,8 @@
                                 <div class="img-cover">
                                     <a-image show-loader width="100%" height="100%" :src="item.file_url" fit="cover"
                                         v-if="!isModal" />
-                                    <a-image show-loader :preview="false" width="100%" height="100%" :src="item.file_url"
-                                        fit="cover" v-else />
+                                    <a-image show-loader :preview="false" width="100%" height="100%"
+                                        :src="item.file_url" fit="cover" v-else />
                                 </div>
                             </template>
                             <template v-else-if="item.file_type == 'video'">
@@ -59,8 +59,10 @@
                             </div>
                             <div class="media-item-tool">
                                 <a-checkbox v-model="item.check" v-if="!isModal"></a-checkbox>
-                                <div class="media-name ml5">{{ item.former_name }}</div>
-                                <a-dropdown :trigger="isModal ? 'hover' :'click'">
+                                <a-tooltip :content="item.former_name">
+                                    <div class="media-name ml5">{{ item.former_name }}</div>
+                                </a-tooltip>
+                                <a-dropdown :trigger="isModal ? 'hover' : 'click'">
                                     <span class="icon icon-gengduo-2"></span>
                                     <template #content>
                                         <a-doption @click.stop="onCopy(item.file_url)">复制链接</a-doption>
@@ -187,7 +189,7 @@ const initGroup = (data: any) => {
 
 const mediaType = ref<string>(props.type);
 
-const toInit = (isInit: boolean = false,callback:Function | unknown = null) => {
+const toInit = (isInit: boolean = false, callback: Function | unknown = null) => {
     if (isInit) {
         listPage.page = 1;
     }
@@ -209,7 +211,7 @@ const toInit = (isInit: boolean = false,callback:Function | unknown = null) => {
             setTimeout(() => {
                 initLoading.value = false;
             }, 500);
-            if(typeof callback == 'function'){
+            if (typeof callback == 'function') {
                 callback()
             }
         })
@@ -218,7 +220,7 @@ const toInit = (isInit: boolean = false,callback:Function | unknown = null) => {
                 initLoading.value = false;
             }, 500);
             $utils.errorMsg(err)
-            if(typeof callback == 'function'){
+            if (typeof callback == 'function') {
                 callback()
             }
         });
@@ -387,16 +389,16 @@ onMounted(() => {
     } else {
         mediaWidth.value = proxy?.$refs["mediaRef"]?.offsetWidth - 10;
         let limit = parseInt(Math.floor(mediaWidth.value / 144).toString()) * 3;
-        if(limit > 10){
+        if (limit > 10) {
             listPage.limit = limit
-        }else{
+        } else {
             listPage.limit = 10
         }
         console.log(listPage.limit)
     }
 });
 
-const open = (selectedData: string | string[] = "",callback:Function | unknown = null) => {
+const open = (selectedData: string | string[] = "", callback: Function | unknown = null) => {
     if (selectedData.length > 0) {
         if (typeof selectedData == "string") {
             selectedData = [selectedData];
@@ -405,7 +407,7 @@ const open = (selectedData: string | string[] = "",callback:Function | unknown =
             selectedDataList.value.push(item);
         });
     }
-    toInit(true,callback);
+    toInit(true, callback);
 };
 
 const close = () => {
@@ -416,9 +418,9 @@ const close = () => {
 
 const mediaGroupRef = ref<HTMLElement>()
 
-const toTypeInit = (type: string,callback:Function | unknown) => {
+const toTypeInit = (type: string, callback: Function | unknown) => {
     mediaType.value = type;
-    toInit(true,callback);
+    toInit(true, callback);
     proxy?.$refs['mediaGroupRef']?.toTypeInit(type);
 }
 
@@ -458,8 +460,8 @@ const dragover = (e: any) => {
 
 defineExpose({ open, close, toTypeInit, setYes });
 </script>
-        
-        
+
+
 <style scoped>
 .media-body {
     height: 100%;
@@ -651,7 +653,8 @@ defineExpose({ open, close, toTypeInit, setYes });
     padding: 10px 20px;
 }
 
-.media-item-video,.media-item-audio {
+.media-item-video,
+.media-item-audio {
     width: 100%;
     height: 110px;
     text-align: center;
@@ -659,10 +662,14 @@ defineExpose({ open, close, toTypeInit, setYes });
     font-size: 30px;
     color: var(--color-text-2);
 }
-.media-item-video .icon,.media-item-audio .icon {
+
+.media-item-video .icon,
+.media-item-audio .icon {
     font-size: 40px;
 }
-.media-item-video-play,.media-item-audio-play {
+
+.media-item-video-play,
+.media-item-audio-play {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -674,41 +681,47 @@ defineExpose({ open, close, toTypeInit, setYes });
     color: var(--color-text-3);
 }
 
-.media-body.mobile{
+.media-body.mobile {
     display: block;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.media-body.mobile .media-group-box{
+
+.media-body.mobile .media-group-box {
     width: 100%;
     height: auto;
 }
-.media-body.mobile .media-group-list{
+
+.media-body.mobile .media-group-list {
     height: auto;
 }
 
-.media-body.mobile .media-box{
+.media-body.mobile .media-box {
     width: 100%;
     margin-top: 10px;
     border-top: 1px solid var(--color-border-1);
 }
-.media-body.mobile .media-list-box{
+
+.media-body.mobile .media-list-box {
     height: auto;
     overflow: unset;
 }
-.media-body.mobile .media-list{
+
+.media-body.mobile .media-list {
     height: auto;
     width: calc(100% - 10px);
 }
-.media-body.mobile .media-item{
+
+.media-body.mobile .media-item {
     width: calc(50% - 20px);
     margin: 0 5px 5px 0;
 }
-.media-body.mobile .media-select-group-name .active-name{
+
+.media-body.mobile .media-select-group-name .active-name {
     display: none;
 }
-.media-body.mobile .media-list-box .media-right-box{
+
+.media-body.mobile .media-list-box .media-right-box {
     display: none;
 }
 </style>
-        

@@ -7,11 +7,14 @@
             contentHeight ? `height:${contentHeight - footerHeight}px` : ''
         ]" :class="[
             hideContentPadding ? 'hide-content-padding' : '',
-            hideFooter?'hide-footer':''
-            ]">
+            hideFooter ? 'hide-footer' : ''
+        ]">
             <div class="layout-body-main-content-page-header" v-if="pageHeader">
                 <div class="page-header-left">
                     <slot name="page-header-left"></slot>
+                </div>
+                <div class="page-header-center">
+                    <slot name="page-header-center"></slot>
                 </div>
                 <div class="page-header-right">
                     <slot name="page-header-right"></slot>
@@ -84,7 +87,7 @@ onMounted(() => {
             } else {
                 contentHeight.value = _contentHeight;
             }
-            if(props.hideFooter){
+            if (props.hideFooter) {
                 footerHeight.value = 0
             }
             contentBodyHeight.value = contentHeight.value - footerHeight.value - (props.hideContentPadding ? 0 : 24) - (props.pageHeader ? 49 : 0)
@@ -99,7 +102,9 @@ onMounted(() => {
     position: relative;
     overflow: hidden;
 }
-
+.layout-body-main .layout-body-main-header{
+    margin-bottom: var(--base-padding);
+}
 .layout-body-main-content-page-header {
     height: 45px;
     display: flex;
@@ -138,7 +143,8 @@ onMounted(() => {
     border: 1px solid var(--color-border-1);
     overflow: hidden;
 }
-.layout-body-main-content.hide-footer{
+
+.layout-body-main-content.hide-footer {
     border-bottom-left-radius: var(--base-radius-default);
     border-bottom-right-radius: var(--base-radius-default);
 }
@@ -147,13 +153,27 @@ onMounted(() => {
     max-height: 100%;
     padding: var(--base-padding);
     background-color: var(--color-bg-2);
+    overflow-y: scroll;
+}
+
+.layout-body-main-content .layout-body-main-content-body::-webkit-scrollbar {
+    width: 0;
+}
+
+.layout-body-main-content .layout-body-main-content-body::-webkit-scrollbar-track {
+    background: none
+}
+
+.layout-body-main-content .layout-body-main-content-body::-webkit-scrollbar-thumb {
+    background: none
 }
 
 .layout-body-main-content.hide-content-padding .layout-body-main-content-body {
     padding: 0;
     /* border: none; */
 }
-.layout-body-main-content  .page-header-left{
+
+.layout-body-main-content .page-header-left {
     white-space: nowrap;
     color: var(--color-text-1)
 }

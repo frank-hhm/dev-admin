@@ -11,5 +11,4 @@ import { storeToRefs } from "pinia";
 
 const { layout } = storeToRefs(useAppStore());
 
-
 </script>

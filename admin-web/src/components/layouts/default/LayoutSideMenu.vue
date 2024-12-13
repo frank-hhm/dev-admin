@@ -57,7 +57,7 @@ const onPath = (menu: any) => {
 const initRoute = () => {
   var _router = {
     path: router.currentRoute.value.path,
-    activeMenu: router.currentRoute.value.meta.activeMenu || "",
+    activeMenu: router.currentRoute.value.meta?.activeMenu || "",
   };
   if (!menus.value || menus.value == undefined) {
     router.replace({
