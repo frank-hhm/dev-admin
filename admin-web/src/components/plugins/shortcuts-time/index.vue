@@ -1,8 +1,6 @@
 <template>
     <a-range-picker show-time :shortcuts="shortcuts" shortcuts-position="left" :format="format" @change="onChange"
             @select="onSelect" @ok="onOk" style="width: 100%;"/>
-    <a-range-picker show-time :shortcuts="shortcuts" shortcuts-position="left" :format="format" @change="onChange"
-            @select="onSelect" @ok="onOk" style="width: 100%;"/>
 </template>
 <script lang="ts">
 export default {

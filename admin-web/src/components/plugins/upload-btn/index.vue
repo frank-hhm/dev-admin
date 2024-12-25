@@ -1,5 +1,5 @@
 <template>
-    <div class="upload-select-box" ref="uploadSelectBoxRef">
+    <div class="upload-select-box">
         <!-- 图片 -->
         <template v-if="type == 'image'">
             <!-- 单个 -->
@@ -9,8 +9,8 @@
                         <i class="icon icon-jia"></i>
                     </template>
                     <template v-else>
-                        <a-image ref="imageRef" height="100%" width="100%" show-loader :preview="false"
-                            :src="selectData" fit="cover" />
+                        <a-image ref="imageRef" height="100%" width="100%" show-loader :preview="false" :src="selectData"
+                            fit="cover" />
                         <div class="upload-select-del" @click.stop="onDelete(-1)">
                             <div class="icon icon-cuo"></div>
                         </div>
@@ -26,8 +26,7 @@
                 <!-- 已选素材 -->
                 <template v-for="(item, index) in selectData" :key="index">
                     <div class="upload-select-btn" :style="styles" draggable="true" @dragstart="dragstart(item)"
-                        @dragenter="dragenter(item, $event)" @dragend="dragend(item, $event)"
-                        @dragover="dragover($event)">
+                        @dragenter="dragenter(item, $event)" @dragend="dragend(item, $event)" @dragover="dragover($event)">
                         <a-image height="100%" width="100%" show-loader :preview="false" :src="item" fit="cover" />
                         <div class="upload-select-del" @click.stop="onDelete(index, item)">
                             <div class="icon icon-cuo"></div>
@@ -42,8 +41,7 @@
                     <i class="icon icon-jia"></i>
                 </div>
             </template>
-            <a-image-preview-group :srcList="previewList" v-model:visible="previewVisblie"
-                v-model:current="previewIndex" />
+            <a-image-preview-group :srcList="previewList" v-model:visible="previewVisblie" v-model:current="previewIndex" />
         </template>
         <template v-else-if="type == 'video'">
             <a-input v-model="selectData" clearable :disabled="disabled" placeholder="请选择视频">
@@ -84,7 +82,6 @@ const props = withDefaults(
         count?: number | string;
         padding?: string;
         disabled?: boolean;
-        ratio?: boolean | string | number;
     }>(),
     {
         type: "image",
@@ -93,8 +90,7 @@ const props = withDefaults(
         modelValue: "",
         count: 1,
         padding: '5px',
-        disabled: false,
-        ratio: false
+        disabled: false
     }
 );
 const emit = defineEmits(["change", "update:modelValue"]);
@@ -104,27 +100,10 @@ const mediaSelectModalRef = ref<HTMLElement>();
 const selectData: string | number | string[] | number[] | any = ref(
     props.count == 1 ? props.modelValue.toString() : props.modelValue
 );
-
-const uploadSelectBoxRef = ref<HTMLElement>()
-
 const styles = computed(() => {
-    let width = props.width ? props.width : props.height, height:any = props.height;
-    if (props.ratio !== false && props.ratio) {
-        if (width == '100%') {
-            height = Number(uploadSelectBoxRef.value?.offsetWidth) * Number(props.ratio);
-        } else {
-            height = Number(width) * Number(props.ratio);
-        }
-    }
-    if(typeof height == 'number'){
-        height = height + 'px';
-    }
-    if(typeof width == 'number'){
-        width = width + 'px';
-    }
     return {
-        height: height,
-        width: width,
+        height: props.height,
+        width: props.width ? props.width : props.height,
         padding: props.padding,
         marginRight: props.count == 1 ? '' : '5px',
         marginBottom: props.count == 1 ? '' : '5px',
@@ -241,13 +220,11 @@ onMounted(() => {
 .upload-select-box {
     display: flex;
     flex-wrap: wrap;
-    max-width: 100%;
-    width: 100%;
 }
 
 .upload-select-btn {
     background: var(--color-secondary);
-    border-radius: var(--base-radius-small);
+    border-radius: var(--base-radius);
     text-align: center;
     display: flex;
     justify-content: center;
@@ -271,11 +248,10 @@ onMounted(() => {
     height: 14px;
     line-height: 14px;
     cursor: pointer;
-    border-radius: var(--base-radius-small);
-    background: rgba(0, 0, 0, 0.6);
+    border-radius:var(--base-radius-default);
+    background: rgba(0, 0, 0, 0.3);
     text-align: center;
     opacity: 0;
-    transition: all 0.3s;
 }
 
 
@@ -289,14 +265,13 @@ onMounted(() => {
     left: 0;
     width: 100%;
     display: flex;
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.2);
     line-height: 1.5;
     color: var(--color-white);
     justify-content: space-around;
-    border-bottom-left-radius: var(--base-radius-small);
-    border-bottom-right-radius: var(--base-radius-small);
+    border-bottom-left-radius: var(--base-radius-default);
+    border-bottom-right-radius: var(--base-radius-default);
     opacity: 0;
-    transition: all 0.3s;
 }
 
 .upload-select-btn:hover .upload-select-bottom {
