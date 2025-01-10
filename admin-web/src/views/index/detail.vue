@@ -96,7 +96,7 @@ const onChangeAvatar = (file: File) => {
             avatarLoading.value = false;
         }, 500);
     }).catch((err: ResultError) => {
-        $utils.successMsg(err.message)
+        $utils.errorMsg(err)
         avatarProgress.value = {
             parent: 0
         }

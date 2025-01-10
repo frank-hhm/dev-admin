@@ -36,7 +36,7 @@ export const getStorage = (key: string) => {
 }
 
 export const errorMsg = (res: ResultError) => {
-    if (res.code == 'SERVER_ERRPR') {
+    if (res.code == 'SERVER_ERRPR' || res.code === 0) {
         Message.error({
             content: res?.data?.message || '服务器请求错误，请稍后再试',
             position: 'top',
