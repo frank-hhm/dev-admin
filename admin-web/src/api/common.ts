@@ -1,29 +1,45 @@
 import { request, requestProgress } from '@/utils/request/default'
 export const getCaptchaApi = () => {
     return request({
-        url: 'index/captcha',
+        url: 'common.publics/captcha',
         method: 'GET'
     }, {
         isAllow: false,
-        apiPath: 'index/'
+        apiPath: 'api/'
     })
 }
 export const getSystemInfoApi = () => {
     return request({
-        url: 'index/systemInfo',
+        url: 'common.publics/systemInfo',
         method: 'GET'
     }, {
         isAllow: false,
-        apiPath: 'index/'
+        apiPath: 'api/'
     })
 }
 
 export const getEnumApi = () => {
     return request({
-        url: 'index/enum',
+        url: 'common.publics/enum',
         method: 'GET'
     }, {
         isAllow: false,
-        apiPath: 'index/'
+        apiPath: 'api/'
+    })
+}
+
+export const getEmailCodeApi = (data:{
+    email:string
+    captcha_code:string
+    captcha_uniqid:string
+    type:string
+}) => {
+    return request({
+        url: 'common.publics/getEmailCode',
+        method: 'POST',
+        data
+    }, {
+        isAllow: true,
+        apiPath: 'api/'
     })
 }

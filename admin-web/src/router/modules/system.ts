@@ -34,5 +34,14 @@ export default [
             auth: 'system-admin-list',
             menu_name: "管理员",
         },
-    }
+    },
+    {
+        path: `/system/config/email`,
+        name: `systemConfigEmail`,
+        component: () => import("@/views/system/config/email.vue"),
+        meta: {
+            auth: 'system-config-email',
+            menu_name: "邮箱IMAP配置",
+        },
+    },
 ]

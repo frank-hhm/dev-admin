@@ -18,7 +18,7 @@ export const dispatchEvents = (event: string, detail?: any) => {
 
 const throttle = (delay: number = 2000,callback: Function) => {
     var startTime = new Date().getTime();
-    var timer: string | number | NodeJS.Timeout | undefined  = undefined;
+    var timer: string | number | undefined | any  = undefined;
     return () => {
         var currentTime = new Date().getTime();
         if(timer){

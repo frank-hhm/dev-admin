@@ -32,6 +32,14 @@
                         <div class="desc">{{ adminInfo.account }}</div>
                     </div>
                     <div class="detail-item">
+                        <div class="title">邮箱：</div>
+                        <div class="desc">{{ adminInfo.email }}</div>
+                        <div class="ml20">
+                            <a-button size="small" shape="circle" @click="onUpdateEmail"><icon-edit /></a-button>
+                            <emailComponent ref="emailComponentRef"></emailComponent>
+                        </div>
+                    </div>
+                    <div class="detail-item">
                         <div class="title">姓名：</div>
                         <div class="desc">{{ adminInfo.real_name }}</div>
                     </div>
@@ -59,6 +67,7 @@ import adminPassModal from "@/components/system/admin/update-password.vue";
 import { uploadAvatarApi } from "@/api/system/admin";
 import { Result, ResultError } from "@/types";
 import loginLogsComponent from "@/views/system/admin/login-logs.vue";
+import emailComponent from "@/components/system/admin/update-email.vue";
 
 
 const { adminInfo } = storeToRefs(useAdminStore());
@@ -147,6 +156,13 @@ const loginLogsComponentRef = ref<HTMLElement>();
 const onLoginLogs = () => {
     proxy?.$refs["loginLogsComponentRef"]?.open(adminInfo?.value.id);
 }
+
+const emailComponentRef = ref<HTMLElement>();
+
+const onUpdateEmail = () => {
+    proxy?.$refs["emailComponentRef"]?.open();
+}
+
 </script>
 <style scoped>
 .detail-main {

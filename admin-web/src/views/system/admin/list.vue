@@ -77,6 +77,11 @@
                             </div>
                         </template>
                     </a-table-column>
+                    <a-table-column title="邮箱" data-index="email" :width="120">
+                        <template #cell="{ record }">
+                            <div>{{ record.email }}</div>
+                        </template>
+                    </a-table-column>
                     <a-table-column title="登录次数" data-index="login_count" align="center" :width="100">
                         <template #cell="{ record }">
                             <div>{{ record.login_count }}</div>

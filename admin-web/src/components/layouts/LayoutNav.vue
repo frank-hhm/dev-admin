@@ -49,6 +49,7 @@ import { logoutApi } from '@/api/login';
 import { Message } from '@arco-design/web-vue';
 import adminPassModal from "@/components/system/admin/update-password.vue";
 import selectBtn from "@/components/layouts/select-btn.vue";
+import { Result } from "@/types";
 
 const { systemInfo, isMobile } = storeToRefs(useAppStore());
 
@@ -96,7 +97,7 @@ const outLogin = () => {
     id: 'outlogin',
     content: "正在退出...",
   });
-  logoutApi().then(async (res: any) => {
+  logoutApi().then(async (res: Result) => {
     useAdminStore().resetToken();
     $utils.setStorage("token", null);
     setTimeout(() => {

@@ -56,9 +56,22 @@ export const deleteAdminApi = (params: { id: number | string }) => {
         params
     })
 }
-export const uploadAvatarApi = (data:any) => {
+export const uploadAvatarApi = (data: any) => {
     return requestProgress({
         url: `system.admin/updateAvatar`,
+        method: 'POST',
+        data
+    })
+}
+
+export const uploadEmailApi = (data: {
+    email: string
+    code: string
+    captcha_code: string
+    captcha_uniqid: string
+}) => {
+    return request({
+        url: `system.admin/updateEmail`,
         method: 'POST',
         data
     })

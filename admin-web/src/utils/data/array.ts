@@ -26,7 +26,7 @@ export const includeArray = (list1: any, list2: any) => {
   
   // 对象转数组
   export const toArray = (obj: any) => {
-    var arr = [];
+    var arr:any = [];
     for (let i in obj) {
       if (obj[i] != null && obj[i] != undefined) arr.push(obj[i])
     };

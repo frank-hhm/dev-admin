@@ -4,7 +4,8 @@
             :width="isMobile ? 'calc(100% - 20px)' : '800px'" :top="useSetting().ModalTop" class="modal"
             v-model:visible="visible" :align-center="false" title-align="start" render-to-body>
             <div v-loading="initLoading">
-                <a-form :model="createForm" :layout="isMobile?'vertical':'horizontal'" ref="createRef" :rules="createRules">
+                <a-form :model="createForm" :layout="isMobile ? 'vertical' : 'horizontal'" ref="createRef"
+                    :rules="createRules">
                     <a-row :gutter="20">
                         <a-col :md="12" :xs="24">
                             <a-form-item :label-col-flex="labelColFlex" label="姓名" field="real_name">
@@ -12,6 +13,9 @@
                             </a-form-item>
                             <a-form-item :label-col-flex="labelColFlex" label="账号" field="account">
                                 <a-input v-model="createForm.account" placeholder="请输入账号"></a-input>
+                            </a-form-item>
+                            <a-form-item :label-col-flex="labelColFlex" label="邮箱" field="email">
+                                <a-input v-model="createForm.email" placeholder="请输入邮箱"></a-input>
                             </a-form-item>
                         </a-col>
                         <a-col :md="12" :xs="24">
@@ -25,7 +29,8 @@
                             <a-form-item :label-col-flex="labelColFlex" label="角色" field="roles">
                                 <a-select v-model="createForm.roles" multiple collapse-tags placeholder="选择角色"
                                     class="form-select-fil" @change="$forceUpdate()">
-                                    <a-option v-for="item in roleSelect" :key="item.id" :value="item.id">{{ item.role_name }}</a-option>
+                                    <a-option v-for="item in roleSelect" :key="item.id" :value="item.id">{{
+            item.role_name }}</a-option>
                                 </a-select>
                             </a-form-item>
                         </a-col>
@@ -74,6 +79,7 @@ import { EnumItemType, Result, ResultError } from "@/types";
 import { useEnumStore, useAppStore } from '@/store';
 import { useSetting } from "@/hooks/useSetting";
 import { storeToRefs } from "pinia";
+import { ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 
@@ -100,6 +106,7 @@ const createRef = ref<HTMLElement>();
 
 const createForm = ref<any>({
     account: "",
+    email: "",
     real_name: "",
     avatar: "",
     roles: [],
@@ -110,7 +117,20 @@ const createForm = ref<any>({
 
 const createRules: any = reactive({
     account: [{ required: true, message: "账号不能为空！", trigger: "blur" }],
-    real_name: [{ required: true, message: "姓名不能为空！", trigger: "blur" }]
+    real_name: [{ required: true, message: "姓名不能为空！", trigger: "blur" }],
+    email: [
+        { required: true, message: "邮箱不能为空！", trigger: "blur" },
+        {
+            validator: (value: string | undefined, callback: (error?: string) => void) => {
+                console.log($utils.isEmail(value))
+                if (!$utils.isEmail(value)) {
+                    callback('邮箱格式不正确')
+                } else {
+                    callback()
+                }
+            }, trigger: "blur"
+        },
+    ],
 });
 
 const initLoading = ref<boolean>(false);
@@ -124,6 +144,7 @@ const toInit = () => {
         .then((res: Result) => {
             createForm.value.account = res.data.account;
             createForm.value.real_name = res.data.real_name;
+            createForm.value.email = res.data.email;
             createForm.value.avatar = res.data.avatar;
             adminLevel.value = res.data.level;
             createForm.value.status = res.data.status.value;
@@ -138,8 +159,8 @@ const toInit = () => {
 const btnLoading = ref<boolean>(false);
 
 const onCreateOk = () => {
-    proxy?.$refs['createRef']?.validate((valid: any, fields: any) => {
-        if (!valid) {
+    proxy?.$refs['createRef']?.validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             if (btnLoading.value) {
                 return;
             }

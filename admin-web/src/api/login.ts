@@ -15,3 +15,17 @@ export const logoutApi = () => {
         method: 'GET'
     })
 }
+export const forgetPasswordApi = (data: {
+    email: string;
+    code: string;
+    pwd: string;
+    conf_pwd: string;
+}) => {
+    return request({
+        url: 'login/forgetPassword',
+        method: 'POST',
+        data
+    }, {
+        isAllow :false
+    })
+}

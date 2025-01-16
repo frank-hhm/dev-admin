@@ -39,6 +39,7 @@ import { getConfigApi, saveConfigApi } from "@/api/system/config";
 import { Result, ResultError } from "@/types";
 import { useAppStore } from "@/store";
 import { storeToRefs } from "pinia";
+import { ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 
@@ -51,20 +52,29 @@ const labelColFlex = ref<string>("80px");
 
 const configFormRef = ref<HTMLElement>();
 
-const configForm = ref<any>({
-    system_name: '',
-    system_version: '',
-    system_logo: '',
-    system_icon: [],
-    web_domain: '',
-    copyright: ''
+interface ConfigFormType {
+    system_name:string;
+    system_version:string;
+    system_logo:string;
+    system_icon: string;
+    web_domain:string;
+    copyright: string;
+}
+
+const configForm = ref<ConfigFormType>({
+    system_name: "",
+    system_version: "",
+    system_logo: "",
+    system_icon: "",
+    web_domain: "",
+    copyright: ""
 })
 
 const initLoading = ref<boolean>(false)
 
 const toInit = () => {
     initLoading.value = true
-    getConfigApi().then((res: Result) => {
+    getConfigApi('default').then((res: Result) => {
         configForm.value = res.data
         initLoading.value = false;
     }, (err: ResultError) => {
@@ -76,8 +86,8 @@ const toInit = () => {
 const btnLoading = ref<boolean>(false)
 
 const onSave = () => {
-    proxy?.$refs['configFormRef']?.validate((valid: any, fields: any) => {
-        if (!valid) {
+    proxy?.$refs['configFormRef']?.validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             btnLoading.value = true;
             saveConfigApi(configForm.value).then((res: Result) => {
                 btnLoading.value = false;

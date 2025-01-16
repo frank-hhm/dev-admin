@@ -14,7 +14,7 @@
                 </div>
                 <a-form :model="loginForm" layout="vertical" ref="loginRef" :rules="loginRules">
                     <a-form-item field="account" hide-label hide-asterisk class="login-main-form-item">
-                        <a-input v-model="loginForm.account" placeholder="请输入账号" size="large">
+                        <a-input v-model="loginForm.account" placeholder="请输入账号或邮箱" size="large">
                             <template #prefix>
                                 <icon-user />
                             </template>
@@ -27,7 +27,8 @@
                             </template>
                         </a-input-password>
                     </a-form-item>
-                    <a-form-item field="captcha_code" hide-label hide-asterisk class="login-main-form-item default-append">
+                    <a-form-item field="captcha_code" hide-label hide-asterisk
+                        class="login-main-form-item default-append">
                         <a-input v-model="loginForm.captcha_code" placeholder="请输入验证码" allow-clear maxlength="4"
                             size="large">
                             <template #prefix>
@@ -51,10 +52,16 @@
                         <a-checkbox v-model="isCacheLogin" default-checked>记住密码</a-checkbox>
                     </div>
                     <div>
-                        <a-button shape="circle" size="mini" @click="onTemplate">
-                            <icon-sun-fill />
+                        <a-button type="text" size="mini" @click="onForgetPassword">
+                            找回密码
                         </a-button>
+                        <forgetPassword ref="forgetPasswordRef"></forgetPassword>
                     </div>
+                </div>
+                <div class="mt10 flex center">
+                    <a-button shape="circle" size="mini" @click="onTemplate">
+                        <icon-sun-fill />
+                    </a-button>
                 </div>
             </div>
         </div>
@@ -66,6 +73,8 @@ import { ref, getCurrentInstance, reactive, onMounted, nextTick } from "vue";
 import type { Result, ResultError } from "@/types";
 import { loginApi, } from "@/api/login";
 import { getCaptchaApi } from "@/api/common";
+import forgetPassword from "./forget-password.vue";
+
 import {
     useAppStore,
     useAdminStore,
@@ -85,18 +94,11 @@ const {
     proxy: { $utils },
 } = getCurrentInstance() as any;
 
-interface ILoginType {
-    account: string;
-    password: string;
-    captcha_uniqid: string;
-    captcha_code: string;
-}
+const cacheLogin = ref<any>(getCacheLogin())
 
-const cacheLogin = ref<ILoginType>(getCacheLogin())
-
-const loginForm: ILoginType = reactive({
+const loginForm = reactive({
     account: cacheLogin.value?.account || "",
-    password:  cacheLogin.value?.password || "",
+    password: cacheLogin.value?.password || "",
     captcha_uniqid: "",
     captcha_code: "",
 });
@@ -221,11 +223,16 @@ const onTemplate = () => {
 
 const isCacheLogin = ref<boolean>(true);
 
+const forgetPasswordRef = ref<HTMLElement>()
+
+const onForgetPassword = () => {
+    proxy?.$refs['forgetPasswordRef']?.open();
+}
+
 </script>
 
 
 <style scoped lang="scss">
-
 .login-body {}
 
 .login-box {

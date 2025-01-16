@@ -33,6 +33,7 @@ declare module '@vue/runtime-core' {
     SelectModal: typeof import('./src/components/media/select-modal.vue')['default']
     ShortcutsTime: typeof import('./src/components/plugins/shortcuts-time/index.vue')['default']
     TextOverflow: typeof import('./src/components/plugins/text-overflow/index.vue')['default']
+    UpdateEmail: typeof import('./src/components/system/admin/update-email.vue')['default']
     UpdateName: typeof import('./src/components/media/update-name.vue')['default']
     UpdatePassword: typeof import('./src/components/system/admin/update-password.vue')['default']
     Upload: typeof import('./src/components/media/upload.vue')['default']

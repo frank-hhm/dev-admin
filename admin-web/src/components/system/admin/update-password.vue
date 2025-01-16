@@ -35,6 +35,7 @@ import type { Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store";
+import { ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 
@@ -68,8 +69,8 @@ const initLoading = ref<boolean>(false);
 const btnLoading = ref<boolean>(false);
 
 const onSave = () => {
-    proxy?.$refs['createRef'].validate((valid: any, fields: any) => {
-        if (!valid) {
+    proxy?.$refs['createRef'].validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             if (btnLoading.value) {
                 return;
             }

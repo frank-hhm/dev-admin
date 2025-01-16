@@ -87,7 +87,15 @@ const {
 
 const initLoading = ref<boolean>(true);
 
-const lists = ref<any>([]);
+interface RoleItem {
+    id: number;
+    role_name: string;
+    remarks: string;
+    create_time: string;
+    update_time: string;
+}
+
+const lists = ref<RoleItem[]>([]);
 
 const createComponentRef = ref<HTMLElement>();
 
@@ -111,9 +119,13 @@ const toInit = (isInit: boolean = false) => {
         listPage.value.page = 1;
     }
     initLoading.value = true;
-    let obj: any = {};
-    obj.page = listPage.value.page;
-    obj.limit = listPage.value.limit;
+    let obj: {
+        page: number;
+        limit: number;
+    } = {
+        page: listPage.value.page,
+        limit:  Number(listPage.value.limit || useSetting().PageLimit.value),
+    };
     getListRoleApi(obj)
         .then((res: Result) => {
             lists.value = res.data.data;

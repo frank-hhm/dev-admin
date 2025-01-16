@@ -46,7 +46,13 @@ const emit = defineEmits(["success"]);
 
 const treeRef = ref<HTMLElement>();
 
-const ruleList = ref<any>([]);
+interface RuleItemType {
+    id: number;
+    label: string;
+    children: RuleItemType[];
+}
+
+const ruleList = ref<RuleItemType[]>([]);
 
 const initLoading = ref<boolean>(true)
 

@@ -28,7 +28,7 @@
                     </a-col>
                     <a-col :md="12" :xs="24">
                         <a-form-item :label-col-flex="labelColFlex" label="父级分类" field="pid">
-                            <a-cascader v-model="createForm.pid" :options="menusCascader" @change="pidChange" allow-search
+                            <a-cascader v-model="createForm.pid" :options="menusCascader" allow-search
                                 allow-clear class="form-select-fil" check-strictly placeholder="请选择父级分类" />
                         </a-form-item>
                     </a-col>
@@ -41,7 +41,7 @@
                                 </template>
                                 <template #append>
                                     <a-button @click="() => {
-                                        selectModalIconRef.open();
+                                        proxy?.$refs['selectModalIconRef']?.open();
                                     }
                                         ">
                                         图标
@@ -66,7 +66,7 @@
                             <a-input disabled v-model="createForm.api_rule" placeholder="请选择接口">
                                 <template #append>
                                     <a-button @click="() => {
-                                        selectRuleRef.open();
+                                        proxy?.$refs['selectRuleRef']?.open();
                                     }">
                                         接口
                                     </a-button>
@@ -131,6 +131,7 @@ import type { EnumItemType, Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
 
 import { storeToRefs } from "pinia";
+import { FieldRule, ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 const {
@@ -150,7 +151,21 @@ const visible = ref<boolean>(false);
 
 const createRef = ref<HTMLElement>();
 
-const createForm = ref<any>({
+interface listItem {
+    module: number | string
+    type: number
+    menu_name: string
+    pid: string | number| any,
+    menu_path:string
+    menu_node:string
+    params:string
+    icon:string
+    sort:number
+    status:number
+    api_rule:string
+}
+
+const createForm = ref<listItem>({
     module: 1,
     type: 1,
     menu_name: "",
@@ -193,7 +208,8 @@ const toInit = () => {
         });
 };
 
-const createRules: any = reactive({
+const createRules: Record<string, FieldRule | FieldRule[]>
+ = reactive({
     menu_name: [{ required: true, message: "菜单名称不能为空！" }],
 });
 
@@ -204,13 +220,13 @@ const emit = defineEmits(["success"]);
 const btnLoading = ref(false);
 
 const onCreateOk = () => {
-    proxy?.$refs['createRef']?.validate((valid: any, fields: any) => {
-        if (!valid) {
+    proxy?.$refs['createRef']?.validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             if (btnLoading.value) {
                 return;
             }
             btnLoading.value = true;
-            let operationApi: any = null;
+            let operationApi: Promise<Result> | null = null;
             if (operation.value == "create") {
                 operationApi = createMenusApi(createForm.value);
             } else {
@@ -223,7 +239,8 @@ const onCreateOk = () => {
                     )
                 );
             }
-            operationApi
+            if(operationApi){
+                operationApi
                 .then((res: Result) => {
                     $utils.successMsg(res.message);
                     close();
@@ -234,14 +251,25 @@ const onCreateOk = () => {
                     $utils.errorMsg(err);
                     btnLoading.value = false;
                 });
+            }
         }
     });
 };
 
-const menusCascader = ref<any>([]);
+interface menusCascaderType {
+    pid:number;
+    label:string;
+    disabled:boolean;
+    value:number;
+    children:menusCascaderType[]
+}
+
+const menusCascader = ref<menusCascaderType[]>([]);
 
 const initCascader = () => {
-    let obj: any = {};
+    let obj: {
+        pid?:number
+    } = {};
     if (operationId.value) {
         obj["pid"] = operationId.value;
     }
@@ -254,14 +282,13 @@ const initCascader = () => {
         });
 };
 
-const pidChange = (value: any) => {
-    // console.log(value);
-};
-const selectRuleRef = ref<any>();
+const selectRuleRef = ref<HTMLElement>();
 
-const selectModalIconRef = ref<any>();
+const selectModalIconRef = ref<HTMLElement>();
 
-const ruleChange = (ruleItem: any) => {
+const ruleChange = (ruleItem: {
+    rule: string;
+}) => {
     // createForm.value.menu_name = ruleItem.title;
     createForm.value.api_rule = ruleItem.rule;
 };

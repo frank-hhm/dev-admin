@@ -20,7 +20,7 @@ export const useWebsocketStore = defineStore("websocket", () => {
         }
     }
 
-    let heartbeatIntervalId: NodeJS.Timeout | null = null;
+    let heartbeatIntervalId: any | unknown = null;
 
     const setupEventListeners = (websocket: WebSocket) => {
         heartbeatIntervalId = setInterval(() => {

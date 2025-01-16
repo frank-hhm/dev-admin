@@ -101,8 +101,8 @@ import { storeToRefs } from "pinia";
 const { isMobile } = storeToRefs(useAppStore());
 const MenusStore = useMenusStore();
 
-const { proxy } = getCurrentInstance() as any;
 const {
+    proxy,
     proxy: { $utils },
 } = getCurrentInstance() as any;
 
@@ -110,11 +110,32 @@ const createComponentRef = ref<HTMLElement>();
 
 const initLoading = ref<boolean>(true);
 
-const lists = ref<any>([]);
+interface listItemType {
+    id: number;
+    menu_name: string;
+    icon: string;
+    menu_path: string;
+    api_rule: string;
+    sort: number;
+    status: number;
+    pid: number;
+    module: number;
+    type: number;
+    children: listItemType[];
+    params: string;
+    menu_node: string;
+    switch?: boolean;
+    loading?: boolean;
+}
+
+
+const lists = ref<listItemType[]>([]);
 
 const toInit = (initMenu: boolean = false) => {
     initLoading.value = true;
-    let obj: any = {};
+    let obj: {
+        module?: number | string;
+    } = {};
     if (menusLevel.value != "") {
         obj.module = menusLevel.value;
     }
@@ -166,7 +187,7 @@ const onCreate = (id: number | string) => {
     proxy?.$refs["createComponentRef"]?.open(id, menusLevel.value);
 };
 
-const onStatusChange = (val: any, row: any) => {
+const onStatusChange = (val: boolean | string | number, row: listItemType) => {
     if (row.switch === true) {
         row.loading = true;
         initLoading.value = true;

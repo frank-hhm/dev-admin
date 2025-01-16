@@ -5,7 +5,7 @@ export default [
         name: 'login',
         meta: {
             login:false,
-            title: '登录'
+            menu_name: '登录'
         },
         component: () => import('@/views/login/index.vue')
     },

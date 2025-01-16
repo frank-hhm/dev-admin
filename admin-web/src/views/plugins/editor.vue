@@ -10,5 +10,4 @@ import { ref } from "vue";
 const editorRef = ref<HTMLElement>();
 
 const content = ref<string>("");
-
 </script>

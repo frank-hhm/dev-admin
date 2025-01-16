@@ -40,6 +40,7 @@ import {
     updateMediaGroupApi,
     getCascaderApi
 } from "@/api/media";
+import { ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 
@@ -103,8 +104,8 @@ const toInit = () => {
 const btnLoading = ref<boolean>(false)
 
 const onSave = () => {
-    proxy?.$refs['createRef']?.validate((valid: any, fields: any) => {
-        if (!valid) {
+    proxy?.$refs['createRef']?.validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             if (btnLoading.value) {
                 return
             }

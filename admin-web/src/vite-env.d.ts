@@ -2,7 +2,9 @@
 /// <reference types="vite-plugin-pages/client" />
 
 declare module 'particles.vue3';
+
 declare module 'vue-cropper';
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>

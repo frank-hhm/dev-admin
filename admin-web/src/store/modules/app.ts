@@ -45,7 +45,6 @@ export const useAppStore = defineStore("app", () => {
 
     const setMobile = (value: boolean) => {
         isMobile.value = value
-        console.log(isMobile.value)
         if(isMobile.value){
             setLayout('layout1')
         }

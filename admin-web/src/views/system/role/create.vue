@@ -35,6 +35,7 @@ import type { Result, ResultError } from "@/types";
 import { useSetting } from "@/hooks/useSetting";
 import { storeToRefs } from "pinia";
 import { useAppStore } from "@/store";
+import { ValidatedError } from "@arco-design/web-vue";
 
 const { isMobile } = storeToRefs(useAppStore());
 const {
@@ -52,12 +53,17 @@ const visible = ref<boolean>(false);
 
 const createRef = ref<HTMLElement>();
 
-const createForm = ref<any>({
+const createForm = ref<{
+    role_name: string;
+    remarks: string;
+}>({
     role_name: "",
     remarks: "",
 });
 
-const createRules: any = reactive({
+const createRules:{
+    role_name: Array<{ required: boolean; message: string }>;
+} = reactive({
     role_name: [{ required: true, message: "角色名称不能为空！" }],
 });
 
@@ -84,14 +90,13 @@ const toInit = () => {
 const btnLoading = ref<boolean>(false);
 
 const onCreateOk = () => {
-    proxy?.$refs['createRef']?.validate((valid: any, fields: any) => {
-        console.log(valid)
-        if (!valid) {
+    proxy?.$refs['createRef']?.validate((error: undefined | Record<string, ValidatedError>) => {
+        if (error === undefined) {
             if (btnLoading.value) {
                 return;
             }
             btnLoading.value = true;
-            let operationApi: any = null;
+            let operationApi: Promise<Result> | null = null;
             if (operation.value == "create") {
                 operationApi = createRoleApi(createForm.value);
             } else {
@@ -104,7 +109,8 @@ const onCreateOk = () => {
                     )
                 );
             }
-            operationApi
+            if(operationApi){
+                operationApi
                 .then((res: Result) => {
                     $utils.successMsg(res.message);
                     close();
@@ -115,6 +121,7 @@ const onCreateOk = () => {
                     $utils.errorMsg(err);
                     btnLoading.value = false;
                 });
+            }
         }
     });
 };
