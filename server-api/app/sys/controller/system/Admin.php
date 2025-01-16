@@ -8,6 +8,8 @@ declare(strict_types=1);
 
 namespace app\sys\controller\system;
 
+use app\common\exception\CommonException;
+use app\common\helper\MailerHelper;
 use app\sys\controller\Base;
 use think\facade\{App, Config, Filesystem};
 use app\common\services\system\AdminService;
@@ -53,6 +55,7 @@ class Admin extends Base
         $data = $this->request->postMore([
             ['account', ''],
             ['real_name', ''],
+            ['email',''],
             ['avatar',''],
             ['roles', []],
             ['pwd',''],
@@ -73,6 +76,7 @@ class Admin extends Base
         $data = $this->request->postMore([
             ['id', ''],
             ['account', ''],
+            ['email',''],
             ['real_name', ''],
             ['avatar',''],
             ['roles', []],
@@ -197,7 +201,8 @@ class Admin extends Base
 
 
     /**
-     *
+     * 修改头像
+     * @method(POST)
      */
     public function updateAvatar(){
         $file = request()->file('file');
@@ -213,5 +218,25 @@ class Admin extends Base
             $this->success('修改成功');
         }
         $this->error('失败成功');
+    }
+
+
+    /**
+     * 修改邮箱
+     * @method(POST)
+     */
+    public function updateEmail(): void
+    {
+        $data = $this->vali([
+            'email.require'   => '请输入邮箱!',
+            'email.email'   => '请输入正确的邮箱!',
+            'code.require'   => '请输入验证码!',
+            'code.min'   => '验证码不能少于6位字符!',
+        ]);
+        MailerHelper::checkCode($this->adminInfo['email'],$data['code']);
+        if ($this->service->dao->update($this->adminId,['email'=>$data['email']])) {
+            $this->success('邮箱更新成功');
+        }
+        $this->error('邮箱更新失败');
     }
 }

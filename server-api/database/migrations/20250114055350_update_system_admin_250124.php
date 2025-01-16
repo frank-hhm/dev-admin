@@ -28,6 +28,10 @@ class UpdateSystemAdmin250124 extends Migrator
      */
     public function change()
     {
-
+        $table = $this->table('system_admin');
+        $table
+            ->addColumn(Column::string('email')->setLimit(150)->setDefault('')->setComment('邮箱'))
+            ->addIndex(['email'])
+            ->update();
     }
 }

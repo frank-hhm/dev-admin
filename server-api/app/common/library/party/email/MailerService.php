@@ -15,9 +15,6 @@ class MailerService
     protected mixed $error;
 
     protected bool $from = false;
-    // 错误信息
-    protected bool $isHtml = false;
-
     public function __construct()
     {
         if(
@@ -37,7 +34,7 @@ class MailerService
 
         $this->mail = new PHPMailer(true);
         $this->mail->isSMTP();
-        $this->mail->Host = $mailPost; // SMTP 服务器地址
+        $this->mail->Host = $mailHost; // SMTP 服务器地址
         $this->mail->SMTPAuth = true;
         $this->mail->Username = $mailUserName; // SMTP 服务器的用户名
         $this->mail->Password = $mailPassword;  // SMTP 服务器的密码
@@ -45,7 +42,8 @@ class MailerService
         $this->mail->Port = $mailPost; // SMTP 服务器的端口号
         $this->mail->CharSet = 'UTF-8'; // 设置发送的邮件的编码
     }
-    public function send($subject = '测试邮件',$content = ''){
+    public function send($subject = '测试邮件',$content = ''): bool
+    {
         try {
             if(!$this->from){
                 $defaultForm = sysconf('mail_default_from');
@@ -83,12 +81,20 @@ class MailerService
     // 收件人的邮箱地址和名称
     public function addAddress($address,$name): void
     {
-        $this->mail->addAddress($address, $name);
+        try {
+            $this->mail->addAddress($address, $name);
+        } catch (Exception $e) {
+            $this->setError($e->getMessage());
+        }
     }
 
     public function addImage($imagePath): void
     {
-        $this->mail->addEmbeddedImage($imagePath, 'logo');
+        try {
+            $this->mail->addEmbeddedImage($imagePath, 'logo');
+        } catch (Exception $e) {
+            $this->setError($e->getMessage());
+        }
     }
     /**
      * 获取错误信息

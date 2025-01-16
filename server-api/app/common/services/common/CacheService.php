@@ -22,7 +22,7 @@ class CacheService  extends BaseService
 {
 
     ## 过期时间
-    protected int $expire;
+    protected int $expire = 0;
 
     ## 获取缓存过期时间
     protected function getExpire(int $expire = null): int
@@ -44,6 +44,7 @@ class CacheService  extends BaseService
         try {
             return $this->redis()->set($name, $value, $expire ?? $this->getExpire($expire));
         } catch (\Throwable $e) {
+//            throw new CommonException($e->getMessage());
             return false;
         }
     }

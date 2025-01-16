@@ -39,12 +39,12 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function accountByAdmin(string $account)
     {
-        return $this->model->where(['account' => $account, 'status' => 1])->find();
+        return $this->model->where(['account|email' => $account, 'status' => 1])->find();
     }
 
     public function accountByAdminToId(string $account)
     {
-        return $this->model->where(['account' => $account, 'status' => 1])->value('id');
+        return $this->model->where(['account|email' => $account, 'status' => 1])->value('id');
     }
 
     public function accountById(int $id)
@@ -57,7 +57,7 @@ class AdminDao extends \app\common\dao\BaseDao
      */
     public function isAccountUsable($account, $id)
     {
-        return $this->model->where(['account' => $account])->where('id', '<>', $id)->count();
+        return $this->model->where(['account|email' => $account])->where('id', '<>', $id)->count();
     }
 
     /**

@@ -28,6 +28,7 @@ class ApiException extends Handle
             'message' => $e->getMessage(),
             'data' => [],
         ];
+        return parent::render($request, $e);
         if(env('app_debug') === true){
             return parent::render($request, $e);
         }

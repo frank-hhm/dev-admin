@@ -9,10 +9,12 @@ declare(strict_types=1);
 namespace app\sys\controller;
 use app\BaseController;
 use app\common\exception\CommonException;
+use app\common\helper\MailerHelper;
 use app\common\services\common\CacheService;
 use app\common\services\common\CaptchaService;
 use app\common\services\system\AdminService;
 use app\common\services\system\LoginLogsService;
+use app\sys\validate\AdminPassValidate;
 use think\Cache;
 use think\facade\Queue;
 
@@ -70,5 +72,37 @@ class Login extends BaseController
                 $this->error($e->getMessage(),[],$e->getCode());
             }
         }
+    }
+    /**
+     * 找回密码
+     * @method(POST)
+     */
+    public function forgetPassword(): void
+    {
+        $data = $this->vali([
+            'email.require'   => '请输入邮箱!',
+            'email.email'   => '请输入正确的邮箱!',
+            'code.require'   => '请输入验证码!',
+            'code.min'   => '验证码不能少于6位字符!',
+            'pwd.require'   => '请输入密码!',
+            'conf_pwd.require'   => '请输入确定密码!',
+            'pwd.min'   => '账号最小长度为6位!',
+            'conf_pwd.min'   => '账号确定密码最小长度为6位!',
+            'conf_pwd.confirm:pwd'   => '两次密码不一致!',
+        ]);
+        MailerHelper::checkCode($data['email'],$data['code']);
+
+        $adminService = app(AdminService::class);
+        $admin = $adminService->dao->model->where('email',$data['email'])->where('status',1)->find();
+        if(empty($admin)){
+            throw new CommonException('账号不存在!');
+        }
+
+        //修改密码
+        $pwd = $adminService->dao->passwordHash($data['pwd']);
+        if ($adminService->dao->update($admin['id'],['pwd'=>$pwd])) {
+            $this->success('设置新密码成功');
+        }
+        $this->error('设置新密码失败');
     }
 }
